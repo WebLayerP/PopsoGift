@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	EXAMPLE LOGBACK CONFIGURATION!
+
+Pay attention to:
+- file path (<apphome>/log/*)
+- rolling policy: the volume logs have a limit of 300mb
+- log pattern: it must be "yyyy-MM-dd'T'HH:mm:ss.SSSZ" due to splunk constraint
+- remember to report each log file to SPLUNK_ADD env variable.
+
+Riferimento wiki: http://cristallo.popso.it/dokuwiki/doku.php?id=s.o.s.i.:sosi-sviluppo_applic:architetture_applicative_e_metodologia:metodologie_software:linee_guida:linee_guida_di_logging:linee_guida_di_logging_applicazioni_dipartimentali&s[]=log&s[]=applicativi
+-->
+<configuration>
+        <appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>log/Popsogift-trace.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+                        <!-- rollover daily -->
+                        <fileNamePattern>log/Popsogift-trace.%i.log</fileNamePattern>
+                        <minIndex>1</minIndex>
+                        <maxIndex>1</maxIndex>
+                </rollingPolicy>
+                <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                        <maxFileSize>50MB</maxFileSize>
+                </triggeringPolicy>
+                <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                        <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSZ"} %-5level id_user=%X{id_user} ip_address=%X{ip_address} banca=%X{banca} canale=%X{canale} applicazione=%X{applicazione} layer=%X{layer} nodo=%X{nodo} id_sessione=%X{id_sessione} idConversazione="%X{idConversazione}" - %msg%n</pattern>
+                </encoder>
+        </appender>
+        <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>log/Popsogift-audit.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+                        <!-- rollover daily -->
+                        <fileNamePattern>log/Popsogift-audit.%i.log</fileNamePattern>
+                        <minIndex>1</minIndex>
+                        <maxIndex>1</maxIndex>
+                </rollingPolicy>
+                <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                        <maxFileSize>20MB</maxFileSize>
+                </triggeringPolicy>
+                <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                        <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSZ"} %-5level id_user=%X{id_user} ip_address=%X{ip_address} id_cliente=%X{id_cliente} tipo_rapporto=%X{tipo_rapporto} num_rapporto=%X{num_rapporto} filiale_rapporto=%X{filiale_rapporto} divisa_rapporto=%X{divisa_rapporto} canale=%X{canale} idConversazione=%X{idConversazione} - %msg%n</pattern>
+                </encoder>
+        </appender>
+        <appender name="PERFORMANCE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>log/Popsogift-perf.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+                        <!-- rollover daily -->
+                        <fileNamePattern>log/Popsogift-perf.%i.log</fileNamePattern>
+                        <minIndex>1</minIndex>
+                        <maxIndex>1</maxIndex>
+                </rollingPolicy>
+                <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                        <maxFileSize>10MB</maxFileSize>
+                </triggeringPolicy>
+                <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                        <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSZ"} %-5level nodo="%X{nodo}" idConversazione="%X{idConversazione}" - %msg%n</pattern>
+                </encoder>
+        </appender>
+        <appender name="SECURITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>log/Popsogift-security.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+                        <!-- rollover daily -->
+                        <fileNamePattern>log/Popsogift-security.%i.log</fileNamePattern>
+                        <minIndex>1</minIndex>
+                        <maxIndex>1</maxIndex>
+                </rollingPolicy>
+                <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                        <maxFileSize>10MB</maxFileSize>
+                </triggeringPolicy>
+                <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                        <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSZ"} %-5level id_user=%X{id_user} ip_address=%X{ip_address} banca=%X{banca} nodo=%X{nodo} id_sessione=%X{id_sessione} idConversazione="%X{idConversazione}" - %msg%n</pattern>
+                </encoder>
+        </appender>
+
+        <!--         <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                        <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSZ"} %p %c{1.} [%t] %m%n</pattern>
+                </encoder>
+        </appender>-->
+
+        <logger name="AUDIT" level="${LOG_LEVEL_AUDIT:-INFO}" additivity="false">
+                <appender-ref ref="AUDIT" />
+        </logger>
+
+        <!--         PERFORMANCE is needed for rest-logger or soap-logger by Popso
+        <logger name="PERFORMANCE" level="${LOG_LEVEL_PERFORMANCE:-INFO}" additivity="false">
+                <appender-ref ref="PERFORMANCE" />
+        </logger>
+        <logger name="SECURITY" level="${LOG_LEVEL_SECURITY:-INFO}" additivity="false">
+                <appender-ref ref="SECURITY" />
+        </logger>-->
+
+        <!-- Edit following logger according to your application -->
+        <logger name="org.apache" level="WARN"/>
+        <logger name="org.apache.cxf" level="INFO"/>
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="org.hibernate.type" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="com.zaxxer.hikari" level="INFO"/>
+
+        <root level="${LOG_LEVEL:-INFO}">
+                <appender-ref ref="TRACE" />
+        </root>
+</configuration>

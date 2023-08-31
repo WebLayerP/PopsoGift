@@ -1,0 +1,401 @@
+openapi: 3.0.3
+info:
+  title: Dummy Producer Service
+  description: Dummy Producer Service
+  version: 1.0.0
+paths:
+  /dummy/{id}:
+    get:
+      summary: Get Dummy Entity Details by Id
+      tags:
+        - Dummy Service
+      description: |
+        This api provide you all Dummy Entity Details for a given Id
+      operationId: getDummy
+      parameters:
+        - $ref: '#/components/parameters/Bps-Tt-IdOperazione-CodiceApplicazioneChiamante'
+        - $ref: '#/components/parameters/Bps-Tt-IdOperazione-CodiceOperazione'
+        - $ref: '#/components/parameters/Bps-Tt-IdConversazione'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceApplicazione'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceCanale'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceIstituto'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceFilialeContabile'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceDipendenza'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Ndg-TipoCliente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Ndg-CodiceNdg'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Utente-TipoUtente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Utente-IdUtente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Esecutore-TipoCliente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Esecutore-CodiceNdg'
+        - name: id
+          in: path
+          description: The Dummy Entity Id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - name: date
+          in: query
+          description: Data obbligatoria
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2019-05-17"
+      x-contracts:
+        - contractId: 1
+          name: Test OK - Normal Response
+          contractPath: "/dummy/1"
+          requestHeaders:
+            - X-Bps-Tt-IdOperazione-CodiceApplicazioneChiamante: test
+              X-Bps-Tt-IdOperazione-CodiceOperazione: test
+              X-Bps-Tt-IdConversazione: OK
+              X-Bps-Tc-CodiceApplicazione: test
+              X-Bps-Tc-CodiceCanale: TST
+              X-Bps-Tc-CodiceIstituto: '05696'
+        - contractId: 2
+          name: Test KO - Not Found
+          contractPath: "/dummy/2"
+          requestHeaders:
+            - X-Bps-Tt-IdOperazione-CodiceApplicazioneChiamante: test
+              X-Bps-Tt-IdOperazione-CodiceOperazione: test
+              X-Bps-Tt-IdConversazione: OK
+              X-Bps-Tc-CodiceApplicazione: test
+              X-Bps-Tc-CodiceCanale: TST
+              X-Bps-Tc-CodiceIstituto: '05696'
+      responses:
+        '200':
+          $ref: '#/components/responses/Ok'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerFault'
+        default:
+          $ref: '#/components/responses/Ok'
+
+  /user/{user_id}/position/{position}/campaign:
+    get:
+      summary: Get Campaign
+      tags:
+        - Dummy Get Campaign
+      description: "This api provide you the users campain based on location"
+      operationId: getCampaign
+      parameters:
+        - $ref: '#/components/parameters/Bps-Tt-IdOperazione-CodiceApplicazioneChiamante'
+        - $ref: '#/components/parameters/Bps-Tt-IdOperazione-CodiceOperazione'
+        - $ref: '#/components/parameters/Bps-Tt-IdConversazione'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceApplicazione'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceCanale'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceIstituto'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceFilialeContabile'
+        - $ref: '#/components/parameters/Bps-Tc-CodiceDipendenza'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Ndg-TipoCliente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Ndg-CodiceNdg'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Utente-TipoUtente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Utente-IdUtente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Esecutore-TipoCliente'
+        - $ref: '#/components/parameters/Bps-Tc-IdentificazioneSoggetti-Esecutore-CodiceNdg'
+        - name: user_id
+          in: path
+          description: User Identifier
+          required: true
+          schema:
+            type: integer
+        - name: position
+          in: path
+          description: Position of the user
+          required: true
+          schema:
+            type: string
+      x-contracts:
+        - contractId: 1
+          name: Test OK - Normal Response
+          contractPath: "/user/5/position/sondrio/campain:"
+          requestHeaders:
+            - X-Bps-Tt-IdOperazione-CodiceApplicazioneChiamante: test
+              X-Bps-Tt-IdOperazione-CodiceOperazione: test
+              X-Bps-Tt-IdConversazione: OK
+              X-Bps-Tc-CodiceApplicazione: test
+              X-Bps-Tc-CodiceCanale: TST
+              X-Bps-Tc-CodiceIstituto: '05696'
+      responses:
+        '200':
+          $ref: '#/components/responses/Campaign'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerFault'
+        default:
+          $ref: '#/components/responses/Ok'
+components:
+  parameters:
+    Bps-Tt-IdOperazione-CodiceApplicazioneChiamante:
+      description: Codice Identificativo Applicazione cliamante
+      in: header
+      name: X-Bps-Tt-IdOperazione-CodiceApplicazioneChiamante
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdOperazione-CodiceApplicazioneChiamante'
+    Bps-Tt-IdOperazione-CodiceOperazione:
+      description: Codice identificativo univoco di un'operazione (generato dall'applicazione)
+      in: header
+      name: X-Bps-Tt-IdOperazione-CodiceOperazione
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdOperazione-CodiceOperazione'
+    Bps-Tt-IdConversazione:
+      description: Stringa Non Vuota
+      in: header
+      name: X-Bps-Tt-IdConversazione
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdConversazione'
+    Bps-Tc-CodiceApplicazione:
+      description: Codice Identificativo Applicazione
+      in: header
+      name: X-Bps-Tc-CodiceApplicazione
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-CodiceApplicazione'
+    Bps-Tc-CodiceCanale:
+      description: Codice identificativo canale
+      in: header
+      name: X-Bps-Tc-CodiceCanale
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-CodiceCanale'
+    Bps-Tc-CodiceIstituto:
+      description: Codice ABI
+      in: header
+      name: X-Bps-Tc-CodiceIstituto
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-CodiceIstituto'
+    Bps-Tc-CodiceFilialeContabile:
+      description: Codice numerico identificativo della filiale
+      in: header
+      name: X-Bps-Tc-CodiceFilialeContabile
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-CodiceFilialeContabile'
+    Bps-Tc-CodiceDipendenza:
+      description: Codice numerico identificativo della filiale
+      in: header
+      name: X-Bps-Tc-CodiceDipendenza
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-CodiceDipendenza'
+    Bps-Tc-IdentificazioneSoggetti-Ndg-TipoCliente:
+      description: Tipo Cliente (Cliente vs. Non_Cliente (Prospect e Occasionale))
+      in: header
+      name: X-Bps-Tc-IdentificazioneSoggetti-Ndg-TipoCliente
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-IdentificazioneSoggetti-Ndg-TipoCliente'
+    Bps-Tc-IdentificazioneSoggetti-Ndg-CodiceNdg:
+      description: Numero Direzione Generale (Identificativo del Cliente ad uso interno bancario)
+      in: header
+      name: X-Bps-Tc-IdentificazioneSoggetti-Ndg-CodiceNdg
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-IdentificazioneSoggetti-Ndg-CodiceNdg'
+    Bps-Tc-IdentificazioneSoggetti-Utente-TipoUtente:
+      description: Tipo Utente (Scrigno, Intranet, Prospect, ...)
+      in: header
+      name: X-Bps-Tc-IdentificazioneSoggetti-Utente-TipoUtente
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-IdentificazioneSoggetti-Utente-TipoUtente'
+    Bps-Tc-IdentificazioneSoggetti-Utente-IdUtente:
+      description: Identificativo dell'utente
+      in: header
+      name: X-Bps-Tc-IdentificazioneSoggetti-Utente-IdUtente
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-IdentificazioneSoggetti-Utente-IdUtente'
+    Bps-Tc-IdentificazioneSoggetti-Esecutore-TipoCliente:
+      description: Tipo Cliente (Cliente vs. Non_Cliente (Prospect e Occasionale))
+      in: header
+      name: X-Bps-Tc-IdentificazioneSoggetti-Esecutore-TipoCliente
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-IdentificazioneSoggetti-Esecutore-TipoCliente'
+    Bps-Tc-IdentificazioneSoggetti-Esecutore-CodiceNdg:
+      description: Numero Direzione Generale (Identificativo del Cliente ad uso interno bancario)
+      in: header
+      name: X-Bps-Tc-IdentificazioneSoggetti-Esecutore-CodiceNdg
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tc-IdentificazioneSoggetti-Esecutore-CodiceNdg'
+  headers:
+    X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdOperazione-CodiceApplicazioneChiamante'
+    X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdOperazione-CodiceOperazione'
+    X-Bps-Tt-IdConversazione:
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdConversazione'
+    X-Bps-Tt-CodiceOperazioneRisposta:
+      required: true
+      schema:
+        $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/Bps-Tt-IdOperazione-CodiceOperazione'
+  responses:
+    Ok:
+      description: ok
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Dummy'
+      x-contracts:
+        - contractId: 1
+          body:
+            id: 1
+            value: "value-1"
+    Campaign:
+      description: find the Campaign
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Campaign'
+      x-contracts:
+        - contractId: 1
+          body:
+            title: "Nuovo cliente"
+            type: "INFORMATIVA"
+    BadRequest:
+      description: ko - BadRequest
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      content:
+        application/json:
+          schema:
+            $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/BaseFault'
+      x-contracts:
+        - contractId: 2
+          body:
+            classeFault: "APPLICATION_FAULT"
+            codice: 400
+            messaggio: "Entity Not Found id:2"
+            layer: "test"
+    Unauthorized:
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      description: ko - Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/BaseFault'
+    Forbidden:
+      description: ko - Forbidden
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      content:
+        application/json:
+          schema:
+            $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/BaseFault'
+    NotFound:
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      description: ko - NotFound
+      content:
+        application/json:
+          schema:
+            $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/BaseFault'
+    ServerFault:
+      headers:
+        X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceApplicazioneChiamante'
+        X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione:
+          $ref: '#/components/headers/X-Bps-Tt-idOperazioneRichiesta-CodiceOperazione'
+        X-Bps-Tt-IdConversazione:
+          $ref: '#/components/headers/X-Bps-Tt-IdConversazione'
+        X-Bps-Tt-CodiceOperazioneRisposta:
+          $ref: '#/components/headers/X-Bps-Tt-CodiceOperazioneRisposta'
+      description: ko - ServerFault
+      content:
+        application/json:
+          schema:
+            $ref: '../oa3-testate/testate_v11.yaml#/components/schemas/BaseFault'
+  schemas:
+    Dummy:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: string
+      required:
+        - id
+        - value
+    Campaign:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        description:
+          type: string
+        language:
+          type: string
+        type:
+          type: string
+      required:
+        - title
+        - type

@@ -1,0 +1,131 @@
+components:
+  schemas:
+    Bps-Tt-IdOperazione-CodiceApplicazioneChiamante:
+      description: Codice Identificativo Applicazione cliamante
+      type: string
+      minLength: 1
+      maxLength: 8
+    Bps-Tt-IdOperazione-CodiceOperazione:
+      description: Codice identificativo univoco di un'operazione (generato dall'applicazione)
+      type: string
+      minLength: 1
+      maxLength: 20
+    Bps-Tt-IdConversazione:
+      description: Stringa Non Vuota
+      type: string
+      pattern: '[\s\S]*[^ \n\t][\s\S]*'
+      minLength: 1
+    Bps-Tc-CodiceApplicazione:
+      description: Codice Identificativo Applicazione
+      type: string
+      minLength: 1
+      maxLength: 8
+    Bps-Tc-CodiceCanale:
+      description: Codice identificativo canale
+      type: string
+      enum:
+        - NSP
+        - FEC
+        - ITN
+        - ATM
+        - POS
+        - IVR
+        - MBN
+        - CBK
+        - SBK
+        - IBR
+        - APC
+        - APT
+        - ITR
+        - TST
+        - IPR
+        - BTC
+        - PAR
+    Bps-Tc-CodiceIstituto:
+      description: Codice ABI
+      type: string
+      pattern: '[0-9]{5}'
+    Bps-Tc-CodiceFilialeContabile:
+      description: Codice numerico identificativo della filiale
+      type: string
+      pattern: '[0-9]{1,5}'
+    Bps-Tc-CodiceDipendenza:
+      description: Codice numerico identificativo della filiale
+      type: string
+      pattern: '[0-9]{1,5}'
+    Bps-Tc-IdentificazioneSoggetti-Ndg-TipoCliente:
+      description: Tipo Cliente (Cliente vs. Non_Cliente (Prospect e Occasionale))
+      type: string
+      enum:
+        - CLIENTE
+        - NON_CLIENTE_PROSPECT
+        - NON_CLIENTE_OCCASIONALE
+    Bps-Tc-IdentificazioneSoggetti-Ndg-CodiceNdg:
+      description: Numero Direzione Generale (Identificativo del Cliente ad uso interno bancario)
+      type: string
+      pattern: '[0-9]{1,12}'
+    Bps-Tc-IdentificazioneSoggetti-Utente-TipoUtente:
+      description: Tipo Utente (Scrigno, Intranet, Prospect, ...)
+      type: string
+      enum:
+        - SCRIGNO
+        - INTRANET
+        - PROSPECT
+        - ATM
+        - CASSA_PREVIDENZA
+        - TERZA_PARTE
+        - ALTRO
+    Bps-Tc-IdentificazioneSoggetti-Utente-IdUtente:
+      description: Identificativo dell'utente
+      type: string
+      minLength: 1
+      maxLength: 40
+    Bps-Tc-IdentificazioneSoggetti-Esecutore-TipoCliente:
+      description: Tipo Cliente (Cliente vs. Non_Cliente (Prospect e Occasionale))
+      type: string
+      enum:
+        - CLIENTE
+        - NON_CLIENTE_PROSPECT
+        - NON_CLIENTE_OCCASIONALE
+    Bps-Tc-IdentificazioneSoggetti-Esecutore-CodiceNdg:
+      description: Numero Direzione Generale (Identificativo del Cliente ad uso interno bancario)
+      type: string
+      pattern: '[0-9]{1,12}'
+    BaseFault:
+      description: Dettaglio Fault
+      type: object
+      properties:
+        classeFault:
+          $ref: '#/components/schemas/ClasseFault'
+        codice:
+          description: Codice identificativo del fault
+          type: string
+          pattern: '[\s\S]*[^ \n\t][\s\S]*'
+          minLength: 1
+        messaggio:
+          description: Descrizione del fault
+          type: string
+          pattern: '[\s\S]*[^ \n\t][\s\S]*'
+          minLength: 1
+        layer:
+          description: Layer dove è stato scatenato il fault
+          type: string
+          pattern: '[\s\S]*[^ \n\t][\s\S]*'
+          minLength: 1
+      required:
+        - classeFault
+        - codice
+        - messaggio
+        - layer
+    ClasseFault:
+      description: Tipologia eccezione
+      type: string
+      enum:
+        - APPLICATION_FAULT
+        - DATI_TESTATA_FAULT
+        - INPUT_FAULT
+        - SERVIZIO_NON_DISPONIBILE_FAULT
+        - SYSTEM_FAULT
+        - DUBBIA_RISOTTOMISSIBILE_FAULT
+        - DUBBIA_NON_RISOTTOMISSIBILE_FAULT
+        - DUBBIA_RISOTTOMISSIBILE_CON_INTERVENTO_MANUALE_FAULT

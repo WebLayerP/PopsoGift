@@ -8,7 +8,7 @@ import java.util.List;
 public class BeneficiarioDTO {
     private String cognome;
     private String nome;
-    private List<OmaggioDTO> oggettiAssegnati;
+    private OmaggioDTO oggettiAssegnati;
     private List<OmaggioDTO> storicoOggetti;
     private TagDTO tag;
     private GruppoDTO gruppo;

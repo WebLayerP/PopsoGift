@@ -14,4 +14,5 @@ public class CampagnaDTO {
     private Date dataFineModifiche;
     private List<OmaggioDTO> listaOmaggi;
     private List<FilialeDTO> listaFiliali;
+    private StatoDTO stato;
 }

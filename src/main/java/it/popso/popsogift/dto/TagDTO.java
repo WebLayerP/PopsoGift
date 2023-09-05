@@ -1,8 +1,8 @@
-package it.popso.popsogift.entity;
+package it.popso.popsogift.dto;
 
 import java.util.Date;
 
-public class TagEntity {
+public class TagDTO {
 
     private String nomeTag;
     private Integer numeroBeneficiari;

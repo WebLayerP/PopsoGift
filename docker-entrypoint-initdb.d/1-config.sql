@@ -1,3 +1,3 @@
---select
---count(*) as END_SETUP_DATABASE
---from DUAL;
+select
+count(*) as END_SETUP_DATABASE
+from DUAL;

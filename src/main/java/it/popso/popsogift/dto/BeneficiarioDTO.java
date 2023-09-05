@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class BeneficiarioDTO {
+    private String ndg;
     private String cognome;
     private String nome;
     private OmaggioDTO oggettiAssegnati;

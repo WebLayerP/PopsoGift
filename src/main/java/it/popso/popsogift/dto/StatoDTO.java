@@ -1,6 +1,6 @@
 package it.popso.popsogift.dto;
 
-public enum StatoSegnalazioniDTO {
+public enum StatoDTO {
     APPROVATO,
     INATTESA,
     BOZZA

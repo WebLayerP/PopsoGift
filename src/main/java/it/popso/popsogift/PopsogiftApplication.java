@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 
 @SpringBootApplication
-@ComponentScan
+@ComponentScan("it.popso.popsogift.entity")
 @EnableAutoConfiguration
 public class PopsogiftApplication {
 

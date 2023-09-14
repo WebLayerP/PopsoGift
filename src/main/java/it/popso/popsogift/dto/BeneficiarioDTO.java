@@ -6,6 +6,8 @@ import java.util.List;
 
 @Data
 public class BeneficiarioDTO {
+
+    private Integer idBeneficiario;
     private String ndg;
     private String cognome;
     private String nome;

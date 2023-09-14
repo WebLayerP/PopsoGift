@@ -18,7 +18,7 @@
     <properties>
         <archetype-generation>true</archetype-generation>
         <java.version>17</java.version>
-        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
         <spring-cloud-contract.version>3.1.3</spring-cloud-contract.version>
         <!--springdoc.version>1.6.14</springdoc.version-->
         <springdoc.version>2.0.2</springdoc.version>
@@ -41,11 +41,11 @@
     </profiles>
 
     <dependencies>
-        <dependency>
-            <!--Usato per SecurityConfig: disabilitare swagge-UI in prod-->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            &lt;!&ndash;Usato per SecurityConfig: disabilitare swagge-UI in prod&ndash;&gt;-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -184,6 +184,16 @@
             <version>3.0.1</version>
         </dependency>
         <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.2.0.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
         </dependency>
@@ -191,6 +201,31 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>it.popso.sso</groupId>
+            <artifactId>sso-auth-filter</artifactId>
+            <version>1.3.3</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-config</artifactId>-->
+<!--            <version>5.8.5</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-core</artifactId>-->
+<!--            <version>5.8.5</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-web</artifactId>-->
+<!--            <version>5.8.5</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-crypto</artifactId>-->
+<!--            <version>5.8.5</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-standalone</artifactId>
@@ -234,6 +269,11 @@
             <groupId>javax.xml.ws</groupId>
             <artifactId>jaxws-api</artifactId>
             <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>javax.jws</groupId>
@@ -329,53 +369,53 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.4.0</version>
-                <configuration>
-                    <modelPackage>it.popso.popsogift.dto</modelPackage>
-                    <apiPackage>it.popso.popsogift.api</apiPackage>
-                    <generateModelTests>true</generateModelTests>
-                    <typeMappings><typeMapping>date-time=LocalDateTime</typeMapping></typeMappings>
-                    <importMappings><importMapping>LocalDateTime=java.time.LocalDateTime</importMapping></importMappings>
-                    <configOptions>
-                        <sortModelPropertiesByRequredFlag>false</sortModelPropertiesByRequredFlag>
-                        <sortParamsByRequiredFlag>false</sortParamsByRequiredFlag>
-                        <interfaceOnly>true</interfaceOnly>
-                        <enumPropertyNaming>original</enumPropertyNaming>
-                        <dateLibrary>java8</dateLibrary>
-                        <delegatePattern>true</delegatePattern>
-                        <useSpringBoot3>true</useSpringBoot3>
-                    </configOptions>
-                    <verbose>false</verbose>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-api</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/oa3/schema-v1.0.yaml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <generateSupportingFiles>true</generateSupportingFiles>
-                            <generateModelTests>true</generateModelTests>
-                            <generateApiTests>true</generateApiTests>
-                            <typeMappings>
-                                <typeMapping>OffsetDateTime=java.time.LocalDateTime</typeMapping>
-                            </typeMappings>
-                            <importMappings>
-                                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
-                            </importMappings>
-                            <configOptions>
-                                <sourceFolder>src/main/java</sourceFolder>
-                                <delegatePattern>false</delegatePattern>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.openapitools</groupId>-->
+<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
+<!--                <version>6.4.0</version>-->
+<!--                <configuration>-->
+<!--                    <modelPackage>it.popso.popsogift.dto</modelPackage>-->
+<!--                    <apiPackage>it.popso.popsogift.api</apiPackage>-->
+<!--                    <generateModelTests>true</generateModelTests>-->
+<!--                    <typeMappings><typeMapping>date-time=LocalDateTime</typeMapping></typeMappings>-->
+<!--                    <importMappings><importMapping>LocalDateTime=java.time.LocalDateTime</importMapping></importMappings>-->
+<!--                    <configOptions>-->
+<!--                        <sortModelPropertiesByRequredFlag>false</sortModelPropertiesByRequredFlag>-->
+<!--                        <sortParamsByRequiredFlag>false</sortParamsByRequiredFlag>-->
+<!--                        <interfaceOnly>true</interfaceOnly>-->
+<!--                        <enumPropertyNaming>original</enumPropertyNaming>-->
+<!--                        <dateLibrary>java8</dateLibrary>-->
+<!--                        <delegatePattern>true</delegatePattern>-->
+<!--                        <useSpringBoot3>true</useSpringBoot3>-->
+<!--                    </configOptions>-->
+<!--                    <verbose>false</verbose>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>generate-api</id>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <inputSpec>${project.basedir}/src/main/resources/oa3/schema-v1.0.yaml</inputSpec>-->
+<!--                            <generatorName>spring</generatorName>-->
+<!--                            <generateSupportingFiles>true</generateSupportingFiles>-->
+<!--                            <generateModelTests>true</generateModelTests>-->
+<!--                            <generateApiTests>true</generateApiTests>-->
+<!--                            <typeMappings>-->
+<!--                                <typeMapping>OffsetDateTime=java.time.LocalDateTime</typeMapping>-->
+<!--                            </typeMappings>-->
+<!--                            <importMappings>-->
+<!--                                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>-->
+<!--                            </importMappings>-->
+<!--                            <configOptions>-->
+<!--                                <sourceFolder>src/main/java</sourceFolder>-->
+<!--                                <delegatePattern>false</delegatePattern>-->
+<!--                            </configOptions>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>

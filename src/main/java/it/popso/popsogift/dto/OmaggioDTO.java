@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class OmaggioDTO {
+
+    private Integer idFiliale; //TODO controllare se serve
     private String nome;
     private String prezzo;
     private String descrizione;

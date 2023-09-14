@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class CampagnaDTO {
 
+    private Integer idCampagna;  //TODO: controllare se serve
     private String titoloCampagna;
     private TipologiaDTO tipologia;
     private Date dataInizioModifiche;
@@ -15,4 +16,11 @@ public class CampagnaDTO {
     private List<OmaggioDTO> listaOmaggi;
     private List<FilialeDTO> listaFiliali;
     private StatoDTO stato;
+
+    public CampagnaDTO() {
+    }
+
+    public CampagnaDTO(Integer idCampagna, String titoloCampagna, TipologiaDTO tipologia, Date dataInizioModifiche, Date dataFineModifiche, List<OmaggioDTO> listaOmaggi, List<FilialeDTO> listaFiliali, StatoDTO stato) {
+
+    }
 }

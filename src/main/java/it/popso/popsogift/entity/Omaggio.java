@@ -8,8 +8,9 @@ import lombok.Data;
 @Data
 public class Omaggio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idOmaggio; //TODO controllare se serve
+    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="OMAGGIO_SEQ")
+    @SequenceGenerator(name = "OMAGGIO_SEQ", sequenceName = "OMAGGIO_SEQ",allocationSize = 1)
+    private Integer idOmaggio;
 
     @ManyToOne
     @JoinColumn(name="idCampagna")

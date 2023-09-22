@@ -8,7 +8,8 @@ import lombok.Data;
 @Data
 public class Filiale {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="FILIALE_SEQ")
+    @SequenceGenerator(name = "FILIALE_SEQ", sequenceName = "FILIALE_SEQ",allocationSize = 1)
     private String codiceFiliale;
 
     @ManyToOne

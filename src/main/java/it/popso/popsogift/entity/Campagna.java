@@ -14,15 +14,25 @@ import java.util.List;
 @Data
 public class Campagna {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCampagna;  //TODO: controllare se serve
+    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="CAMPAGNA_SEQ")
+    @SequenceGenerator(name = "CAMPAGNA_SEQ", sequenceName = "CAMPAGNA_SEQ",allocationSize = 1)
+    @Column(name="IDCAMPAGNA")
+    private Integer idCampagna;
+    @Column(name="TITOLOCAMPAGNA")
     private String titoloCampagna;
-    private TipologiaDTO tipologia;
+    @ManyToOne
+    @JoinColumn(name="TIPOLOGIA")
+    private Tipologia tipologia;
+    @Column(name="DATAINIZIOMODIFICHE")
     private Date dataInizioModifiche;
+    @Column(name="DATAFINEMODIFICHE")
     private Date dataFineModifiche;
     @OneToMany(mappedBy="campagna")
     private List<Omaggio> listaOmaggi;
     @OneToMany(mappedBy="campagna")
     private List<Filiale> listaFiliali;
-    private StatoDTO stato;
+    @ManyToOne
+    @JoinColumn(name="STATO")
+    private Stato stato;
+
 }

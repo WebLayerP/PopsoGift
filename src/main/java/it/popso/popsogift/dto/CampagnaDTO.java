@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class CampagnaDTO {
 
-    private Integer idCampagna;  //TODO: controllare se serve
+    private Integer idCampagna;
     private String titoloCampagna;
     private TipologiaDTO tipologia;
     private Date dataInizioModifiche;

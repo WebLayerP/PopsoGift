@@ -8,11 +8,10 @@ import lombok.Data;
 @Data
 public class Filiale {
     @Id
-    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="FILIALE_SEQ")
-    @SequenceGenerator(name = "FILIALE_SEQ", sequenceName = "FILIALE_SEQ",allocationSize = 1)
+    @Column(name="CODICEFILIALE")
     private String codiceFiliale;
 
-    @ManyToOne
-    @JoinColumn(name="idCampagna")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="IDCAMPAGNA")
     private Campagna campagna;
 }

@@ -1,6 +1,7 @@
 package it.popso.popsogift.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public enum StatoDTO implements Serializable {
     APPROVATO(1),
@@ -13,21 +14,17 @@ public enum StatoDTO implements Serializable {
         this.idStato = idStato;
     }
 
-    StatoDTO() {
-    }
-
-    //@JsonValue
     public Integer getIdStato() {
         return idStato;
     }
 
-//    @JsonCreator
-//    public static StatoDTO fromNomeStato(String nomeStato) {
-//        for (StatoDTO statoDTO : StatoDTO.values()) {
-//            if (statoDTO.getNomeStato().equalsIgnoreCase(nomeStato)) {
-//                return statoDTO;
-//            }
-//        }
-//        throw new IllegalArgumentException("StatoDTO non valido: " + nomeStato);
-//    }
+
+    public static StatoDTO fromIdStato(Integer idStato) {
+        for (StatoDTO statoDTO : StatoDTO.values()) {
+            if (Objects.equals(statoDTO.getIdStato(), idStato)) {
+                return statoDTO;
+            }
+        }
+        throw new IllegalArgumentException("Stato non valido: " + idStato);
+    }
 }

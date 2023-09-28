@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Stato {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="STATO_SEQ")
-    @SequenceGenerator(name = "STATO_SEQ", sequenceName = "STATO_SEQ",allocationSize = 1)
+    @Column(name="IDSTATO")
     private Integer idStato;
     @Enumerated(EnumType.STRING)
+    @Column(name="NOMESTATO")
     private StatoDTO nomeStato;
 }

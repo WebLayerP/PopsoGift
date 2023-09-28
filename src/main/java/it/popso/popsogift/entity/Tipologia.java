@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Tipologia {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="TIPOLOGIA_SEQ")
-    @SequenceGenerator(name = "TIPOLOGIA_SEQ", sequenceName = "TIPOLOGIA_SEQ",allocationSize = 1)
+    @Column(name="IDTIPOLOGIA")
     private Integer idTipologia;
     @Enumerated(EnumType.STRING)
+    @Column(name="NOMETIPOLOGIA")
     private TipologiaDTO nomeTipologia;
 }

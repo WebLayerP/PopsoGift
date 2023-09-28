@@ -1,9 +1,5 @@
 package it.popso.popsogift.entity;
 
-import it.popso.popsogift.dto.FilialeDTO;
-import it.popso.popsogift.dto.OmaggioDTO;
-import it.popso.popsogift.dto.StatoDTO;
-import it.popso.popsogift.dto.TipologiaDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,9 +23,9 @@ public class Campagna {
     private Date dataInizioModifiche;
     @Column(name="DATAFINEMODIFICHE")
     private Date dataFineModifiche;
-    @OneToMany(mappedBy="campagna")
+    @OneToMany(mappedBy="campagna",fetch = FetchType.LAZY)
     private List<Omaggio> listaOmaggi;
-    @OneToMany(mappedBy="campagna")
+    @OneToMany(mappedBy="campagna",fetch = FetchType.LAZY)
     private List<Filiale> listaFiliali;
     @ManyToOne
     @JoinColumn(name="STATO")

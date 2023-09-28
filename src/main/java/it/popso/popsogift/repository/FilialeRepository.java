@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface FilialeRepository extends JpaRepository<Filiale, Integer> {
+public interface FilialeRepository extends JpaRepository<Filiale, String> {
 
 }
 

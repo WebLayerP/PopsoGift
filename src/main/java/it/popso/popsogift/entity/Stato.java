@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name ="Stato")
+@Table(name ="STATO")
 @Data
 public class Stato {
     @Id
-    @Column(name="IDSTATO")
+    @Column(name="ID_STATO")
     private Integer idStato;
     @Enumerated(EnumType.STRING)
-    @Column(name="NOMESTATO")
+    @Column(name="NOME_STATO")
     private StatoDTO nomeStato;
 }

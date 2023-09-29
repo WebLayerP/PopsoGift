@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Tipologia {
     @Id
-    @Column(name="IDTIPOLOGIA")
+    @Column(name="ID_TIPOLOGIA")
     private Integer idTipologia;
     @Enumerated(EnumType.STRING)
-    @Column(name="NOMETIPOLOGIA")
+    @Column(name="NOME_TIPOLOGIA")
     private TipologiaDTO nomeTipologia;
 }

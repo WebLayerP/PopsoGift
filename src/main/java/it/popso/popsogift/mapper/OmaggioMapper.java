@@ -8,8 +8,16 @@ import org.mapstruct.Mapping;
 public interface OmaggioMapper {
 
     @Mapping(target = "idOmaggio", source = "idOmaggio")
+    @Mapping(target = "nome", source = "nome")
+    @Mapping(target = "prezzo", source = "prezzo")
+    @Mapping(target = "descrizione", source = "descrizione")
+    @Mapping(target = "codice", source = "codice")
     OmaggioDTO omaggioToOmaggioDTO(Omaggio omaggio);
 
     @Mapping(target = "idOmaggio", source = "idOmaggio")
+    @Mapping(target = "nome", source = "nome")
+    @Mapping(target = "prezzo", source = "prezzo")
+    @Mapping(target = "descrizione", source = "descrizione")
+    @Mapping(target = "codice", source = "codice")
     Omaggio omaggioDTOToOmaggio(OmaggioDTO omaggioDTO);
 }

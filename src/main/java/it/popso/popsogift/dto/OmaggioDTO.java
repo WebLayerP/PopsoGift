@@ -7,7 +7,7 @@ public class OmaggioDTO {
 
     private Integer idOmaggio;
     private String nome;
-    private String prezzo;
+    private Long prezzo;
     private String descrizione;
     private String codice;
     private TagDTO tag;

@@ -1,7 +1,6 @@
 package it.popso.popsogift.service;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import it.popso.popsogift.dto.CampagnaDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.entity.Filiale;
@@ -44,7 +43,7 @@ public class CampagnaService {
         return campagnaRepository.findAll();
     }
 
-    public Campagna saveCampagna(CampagnaDTO campagnaDTO) throws JsonProcessingException {
+    public Campagna saveCampagna(CampagnaDTO campagnaDTO){
         CampagnaMapper campagnaMapper= Mappers.getMapper(CampagnaMapper.class);
         Campagna campagna = campagnaMapper.campagnaDTOToEntity(campagnaDTO);
         OmaggioMapper omaggioMapper= Mappers.getMapper(OmaggioMapper.class);

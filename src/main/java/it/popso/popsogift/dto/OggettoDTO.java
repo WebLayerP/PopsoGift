@@ -3,9 +3,9 @@ package it.popso.popsogift.dto;
 import lombok.Data;
 
 @Data
-public class OmaggioDTO {
+public class OggettoDTO {
 
-    private Integer idOmaggio;
+    private Integer idOggetto;
     private String nome;
     private Long prezzo;
     private String descrizione;

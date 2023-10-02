@@ -1,23 +1,23 @@
 package it.popso.popsogift.mapper;
 
-import it.popso.popsogift.dto.OmaggioDTO;
-import it.popso.popsogift.entity.Omaggio;
+import it.popso.popsogift.dto.OggettoDTO;
+import it.popso.popsogift.entity.Oggetto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 @Mapper
-public interface OmaggioMapper {
+public interface OggettoMapper {
 
-    @Mapping(target = "idOmaggio", source = "idOmaggio")
+    @Mapping(target = "idOggetto", source = "idOggetto")
     @Mapping(target = "nome", source = "nome")
     @Mapping(target = "prezzo", source = "prezzo")
     @Mapping(target = "descrizione", source = "descrizione")
     @Mapping(target = "codice", source = "codice")
-    OmaggioDTO omaggioToOmaggioDTO(Omaggio omaggio);
+    OggettoDTO oggettoToOggettoDTO(Oggetto oggetto);
 
-    @Mapping(target = "idOmaggio", source = "idOmaggio")
+    @Mapping(target = "idOggetto", source = "idOggetto")
     @Mapping(target = "nome", source = "nome")
     @Mapping(target = "prezzo", source = "prezzo")
     @Mapping(target = "descrizione", source = "descrizione")
     @Mapping(target = "codice", source = "codice")
-    Omaggio omaggioDTOToOmaggio(OmaggioDTO omaggioDTO);
+    Oggetto oggettoDTOToOggetto(OggettoDTO oggettoDTO);
 }

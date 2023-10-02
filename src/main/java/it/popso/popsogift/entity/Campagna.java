@@ -24,7 +24,7 @@ public class Campagna {
     @Column(name="DATA_FINE_MODIFICHE")
     private Date dataFineModifiche;
     @OneToMany(mappedBy="campagna",fetch = FetchType.LAZY)
-    private List<Omaggio> listaOmaggi;
+    private List<Oggetto> listaOmaggi;
     @OneToMany(mappedBy="campagna",fetch = FetchType.LAZY)
     private List<Filiale> listaFiliali;
     @ManyToOne

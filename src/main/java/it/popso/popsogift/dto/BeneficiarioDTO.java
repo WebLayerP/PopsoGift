@@ -11,8 +11,8 @@ public class BeneficiarioDTO {
     private String ndg;
     private String cognome;
     private String nome;
-    private OmaggioDTO oggettiAssegnati;
-    private List<OmaggioDTO> storicoOggetti;
+    private OggettoDTO oggettiAssegnati;
+    private List<OggettoDTO> storicoOggetti;
     private TagDTO tag;
     private GruppoDTO gruppo;
     private String indirizzo;

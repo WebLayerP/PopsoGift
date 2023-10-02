@@ -1,18 +1,17 @@
 package it.popso.popsogift.entity;
 
-import it.popso.popsogift.dto.TagDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name ="OMAGGIO")
+@Table(name ="OGGETTO")
 @Data
-public class Omaggio {
+public class Oggetto {
     @Id
-    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="OMAGGIO_SEQ")
-    @SequenceGenerator(name = "OMAGGIO_SEQ", sequenceName = "OMAGGIO_SEQ",allocationSize = 1)
-    @Column(name="ID_OMAGGIO")
-    private Integer idOmaggio;
+    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="OGGETTO_SEQ")
+    @SequenceGenerator(name = "OGGETTO_SEQ", sequenceName = "OGGETTO_SEQ",allocationSize = 1)
+    @Column(name="ID_OGGETTO")
+    private Integer idOggetto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ID_CAMPAGNA")
@@ -25,6 +24,5 @@ public class Omaggio {
     private String descrizione;
     @Column(name="CODICE")
     private String codice;
-//    @Column(name="TAG") //TODO Scommentare e collegare al momento opportuno
-//    private TagDTO tag;
+
 }

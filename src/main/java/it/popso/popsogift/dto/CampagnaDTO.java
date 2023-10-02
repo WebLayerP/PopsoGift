@@ -13,14 +13,14 @@ public class CampagnaDTO {
     private TipologiaDTO tipologia;
     private Date dataInizioModifiche;
     private Date dataFineModifiche;
-    private List<OmaggioDTO> listaOmaggi;
+    private List<OggettoDTO> listaOmaggi;
     private List<FilialeDTO> listaFiliali;
     private StatoDTO stato;
 
     public CampagnaDTO() {
     }
 
-    public CampagnaDTO(Integer idCampagna, String titoloCampagna, TipologiaDTO tipologia, Date dataInizioModifiche, Date dataFineModifiche, List<OmaggioDTO> listaOmaggi, List<FilialeDTO> listaFiliali, StatoDTO stato) {
+    public CampagnaDTO(Integer idCampagna, String titoloCampagna, TipologiaDTO tipologia, Date dataInizioModifiche, Date dataFineModifiche, List<OggettoDTO> listaOmaggi, List<FilialeDTO> listaFiliali, StatoDTO stato) {
 
     }
 }

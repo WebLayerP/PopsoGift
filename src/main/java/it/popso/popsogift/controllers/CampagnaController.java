@@ -1,11 +1,11 @@
 package it.popso.popsogift.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import it.popso.popsogift.dto.CampagnaDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.repository.CampagnaRepository;
 import it.popso.popsogift.service.CampagnaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,21 +32,15 @@ public class CampagnaController {
     }
 
 
-    @GetMapping("/all")
+    @GetMapping("/prova/entities")
     public List<Campagna> getAllCampagne() {
         return campagnaService.getAllCampagne();
     }
 
-    @PostMapping("/insert")
-    public ResponseEntity<?> createCampagna(@RequestBody CampagnaDTO campagnaDTO){
-        try {
-            Campagna campagnaInserita = campagnaService.saveCampagna(campagnaDTO);
-            return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);
-        }catch(DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore: campagna duplicata");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore interno del server");
-        }
+    @PostMapping("/prova/inserisci")
+    public ResponseEntity<Campagna> createCampagna(@RequestBody CampagnaDTO campagnaDTO) throws JsonProcessingException {
+        Campagna campagnaInserita = campagnaService.saveCampagna(campagnaDTO);
+        return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);
     }
 
     @GetMapping("/test")

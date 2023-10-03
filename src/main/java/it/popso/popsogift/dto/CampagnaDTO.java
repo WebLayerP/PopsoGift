@@ -19,8 +19,4 @@ public class CampagnaDTO {
 
     public CampagnaDTO() {
     }
-
-    public CampagnaDTO(Integer idCampagna, String titoloCampagna, TipologiaDTO tipologia, Date dataInizioModifiche, Date dataFineModifiche, List<OggettoDTO> listaOmaggi, List<FilialeDTO> listaFiliali, StatoDTO stato) {
-
-    }
 }

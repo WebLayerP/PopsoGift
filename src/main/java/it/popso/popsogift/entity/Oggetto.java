@@ -13,9 +13,6 @@ public class Oggetto {
     @Column(name="ID_OGGETTO")
     private Integer idOggetto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_CAMPAGNA")
-    private Campagna campagna;
     @Column(name="NOME")
     private String nome;
     @Column(name="PREZZO")

@@ -23,9 +23,25 @@ public class Campagna {
     private Date dataInizioModifiche;
     @Column(name="DATA_FINE_MODIFICHE")
     private Date dataFineModifiche;
-    @OneToMany(mappedBy="campagna",fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_CAMPAGNA_OGGETTO",
+            joinColumns = @JoinColumn(name = "ID_CAMPAGNA"),
+            inverseJoinColumns = @JoinColumn(name = "ID_OGGETTO"))
     private List<Oggetto> listaOmaggi;
-    @OneToMany(mappedBy="campagna",fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_CAMPAGNA_FILIALE",
+            joinColumns = @JoinColumn(name = "ID_CAMPAGNA"),
+            inverseJoinColumns = @JoinColumn(name = "CODICE_FILIALE"))
     private List<Filiale> listaFiliali;
     @ManyToOne
     @JoinColumn(name="STATO")

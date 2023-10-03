@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name ="Tipologia")
+@Table(name ="TIPOLOGIA_CAMPAGNA")
 @Data
 public class Tipologia {
     @Id
     @Column(name="ID_TIPOLOGIA")
     private Integer idTipologia;
     @Enumerated(EnumType.STRING)
-    @Column(name="NOME_TIPOLOGIA")
+    @Column(name="DESCRIZIONE")
     private TipologiaDTO nomeTipologia;
 }

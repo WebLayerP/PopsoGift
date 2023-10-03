@@ -4,8 +4,9 @@ import it.popso.popsogift.dto.CampagnaDTO;
 import it.popso.popsogift.entity.Campagna;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
-@Mapper
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface CampagnaMapper {
 
     @Mapping(target = "idCampagna", source = "idCampagna")

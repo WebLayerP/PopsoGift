@@ -25,7 +25,6 @@ public class Campagna {
     private Date dataFineModifiche;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.PERSIST,
                     CascadeType.MERGE
             })
     @JoinTable(
@@ -35,7 +34,6 @@ public class Campagna {
     private List<Oggetto> listaOmaggi;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.PERSIST,
                     CascadeType.MERGE
             })
     @JoinTable(

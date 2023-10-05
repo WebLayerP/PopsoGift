@@ -1,6 +1,5 @@
 package it.popso.popsogift.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import it.popso.popsogift.dto.CampagnaDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.repository.CampagnaRepository;
@@ -38,7 +37,7 @@ public class CampagnaController {
     }
 
     @PostMapping("/prova/inserisci")
-    public ResponseEntity<Campagna> createCampagna(@RequestBody CampagnaDTO campagnaDTO) throws JsonProcessingException {
+    public ResponseEntity<Campagna> createCampagna(@RequestBody CampagnaDTO campagnaDTO) {
         Campagna campagnaInserita = campagnaService.saveCampagna(campagnaDTO);
         return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);
     }

@@ -47,7 +47,6 @@ public class CampagnaService {
         campagna.setTipologia(tipologiaMapper.getTipologia(campagnaDTO));
         campagna.setStato(statoMapper.getStato(campagnaDTO));
         for (Filiale filiale: campagna.getListaFiliali()) {
-            System.out.println(filialeRepository.existsById(filiale.getCodiceFiliale()));
             if (!filialeRepository.existsById(filiale.getCodiceFiliale()))
                 try {
                     filialeRepository.save(filiale);

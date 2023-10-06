@@ -31,12 +31,12 @@ public class CampagnaController {
     }
 
 
-    @GetMapping("/prova/entities")
+    @GetMapping("/all")
     public List<Campagna> getAllCampagne() {
         return campagnaService.getAllCampagne();
     }
 
-    @PostMapping("/prova/inserisci")
+    @PostMapping("/insert")
     public ResponseEntity<Campagna> createCampagna(@RequestBody CampagnaDTO campagnaDTO) {
         Campagna campagnaInserita = campagnaService.saveCampagna(campagnaDTO);
         return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);

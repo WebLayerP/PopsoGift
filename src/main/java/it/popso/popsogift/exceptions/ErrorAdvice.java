@@ -59,4 +59,8 @@ public class ErrorAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleMyDataIntegrityViolationException(RuntimeException ex, WebRequest request){
         return handleException(ex, HttpStatus.INTERNAL_SERVER_ERROR, request,ClasseFault.APPLICATION_FAULT);
     }
+    @ExceptionHandler(CannotCreateTransactionException.class)
+    public ResponseEntity<Object> handleMyCannotCreateTransactionException(RuntimeException ex, WebRequest request){
+        return handleException(ex, HttpStatus.INTERNAL_SERVER_ERROR, request,ClasseFault.APPLICATION_FAULT);
+    }
 }

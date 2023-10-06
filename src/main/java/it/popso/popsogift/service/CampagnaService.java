@@ -5,6 +5,7 @@ import it.popso.popsogift.dto.CampagnaDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.entity.Filiale;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
+import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.mapper.CampagnaMapper;
 import it.popso.popsogift.mapper.StatoMapper;
 import it.popso.popsogift.mapper.TipologiaMapper;
@@ -34,7 +35,11 @@ public class CampagnaService {
     private StatoMapper statoMapper;
 
     public List<Campagna> getAllCampagne() {
-        return campagnaRepository.findAll();
+        try {
+            return campagnaRepository.findAll();
+        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+            throw new CannotCreateTransactionException(e.getMessage());
+        }
     }
 
     public Campagna saveCampagna(CampagnaDTO campagnaDTO){

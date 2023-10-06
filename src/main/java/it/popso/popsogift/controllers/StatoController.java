@@ -1,6 +1,7 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Stato;
+import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.repository.StatoRepository;
 import it.popso.popsogift.service.StatoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class StatoController {
 
     @GetMapping("/all")
     public List<Stato> getAllStato() {
-        return statoService.getAllStato();
+        try{
+            return statoService.getAllStato();
+        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+            throw new CannotCreateTransactionException(e.getMessage());
+        }
     }
 }

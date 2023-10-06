@@ -1,6 +1,7 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Tipologia;
+import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.repository.TipologiaRepository;
 import it.popso.popsogift.service.TipologiaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,11 @@ public class TipologiaController {
 
     @GetMapping("/all")
     public List<Tipologia> getAllTipologia() {
-        return tipologiaService.getAllTipologia();
+        try{
+            return tipologiaService.getAllTipologia();
+        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+            throw new CannotCreateTransactionException(e.getMessage());
+        }
     }
 }
 

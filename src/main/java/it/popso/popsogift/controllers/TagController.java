@@ -1,6 +1,7 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Tag;
+import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.repository.TagRepository;
 import it.popso.popsogift.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,11 @@ public class TagController {
 
     @GetMapping("/all")
     public List<Tag> getAllTag() {
-        return tagService.getAllTag();
+        try{
+            return tagService.getAllTag();
+        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+            throw new CannotCreateTransactionException(e.getMessage());
+        }
     }
 }
 

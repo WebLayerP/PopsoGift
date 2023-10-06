@@ -23,5 +23,8 @@ public class Oggetto {
     @ManyToOne
     @JoinColumn(name="CATEGORIA")
     private Categoria categoria;
+    @ManyToOne
+    @JoinColumn(name="FORNITORE")
+    private Fornitore fornitore;
 
 }

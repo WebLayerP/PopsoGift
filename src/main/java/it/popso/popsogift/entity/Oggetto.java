@@ -20,5 +20,8 @@ public class Oggetto {
     private String descrizione;
     @Column(name="CODICE")
     private String codice;
+    @ManyToOne
+    @JoinColumn(name="CATEGORIA")
+    private Categoria categoria;
 
 }

@@ -12,7 +12,6 @@ public class Oggetto {
     @SequenceGenerator(name = "OGGETTO_SEQ", sequenceName = "OGGETTO_SEQ",allocationSize = 1)
     @Column(name="ID_OGGETTO")
     private Integer idOggetto;
-
     @Column(name="NOME")
     private String nome;
     @Column(name="PREZZO")

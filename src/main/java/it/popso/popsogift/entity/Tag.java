@@ -1,12 +1,10 @@
 package it.popso.popsogift.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="TAG")
@@ -16,15 +14,30 @@ public class Tag {
     @Id
     @Column(name="ID_TAG")
     private Integer idTag;
-    @Column(name="NOME_TAG")
+    @Column(name="NOME")
     private String nomeTag;
-    @Column(name="NUMERO_BENEFICIARI")
-    private Integer numeroBeneficiari;
-    @Column(name="NUMERO_OGGETTI")
-    private Integer numeroOggetti;
-    @Column(name="DATA_INSERIMENTO")
+    @Column(name="DESCRIZIONE")
+    private String descrizione;
+    @Column(name="DATA_CREAZIONE")
     private Date dataInserimento;
-    @Column(name="CREATO_DA")
+    @Column(name="AUTORE")
     private String creatoDa;
-
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_OGGETTO_TAG",
+            joinColumns = @JoinColumn(name = "ID_TAG"),
+            inverseJoinColumns = @JoinColumn(name = "ID_OGGETTO"))
+    private List<Oggetto> listaOggetti;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_BENEFICIARIO_TAG",
+            joinColumns = @JoinColumn(name = "ID_TAG"),
+            inverseJoinColumns = @JoinColumn(name = "NDG"))
+    private List<Beneficiario> listaBeneficiari;
 }

@@ -1,20 +1,20 @@
 package it.popso.popsogift.dto;
 
+import it.popso.popsogift.entity.Filiale;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
 public class BeneficiarioDTO {
 
-    private Integer idBeneficiario;
     private String ndg;
-    private String cognome;
-    private String nome;
-    private OggettoDTO oggettiAssegnati;
-    private List<OggettoDTO> storicoOggetti;
-    private TagDTO tag;
-    private GruppoDTO gruppo;
-    private String indirizzo;
+    private Date dataInserimento;
+    private String note;
+    private StatoBeneficiarioDTO statoBeneficiarioDTO;
+    private List<Filiale> listaFiliali;
+    private Date dataEstinzione;
+    private String motivoEstinzione;
 
 }

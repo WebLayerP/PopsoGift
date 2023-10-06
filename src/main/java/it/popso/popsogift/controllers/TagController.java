@@ -1,9 +1,10 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Tag;
-import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.repository.TagRepository;
 import it.popso.popsogift.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/tag")
 public class TagController {
+
+    public static final Logger loggerPerformance = LoggerFactory.getLogger("PERFORMANCE."+TagController.class);
+    public static final String PERFORMANCE_START="[START path=/tag/???]";
+    public static final String PERFORMANCE_END="[END path=/tag/???]";
+    private static Logger logger = LoggerFactory.getLogger(TagController.class);
 
     @Autowired
     private final TagService tagService;
@@ -34,11 +40,17 @@ public class TagController {
 
     @GetMapping("/all")
     public List<Tag> getAllTag() {
-        try{
-            return tagService.getAllTag();
-        }catch(org.springframework.transaction.CannotCreateTransactionException e){
-            throw new CannotCreateTransactionException(e.getMessage());
-        }
+        logger.info("Chiamata getAllTag");
+        List<Tag> listaTag;
+        String performanceLog=PERFORMANCE_START.replace("???","/all");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        listaTag = tagService.getAllTag();
+        performanceLog = PERFORMANCE_END.replace("???", listaTag+ "\nRicerca dati tag completata in "+(System.currentTimeMillis() - start)+" millisecondi");
+        loggerPerformance.debug(performanceLog);
+        return listaTag;
+
+
     }
 }
 

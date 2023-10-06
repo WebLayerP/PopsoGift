@@ -1,6 +1,7 @@
 package it.popso.popsogift.service;
 
 import it.popso.popsogift.entity.Tag;
+import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,11 @@ public class TagService {
     }
 
     public List<Tag> getAllTag() {
-        return tagRepository.findAll();
+        try{
+            return tagRepository.findAll();
+        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+            throw new CannotCreateTransactionException(e.getMessage());
+        }
     }
 }
 

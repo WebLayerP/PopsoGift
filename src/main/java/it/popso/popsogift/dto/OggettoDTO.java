@@ -10,6 +10,6 @@ public class OggettoDTO {
     private Long prezzo;
     private String descrizione;
     private String codice;
-    private Integer categoria;
-    private String fornitore;
+    private CategoriaDTO categoria;
+    private FornitoreDTO fornitore;
 }

@@ -2,9 +2,12 @@ package it.popso.popsogift.dto;
 
 import lombok.Data;
 
-@Data
-public class FornitoreDTO {
+import java.io.Serializable;
 
+@Data
+public class FornitoreDTO implements Serializable {
+
+    private Integer idFornitore;
     private String ragioneSociale;
     private String email;
     private String indirizzo;

@@ -40,7 +40,8 @@ public class CampagnaController {
 
 
     @GetMapping("/all")
-    public List<Campagna> getAllCampagne() {
+    public List<Campagna> getAllCampagne(@RequestHeader("Ruolo") String ruolo,
+                                         @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllCampagne");
         List<Campagna> listaCampagne;
         String performanceLog=PERFORMANCE_START.replace("???","all");
@@ -53,7 +54,9 @@ public class CampagnaController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<Campagna> createCampagna(@RequestBody CampagnaDTO campagnaDTO) {
+    public ResponseEntity<Campagna> createCampagna( @RequestHeader("Ruolo") String ruolo,
+                                                    @RequestHeader("Matricola")String matricola,
+                                                    @RequestBody CampagnaDTO campagnaDTO) {
         logger.info("Chiamata createCampagna");
         Campagna campagnaInserita;
         String performanceLog=PERFORMANCE_START.replace("???","insert");

@@ -38,7 +38,8 @@ public class BeneficiarioController {
     }
 
     @GetMapping("/all")
-    public List<Beneficiario> getAllBeneficiario() {
+    public List<Beneficiario> getAllBeneficiario(@RequestHeader("Ruolo") String ruolo,
+                                                 @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllBeneficiario");
         List<Beneficiario> listaBeneficiario;
         String performanceLog=PERFORMANCE_START.replace("???","/all");
@@ -52,7 +53,9 @@ public class BeneficiarioController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<Beneficiario> createBeneficiario(@RequestBody BeneficiarioDTO beneficiarioDTO) {
+    public ResponseEntity<Beneficiario> createBeneficiario(@RequestHeader("Ruolo") String ruolo,
+                                                           @RequestHeader("Matricola")String matricola,
+                                                           @RequestBody BeneficiarioDTO beneficiarioDTO) {
         logger.info("Chiamata createBeneficiario");
         Beneficiario beneficiarioInserito;
         beneficiarioDTO.setNdg(ndgMockService.getNdgMocked()); //TODO modifica da apportare quando avremo ANAGRAFE

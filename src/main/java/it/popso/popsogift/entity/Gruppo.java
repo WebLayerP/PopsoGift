@@ -22,7 +22,7 @@ public class Gruppo {
             })
     @JoinTable(
             name = "REL_BENEFICIARIO_GRUPPO",
-            joinColumns = @JoinColumn(name = "ID_GRUPPO"),
+            joinColumns = @JoinColumn(name = "GRUPPO"),
             inverseJoinColumns = @JoinColumn(name = "NDG"))
     private List<Beneficiario> listaBeneficiari;
 }

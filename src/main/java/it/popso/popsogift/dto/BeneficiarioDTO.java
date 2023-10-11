@@ -4,7 +4,6 @@ import it.popso.popsogift.entity.Filiale;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class BeneficiarioDTO {
@@ -12,8 +11,8 @@ public class BeneficiarioDTO {
     private String ndg;
     private Date dataInserimento;
     private String note;
-    private StatoBeneficiarioDTO statoBeneficiarioDTO;
-    private List<Filiale> listaFiliali;
+    private StatoBeneficiarioDTO statoBeneficiario;
+    private Filiale filiale;
     private Date dataEstinzione;
     private String motivoEstinzione;
 

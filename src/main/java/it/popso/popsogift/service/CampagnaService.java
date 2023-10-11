@@ -2,18 +2,20 @@ package it.popso.popsogift.service;
 
 
 import it.popso.popsogift.dto.CampagnaDTO;
+import it.popso.popsogift.dto.OggettoDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.entity.Filiale;
+import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
-import it.popso.popsogift.mapper.CampagnaMapper;
-import it.popso.popsogift.mapper.StatoMapper;
-import it.popso.popsogift.mapper.TipologiaMapper;
+import it.popso.popsogift.exceptions.InputFaultMsgException;
+import it.popso.popsogift.mapper.*;
 import it.popso.popsogift.repository.CampagnaRepository;
 import it.popso.popsogift.repository.FilialeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +28,16 @@ public class CampagnaService {
     private CampagnaMapper campagnaMapper;
 
     @Autowired
+    private FornitoreMapper fornitoreMapper;
+
+    @Autowired
     private TipologiaMapper tipologiaMapper;
+
+    @Autowired
+    private OggettoMapper oggettoMapper;
+
+    @Autowired
+    private CategoriaMapper categoriaMapper;
 
     @Autowired
     private FilialeRepository filialeRepository;
@@ -46,6 +57,22 @@ public class CampagnaService {
         Campagna campagna = campagnaMapper.campagnaDTOToEntity(campagnaDTO);
         campagna.setTipologia(tipologiaMapper.getTipologia(campagnaDTO));
         campagna.setStato(statoMapper.getStato(campagnaDTO));
+        List<Oggetto> listaOggetti = new ArrayList<>();
+        for(OggettoDTO oggettoDTO: campagnaDTO.getListaOmaggi()){
+            Oggetto oggetto = oggettoMapper.oggettoDTOToOggetto(oggettoDTO);
+            try {
+                oggetto.setCategoria(categoriaMapper.getCategoria(oggettoDTO));
+            }catch(NullPointerException e){
+                throw new InputFaultMsgException("Categoria non impostata");
+            }
+            try {
+                oggetto.setFornitore(fornitoreMapper.fornitoreDTOToFornitore(oggettoDTO));
+            }catch(NullPointerException e){
+                throw new InputFaultMsgException("Fornitore non impostato");
+            }
+            listaOggetti.add(oggetto);
+        }
+        campagna.setListaOmaggi(listaOggetti);
         for (Filiale filiale: campagna.getListaFiliali()) {
             if (!filialeRepository.existsById(filiale.getCodiceFiliale()))
                 try {

@@ -1,12 +1,15 @@
 package it.popso.popsogift.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name="BENEFICIARIO")
-@Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property="ndg")
 public class Beneficiario {
     @Id
     @Column(name="NDG")
@@ -25,4 +28,77 @@ public class Beneficiario {
     private Date dataEstinzione;
     @Column(name="MOTIVO_ESTINZIONE")
     private String motivoEstinzione;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_BENEFICIARIO_GRUPPO",
+            joinColumns = @JoinColumn(name = "NDG"),
+            inverseJoinColumns = @JoinColumn(name = "GRUPPO"))
+    private List<Gruppo> listaGruppi;
+
+    public String getNdg() {
+        return ndg;
+    }
+
+    public void setNdg(String ndg) {
+        this.ndg = ndg;
+    }
+
+    public Date getDataInserimento() {
+        return dataInserimento;
+    }
+
+    public void setDataInserimento(Date dataInserimento) {
+        this.dataInserimento = dataInserimento;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public StatoBeneficiario getStatoBeneficiario() {
+        return statoBeneficiario;
+    }
+
+    public void setStatoBeneficiario(StatoBeneficiario statoBeneficiario) {
+        this.statoBeneficiario = statoBeneficiario;
+    }
+
+    public Filiale getFiliale() {
+        return filiale;
+    }
+
+    public void setFiliale(Filiale filiale) {
+        this.filiale = filiale;
+    }
+
+    public Date getDataEstinzione() {
+        return dataEstinzione;
+    }
+
+    public void setDataEstinzione(Date dataEstinzione) {
+        this.dataEstinzione = dataEstinzione;
+    }
+
+    public String getMotivoEstinzione() {
+        return motivoEstinzione;
+    }
+
+    public void setMotivoEstinzione(String motivoEstinzione) {
+        this.motivoEstinzione = motivoEstinzione;
+    }
+
+    public List<Gruppo> getListaGruppi() {
+        return listaGruppi;
+    }
+
+    public void setListaGruppi(List<Gruppo> listaGruppi) {
+        this.listaGruppi = listaGruppi;
+    }
 }

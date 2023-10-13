@@ -57,6 +57,7 @@ public class CampagnaService {
         Campagna campagna = campagnaMapper.campagnaDTOToEntity(campagnaDTO);
         campagna.setTipologia(tipologiaMapper.getTipologia(campagnaDTO));
         campagna.setStato(statoMapper.getStato(campagnaDTO));
+        Campagna campagnaInserita = null;
         List<Oggetto> listaOggetti = new ArrayList<>();
         for(OggettoDTO oggettoDTO: campagnaDTO.getListaOmaggi()){
             Oggetto oggetto = oggettoMapper.oggettoDTOToOggetto(oggettoDTO);
@@ -81,7 +82,6 @@ public class CampagnaService {
                     throw new DataIntegrityViolationException(e.getMessage());
                 }
         }
-        Campagna campagnaInserita = null;
         try {
             campagnaInserita = campagnaRepository.save(campagna);
         } catch(DataIntegrityViolationException e){

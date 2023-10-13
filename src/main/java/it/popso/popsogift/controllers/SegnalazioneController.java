@@ -1,15 +1,15 @@
 package it.popso.popsogift.controllers;
 
+import it.popso.popsogift.dto.SegnalazioneDTO;
 import it.popso.popsogift.entity.Segnalazione;
 import it.popso.popsogift.repository.SegnalazioneRepository;
 import it.popso.popsogift.service.SegnalazioneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,6 +53,22 @@ public class SegnalazioneController {
         return listaSegnalazioni;
 
     }
+
+    @PostMapping("/insert")
+    public ResponseEntity<Segnalazione> createSegnalazione(@RequestHeader("Ruolo") String ruolo,
+                                                   @RequestHeader("Matricola")String matricola,
+                                                   @RequestBody SegnalazioneDTO segnalazioneDTO) {
+        logger.info("Chiamata createSegnalazione");
+        Segnalazione segnalazioneInserita;
+        String performanceLog=PERFORMANCE_START.replace("???","insert");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        segnalazioneInserita = segnalazioneService.saveSegnalazione(segnalazioneDTO);
+        performanceLog = PERFORMANCE_END.replace("???", segnalazioneInserita+ "\nInserimento nuova segnalazione completato in "+(System.currentTimeMillis() - start)+" millisecondi");
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(segnalazioneInserita, HttpStatus.CREATED);
+    }
+
 }
 
 

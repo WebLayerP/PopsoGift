@@ -1,11 +1,13 @@
 package it.popso.popsogift.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Table(name ="OGGETTO")
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Oggetto {
     @Id
     @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="OGGETTO_SEQ")

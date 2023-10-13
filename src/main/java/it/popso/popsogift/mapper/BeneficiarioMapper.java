@@ -12,7 +12,7 @@ public interface BeneficiarioMapper {
     BeneficiarioDTO beneficiarioToBeneficiarioDTO(Beneficiario beneficiario);
 
     @Mapping(target="statoBeneficiario", ignore = true)
-    Beneficiario beneficiarioDTOToEntity(BeneficiarioDTO beneficiarioDTO);
+    Beneficiario beneficiarioDTOToBeneficiario(BeneficiarioDTO beneficiarioDTO);
 
 }
 

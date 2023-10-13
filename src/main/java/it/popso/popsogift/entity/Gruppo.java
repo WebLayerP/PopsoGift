@@ -1,6 +1,7 @@
 package it.popso.popsogift.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property="idGruppo")
 @Table(name="GRUPPO")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Gruppo {
     @Id
     @Column(name="ID_GRUPPO")

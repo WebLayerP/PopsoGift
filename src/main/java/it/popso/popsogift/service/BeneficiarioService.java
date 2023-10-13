@@ -22,15 +22,15 @@ public class BeneficiarioService {
     private BeneficiarioMapper beneficiarioMapper;
 
     @Autowired
-    private StatoBeneficiarioMapper statobeneficiarioMapper;
+    private StatoBeneficiarioMapper statoBeneficiarioMapper;
 
     public BeneficiarioService(BeneficiarioRepository beneficiarioRepository) {
         this.beneficiarioRepository = beneficiarioRepository;
     }
 
     public Beneficiario saveBeneficiario(BeneficiarioDTO beneficiarioDTO){
-        Beneficiario beneficiario = beneficiarioMapper.beneficiarioDTOToEntity(beneficiarioDTO);
-        beneficiario.setStatoBeneficiario(statobeneficiarioMapper.getStatoBeneficiario(beneficiarioDTO));
+        Beneficiario beneficiario = beneficiarioMapper.beneficiarioDTOToBeneficiario(beneficiarioDTO);
+        beneficiario.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(beneficiarioDTO));
         Beneficiario beneficiarioInserito = null;
         try {
             beneficiarioInserito = beneficiarioRepository.save(beneficiario);

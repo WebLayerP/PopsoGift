@@ -1,5 +1,6 @@
 package it.popso.popsogift.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name="TAG")
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Tag {
 
     @Id

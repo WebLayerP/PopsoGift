@@ -1,5 +1,6 @@
 package it.popso.popsogift.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name="CAMPAGNA")
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Campagna {
     @Id
     @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="CAMPAGNA_SEQ")

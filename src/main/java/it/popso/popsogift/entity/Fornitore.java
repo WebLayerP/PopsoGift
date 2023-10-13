@@ -1,5 +1,6 @@
 package it.popso.popsogift.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,6 +10,7 @@ import lombok.Data;
 @Entity
 @Table(name ="FORNITORE")
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Fornitore {
 
     @Id

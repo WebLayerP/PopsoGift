@@ -14,6 +14,8 @@ import java.util.List;
 public class Tag {
 
     @Id
+    @GeneratedValue (strategy= GenerationType.SEQUENCE, generator="TAG_SEQ")
+    @SequenceGenerator(name = "TAG_SEQ", sequenceName = "TAG_SEQ",allocationSize = 1)
     @Column(name="ID_TAG")
     private Integer idTag;
     @Column(name="NOME")

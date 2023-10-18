@@ -25,7 +25,7 @@ public class StatoController {
     private final StatoService statoService;
 
     @Autowired
-    StatoRepository statoRepository;
+    private StatoRepository statoRepository;
 
     public StatoController(StatoService statoService, StatoRepository statoRepository) {
         this.statoService = statoService;

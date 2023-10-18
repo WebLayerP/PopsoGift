@@ -1,6 +1,8 @@
 package it.popso.popsogift.service;
 
+import it.popso.popsogift.dto.FilialeDTO;
 import it.popso.popsogift.exceptions.InputFaultMsgException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
@@ -16,27 +18,45 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FilialeService {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    public static final String INDIRIZZO = "indirizzo";
+    public static final String DESCRIZIONE = "descrizione";
+    public static final String CODICE = "codice";
+    public static final String DIPENDENZA = "dipendenza";
+    private final RestTemplate restTemplate = new RestTemplate();
     @Value("${filiali.service.url}")
     private String filialiServiceUrl;
     @Value("${idtipo.parameters}")
     private List<String> parameters;
 
-    public List<Map<String,String>> getFilialiTipo() {
+    @Value("${factory.featureone}")
+    private String featureOne;
+
+    @Value("${factory.featuretwo}")
+    private String featureTwo;
+
+    @Value("${factory.featurethree}")
+    private String featureThree;
+
+    @Autowired
+    private final NumeroBeneficiariMockService numeroBeneficiariMockService;
+
+    public FilialeService(NumeroBeneficiariMockService numeroBeneficiariMockService) {
+        this.numeroBeneficiariMockService = numeroBeneficiariMockService;
+    }
+
+    public List<FilialeDTO> getAllFilialeDTO() {
         ResponseEntity<String> responseEntity = null;
-        List<Map<String,String>> fullListDatiFiliali = new ArrayList<>();
+        List<FilialeDTO> fullListDatiFiliali = new ArrayList<>();
         for (String parameter : parameters) {
             String fullUrl = filialiServiceUrl + parameter;
             responseEntity = restTemplate.exchange(fullUrl, HttpMethod.GET, null, String.class);
             if (responseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
-                fullListDatiFiliali.addAll(saveRisultatiXml(responseEntity.getBody()));
+                fullListDatiFiliali.addAll(getFilialiDTO(responseEntity.getBody()));
             }
         }
         if(responseEntity == null){
@@ -45,46 +65,47 @@ public class FilialeService {
         return fullListDatiFiliali;
     }
 
-    public List<Map<String,String>> saveRisultatiXml(String risultatiXml) {
-        List<Map<String,String>> dipendenze = new ArrayList<>();
+    public List<FilialeDTO> getFilialiDTO(String risultatiXml) {
+        List<FilialeDTO> listaFilialiDTO = new ArrayList<>();
+        Integer numeroBeneficiari = Integer.parseInt(numeroBeneficiariMockService.getNBeneficiariMocked());
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
-            factory.setFeature("http://xml.org/sax/features/external-general-entities",false);
-            factory.setFeature("http://xml.org/sax/features/external-parameter-entities",false);
+            factory.setFeature(featureOne,false);
+            factory.setFeature(featureTwo,false);
+            factory.setFeature(featureThree,false);
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc =builder.parse(new InputSource(new StringReader(risultatiXml)));
-            NodeList dipendenzaNodes = doc.getElementsByTagName("dipendenza");
+            NodeList dipendenzaNodes = doc.getElementsByTagName(DIPENDENZA);
             for(int i=0; i<dipendenzaNodes.getLength(); i++){
+                FilialeDTO filialeDTO = new FilialeDTO();
                 Node dipendenzaNode = dipendenzaNodes.item(i);
-                Map<String,String> dipendenza = new HashMap<>();
                 NodeList campiNodes = dipendenzaNode.getChildNodes();
                 for(int j=0; j< campiNodes.getLength(); j++){
                     Node campoNode = campiNodes.item(j);
                     if(campoNode.getNodeType()== Node.ELEMENT_NODE){
                         String nodeName = campoNode.getNodeName();
                         String nodeValue = campoNode.getTextContent();
-                        if("indirizzo".equals(nodeName) || "descrizione".equals(nodeName) || "codice".equals(nodeName)) {
-                            dipendenza.put(nodeName,nodeValue);
-                        }
+                        setCampi(filialeDTO, nodeName, nodeValue);
                     }
                 }
-                dipendenze.add(dipendenza);
+                filialeDTO.setNumeroBeneficiari(numeroBeneficiari);
+                listaFilialiDTO.add(filialeDTO);
             }
         } catch (Exception e) {
-            throw new InputFaultMsgException("Errore salvataggio dipendenze");
+            throw new InputFaultMsgException("Errore salvataggio filialeDTO");
         }
-        return dipendenze;
+        return listaFilialiDTO;
     }
 
-    private void leggiCampiNidificati(Node node,List<String> elementi){
-        NodeList childNodes = node.getChildNodes();
-        for(int i=0; i< childNodes.getLength(); i++) {
-            Node childNode = childNodes.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                elementi.add(node.getNodeName() + ": " + node.getTextContent());
-                leggiCampiNidificati(childNode,elementi);
-            }
+    private static void setCampi(FilialeDTO filialeDTO, String nodeName, String nodeValue) {
+        if(INDIRIZZO.equals(nodeName)){
+            filialeDTO.setIndirizzo(nodeValue);
+        }
+        if(DESCRIZIONE.equals(nodeName)){
+            filialeDTO.setNomeFiliale(nodeValue);
+        }
+        if(CODICE.equals(nodeName)) {
+            filialeDTO.setCodiceFiliale(nodeValue);
         }
     }
 }

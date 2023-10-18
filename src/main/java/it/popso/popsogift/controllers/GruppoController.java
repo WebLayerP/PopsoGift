@@ -26,7 +26,7 @@ public class GruppoController {
     private final GruppoService gruppoService;
 
     @Autowired
-    GruppoRepository gruppoRepository;
+    private GruppoRepository gruppoRepository;
 
     public GruppoController(GruppoService gruppoService, GruppoRepository gruppoRepository) {
         this.gruppoService = gruppoService;

@@ -2,6 +2,7 @@ package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.FilialeDTO;
 import it.popso.popsogift.service.FilialeService;
+import it.popso.popsogift.service.FilialeServiceSecond;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,12 @@ public class FilialeController {
     @Autowired
     private final FilialeService filialeService;
 
-    public FilialeController(FilialeService filialeService) {
+    @Autowired
+    private final FilialeServiceSecond filialeServiceSecond;
+
+    public FilialeController(FilialeService filialeService, FilialeServiceSecond filialeServiceSecond) {
         this.filialeService = filialeService;
+        this.filialeServiceSecond = filialeServiceSecond;
     }
 
     @GetMapping("/all")
@@ -36,7 +41,8 @@ public class FilialeController {
         String performanceLog=PERFORMANCE_START.replace("???","/all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
-        listaFiliali = filialeService.getAllFilialeDTO();
+        //listaFiliali = filialeService.getAllFilialeDTO();
+        listaFiliali = filialeServiceSecond.getAllFilialeDTO();
         performanceLog = PERFORMANCE_END.replace("???", listaFiliali+ "\nRicerca dati stati completata in "+(System.currentTimeMillis() - start)+" millisecondi");
         loggerPerformance.debug(performanceLog);
         return listaFiliali;

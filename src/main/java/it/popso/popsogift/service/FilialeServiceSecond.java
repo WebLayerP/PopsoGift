@@ -9,14 +9,18 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FilialeServiceSecond {
@@ -29,29 +33,47 @@ public class FilialeServiceSecond {
     @Value("${filiali.service.url}")
     private String filialiServiceUrl;
     @Value("${idtipo.parameters}")
-    private List<String> parameters;
+    private List<Integer> parameters;
 
     @Autowired
     private final NumeroBeneficiariMockService numeroBeneficiariMockService;
+
+    private final ConcurrentHashMap<Integer,String> xmlResponseCache = new ConcurrentHashMap<>();
 
     public FilialeServiceSecond(NumeroBeneficiariMockService numeroBeneficiariMockService) {
         this.numeroBeneficiariMockService = numeroBeneficiariMockService;
     }
 
     public List<FilialeDTO> getAllFilialeDTO() {
-        ResponseEntity<String> responseEntity = null;
         List<FilialeDTO> fullListDatiFiliali = new ArrayList<>();
-        for (String parameter : parameters) {
-            String fullUrl = filialiServiceUrl + parameter;
-            responseEntity = restTemplate.exchange(fullUrl, HttpMethod.GET, null, String.class);
-            if (responseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
-                fullListDatiFiliali.addAll(getFilialiDTO(responseEntity.getBody()));
-            }
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (Integer parameter : parameters) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() ->{
+                ResponseEntity<String> responseEntity;
+                String fullUrl = filialiServiceUrl + parameter;
+                String cachedXmlResponse = xmlResponseCache.get(parameter);
+                if(cachedXmlResponse!= null){
+                    responseEntity = ResponseEntity.status(HttpStatus.OK).body(cachedXmlResponse);
+                }
+                else {
+                    responseEntity = restTemplate.exchange(fullUrl, HttpMethod.GET, null, String.class);
+                    xmlResponseCache.put(parameter, Objects.requireNonNull(responseEntity.getBody()));
+                }
+                if (responseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
+                    fullListDatiFiliali.addAll(getFilialiDTO(responseEntity.getBody()));
+                }
+            });
+            futures.add(future);
+
         }
-        if(responseEntity == null){
-            throw new InputFaultMsgException("Errore di chiamata al servizio");
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        try{
+            allOf.get(15, TimeUnit.SECONDS);
+        } catch(ExecutionException | TimeoutException | InterruptedException e){
+            Thread.currentThread().interrupt();
+            throw new InputFaultMsgException("Errore chiamate servizio filiali");
         }
-        return fullListDatiFiliali;
+        return fullListDatiFiliali.stream().sorted(Comparator.comparing(FilialeDTO::getNomeFiliale)).collect(Collectors.toList());
     }
 
     public List<FilialeDTO> getFilialiDTO(String risultatiXml) {
@@ -59,7 +81,7 @@ public class FilialeServiceSecond {
     }
     private List<FilialeDTO> mapXmlToListaFilialeDTO(String risultatiXml){
         List<FilialeDTO> listaFilialiDTO = new ArrayList<>();
-        Integer numeroBeneficiari = Integer.parseInt(numeroBeneficiariMockService.getNBeneficiariMocked());
+        //Integer numeroBeneficiari = Integer.parseInt(numeroBeneficiariMockService.getNBeneficiariMocked());
         try{
             Document document = Jsoup.parse(risultatiXml);
             Elements dipendenzaElements = document.select(DIPENDENZA);
@@ -71,7 +93,7 @@ public class FilialeServiceSecond {
                 filialeDTO.setNomeFiliale(Objects.requireNonNull(descrizioneElement).text());
                 Element indirizzoElement = dipendenzaElement.select(INDIRIZZO).first();
                 filialeDTO.setIndirizzo(Objects.requireNonNull(indirizzoElement).text());
-                filialeDTO.setNumeroBeneficiari(numeroBeneficiari);
+               // filialeDTO.setNumeroBeneficiari(numeroBeneficiari);
                 listaFilialiDTO.add(filialeDTO);
             }
         } catch(Exception e){

@@ -2,13 +2,11 @@ package it.popso.popsogift.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 @Entity
 @Table(name="CAMPAGNA")
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Campagna {
     @Id
@@ -25,6 +23,12 @@ public class Campagna {
     private Date dataInizioModifiche;
     @Column(name="DATA_FINE_MODIFICHE")
     private Date dataFineModifiche;
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
+    @Column(name="DATA_INSERIMENTO")
+    private Date dataInserimento;
+    @Column(name="MATRICOLA")
+    private String matricola;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.MERGE
@@ -46,5 +50,102 @@ public class Campagna {
     @ManyToOne
     @JoinColumn(name="STATO")
     private Stato stato;
+    @OneToMany(mappedBy="campagna")
+    private List<Segnalazione> segnalazione;
 
+    public Stato getStato() {
+        return stato;
+    }
+
+    public void setStato(Stato stato) {
+        this.stato = stato;
+    }
+
+    public List<Segnalazione> getSegnalazione() {
+        return segnalazione;
+    }
+
+    public void setSegnalazione(List<Segnalazione> segnalazione) {
+        this.segnalazione = segnalazione;
+    }
+
+    public List<Oggetto> getListaOmaggi() {
+        return listaOmaggi;
+    }
+
+    public void setListaOmaggi(List<Oggetto> listaOmaggi) {
+        this.listaOmaggi = listaOmaggi;
+    }
+
+    public List<Filiale> getListaFiliali() {
+        return listaFiliali;
+    }
+
+    public void setListaFiliali(List<Filiale> listaFiliali) {
+        this.listaFiliali = listaFiliali;
+    }
+
+    public Integer getIdCampagna() {
+        return idCampagna;
+    }
+
+    public void setIdCampagna(Integer idCampagna) {
+        this.idCampagna = idCampagna;
+    }
+
+    public String getTitoloCampagna() {
+        return titoloCampagna;
+    }
+
+    public void setTitoloCampagna(String titoloCampagna) {
+        this.titoloCampagna = titoloCampagna;
+    }
+
+    public Tipologia getTipologia() {
+        return tipologia;
+    }
+
+    public void setTipologia(Tipologia tipologia) {
+        this.tipologia = tipologia;
+    }
+
+    public Date getDataInizioModifiche() {
+        return dataInizioModifiche;
+    }
+
+    public void setDataInizioModifiche(Date dataInizioModifiche) {
+        this.dataInizioModifiche = dataInizioModifiche;
+    }
+
+    public Date getDataFineModifiche() {
+        return dataFineModifiche;
+    }
+
+    public void setDataFineModifiche(Date dataFineModifiche) {
+        this.dataFineModifiche = dataFineModifiche;
+    }
+
+    public Date getDataAggiornamento() {
+        return dataAggiornamento;
+    }
+
+    public void setDataAggiornamento(Date dataAggiornamento) {
+        this.dataAggiornamento = dataAggiornamento;
+    }
+
+    public Date getDataInserimento() {
+        return dataInserimento;
+    }
+
+    public void setDataInserimento(Date dataInserimento) {
+        this.dataInserimento = dataInserimento;
+    }
+
+    public String getMatricola() {
+        return matricola;
+    }
+
+    public void setMatricola(String matricola) {
+        this.matricola = matricola;
+    }
 }

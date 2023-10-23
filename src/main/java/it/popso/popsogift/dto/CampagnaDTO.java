@@ -15,6 +15,9 @@ public class CampagnaDTO {
     private Date dataFineModifiche;
     private List<OggettoDTO> listaOmaggi;
     private List<FilialeDTO> listaFiliali;
+    private Date dataAggiornamento;
+    private Date dataInserimento;
+    private String matricola;
     private StatoDTO stato;
 
     public CampagnaDTO() {

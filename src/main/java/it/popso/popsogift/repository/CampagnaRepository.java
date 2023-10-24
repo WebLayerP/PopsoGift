@@ -19,18 +19,18 @@ public interface CampagnaRepository extends JpaRepository<Campagna, Integer> {
             "GROUP BY s.idStato,c.dataAggiornamento, c.titoloCampagna, c.idCampagna")
     List<Object[]> findAllCampagnaGroupByStatoSegn();
 
-    @Query("select sub " +
-            "from (select count(c.stato) as stato_count, c.stato as id_st " +
-            "from Campagna c " +
-            "where (YEAR(c.dataInizioModifiche) = YEAR(CURRENT_DATE) " +
-            "OR YEAR(c.dataFineModifiche) = YEAR(CURRENT_DATE)) " +
-            "GROUP by c.stato) as sub " +
-            "RIGHT OUTER JOIN (select campagna.idCampagna as id_c, campagna.stato from Campagna campagna " +
-            "where (YEAR(campagna.dataInizioModifiche) = YEAR(CURRENT_DATE) " +
-            "OR YEAR(campagna.dataFineModifiche) = YEAR(CURRENT_DATE))) as dub " +
-            "on campagna.stato = sub.id_st " +
-            "LEFT OUTER JOIN Segnalazione segnalazione " +
-            "on dub.id_c = segnalazione.idCampagna")
+    @Query(value = "select * \n" +
+            "from (select count(c.stato) stato_count, c.stato as id_st\n" +
+            "from root.campagna c \n" +
+            "       where (EXTRACT(YEAR FROM c.data_inizio_modifiche) = EXTRACT(YEAR FROM SYSDATE)\n" +
+            "                OR EXTRACT(YEAR FROM c.data_fine_modifiche) = EXTRACT(YEAR FROM SYSDATE))\n" +
+            "        GROUP by c.stato)\n" +
+            "        RIGHT OUTER JOIN (select id_campagna as id_c, stato from ROOT.CAMPAGNA campagna\n" +
+            "        where (EXTRACT(YEAR FROM campagna.data_inizio_modifiche) = EXTRACT(YEAR FROM SYSDATE)\n" +
+            "                OR EXTRACT(YEAR FROM campagna.data_fine_modifiche) = EXTRACT(YEAR FROM SYSDATE)))\n" +
+            "        on stato = id_st\n" +
+            "     Left OUTER JOIN ROOT.SEGNALAZIONE\n" +
+            "     on id_c = segnalazione.id_campagna", nativeQuery = true)
     List<Object[]> findAllCampagnaGroupByStato();
 
 }

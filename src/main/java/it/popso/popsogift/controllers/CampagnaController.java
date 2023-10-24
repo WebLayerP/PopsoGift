@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/campagna")
@@ -68,10 +70,24 @@ public class CampagnaController {
         return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);
     }
 
+    @GetMapping("/bystato")
+    public List<Campagna> getCampagneByStato(){
+
+        List<Object[]>  results = campagnaRepository.findAllCampagnaGroupByStato();
+        //List<Object[]>  resultsTwo = campagnaRepository.findAllCampagnaGroupByStatoSegn();
+        List<Campagna> campagne = new ArrayList<>();
+//        for(Object[] result: results){
+//            Campagna campagna = (Campagna) result[1];
+//            campagne.add(campagna);
+//        }
+        return campagne;
+    }
+
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint() {
         return new ResponseEntity<>("OK",HttpStatus.OK);
     }
+
 
 }
 

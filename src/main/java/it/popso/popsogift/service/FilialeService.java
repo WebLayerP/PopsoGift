@@ -2,23 +2,25 @@ package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.FilialeDTO;
 import it.popso.popsogift.exceptions.InputFaultMsgException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FilialeService {
@@ -31,81 +33,72 @@ public class FilialeService {
     @Value("${filiali.service.url}")
     private String filialiServiceUrl;
     @Value("${idtipo.parameters}")
-    private List<String> parameters;
-
-    @Value("${factory.featureone}")
-    private String featureOne;
-
-    @Value("${factory.featuretwo}")
-    private String featureTwo;
-
-    @Value("${factory.featurethree}")
-    private String featureThree;
+    private List<Integer> parameters;
 
     @Autowired
     private final NumeroBeneficiariMockService numeroBeneficiariMockService;
+
+    private final ConcurrentHashMap<Integer,String> xmlResponseCache = new ConcurrentHashMap<>();
 
     public FilialeService(NumeroBeneficiariMockService numeroBeneficiariMockService) {
         this.numeroBeneficiariMockService = numeroBeneficiariMockService;
     }
 
     public List<FilialeDTO> getAllFilialeDTO() {
-        ResponseEntity<String> responseEntity = null;
         List<FilialeDTO> fullListDatiFiliali = new ArrayList<>();
-        for (String parameter : parameters) {
-            String fullUrl = filialiServiceUrl + parameter;
-            responseEntity = restTemplate.exchange(fullUrl, HttpMethod.GET, null, String.class);
-            if (responseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
-                fullListDatiFiliali.addAll(getFilialiDTO(responseEntity.getBody()));
-            }
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (Integer parameter : parameters) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() ->{
+                ResponseEntity<String> responseEntity;
+                String fullUrl = filialiServiceUrl + parameter;
+                String cachedXmlResponse = xmlResponseCache.get(parameter);
+                if(cachedXmlResponse!= null){
+                    responseEntity = ResponseEntity.status(HttpStatus.OK).body(cachedXmlResponse);
+                }
+                else {
+                    responseEntity = restTemplate.exchange(fullUrl, HttpMethod.GET, null, String.class);
+                    xmlResponseCache.put(parameter, Objects.requireNonNull(responseEntity.getBody()));
+                }
+                if (responseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
+                    fullListDatiFiliali.addAll(getFilialiDTO(responseEntity.getBody()));
+                }
+            });
+            futures.add(future);
+
         }
-        if(responseEntity == null){
-            throw new InputFaultMsgException("Errore di chiamata al servizio");
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        try{
+            allOf.get(15, TimeUnit.SECONDS);
+        } catch(ExecutionException | TimeoutException | InterruptedException e){
+            Thread.currentThread().interrupt();
+            throw new InputFaultMsgException("Errore chiamate servizio filiali");
         }
-        return fullListDatiFiliali;
+        return fullListDatiFiliali.stream().sorted(Comparator.comparing(FilialeDTO::getNomeFiliale)).collect(Collectors.toList());
     }
 
     public List<FilialeDTO> getFilialiDTO(String risultatiXml) {
+        return  mapXmlToListaFilialeDTO(risultatiXml);
+    }
+    private List<FilialeDTO> mapXmlToListaFilialeDTO(String risultatiXml){
         List<FilialeDTO> listaFilialiDTO = new ArrayList<>();
-        Integer numeroBeneficiari = Integer.parseInt(numeroBeneficiariMockService.getNBeneficiariMocked());
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setFeature(featureOne,false);
-            factory.setFeature(featureTwo,false);
-            factory.setFeature(featureThree,false);
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc =builder.parse(new InputSource(new StringReader(risultatiXml)));
-            NodeList dipendenzaNodes = doc.getElementsByTagName(DIPENDENZA);
-            for(int i=0; i<dipendenzaNodes.getLength(); i++){
+        //Integer numeroBeneficiari = Integer.parseInt(numeroBeneficiariMockService.getNBeneficiariMocked());
+        try{
+            Document document = Jsoup.parse(risultatiXml);
+            Elements dipendenzaElements = document.select(DIPENDENZA);
+            for(Element dipendenzaElement: dipendenzaElements){
                 FilialeDTO filialeDTO = new FilialeDTO();
-                Node dipendenzaNode = dipendenzaNodes.item(i);
-                NodeList campiNodes = dipendenzaNode.getChildNodes();
-                for(int j=0; j< campiNodes.getLength(); j++){
-                    Node campoNode = campiNodes.item(j);
-                    if(campoNode.getNodeType()== Node.ELEMENT_NODE){
-                        String nodeName = campoNode.getNodeName();
-                        String nodeValue = campoNode.getTextContent();
-                        setCampi(filialeDTO, nodeName, nodeValue);
-                    }
-                }
-                filialeDTO.setNumeroBeneficiari(numeroBeneficiari);
+                Element codiceElement = dipendenzaElement.select(CODICE).first();
+                filialeDTO.setCodiceFiliale(Objects.requireNonNull(codiceElement).text());
+                Element descrizioneElement = dipendenzaElement.select(DESCRIZIONE).first();
+                filialeDTO.setNomeFiliale(Objects.requireNonNull(descrizioneElement).text());
+                Element indirizzoElement = dipendenzaElement.select(INDIRIZZO).first();
+                filialeDTO.setIndirizzo(Objects.requireNonNull(indirizzoElement).text());
+               // filialeDTO.setNumeroBeneficiari(numeroBeneficiari);
                 listaFilialiDTO.add(filialeDTO);
             }
-        } catch (Exception e) {
-            throw new InputFaultMsgException("Errore salvataggio filialeDTO");
+        } catch(Exception e){
+            throw new InputFaultMsgException("Errore lettura dati da XML");
         }
         return listaFilialiDTO;
-    }
-
-    private static void setCampi(FilialeDTO filialeDTO, String nodeName, String nodeValue) {
-        if(INDIRIZZO.equals(nodeName)){
-            filialeDTO.setIndirizzo(nodeValue);
-        }
-        if(DESCRIZIONE.equals(nodeName)){
-            filialeDTO.setNomeFiliale(nodeValue);
-        }
-        if(CODICE.equals(nodeName)) {
-            filialeDTO.setCodiceFiliale(nodeValue);
-        }
     }
 }

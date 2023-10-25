@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public enum StatoDTO implements Serializable {
-    APPROVATO(1),
-    INATTESA(2),
-    BOZZA(3);
+    IN_CORSO(1),
+    BOZZA(2),
+    CHIUSA(3);
 
     private Integer idStato;
 

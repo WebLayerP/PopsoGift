@@ -1,7 +1,6 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Tipologia;
-import it.popso.popsogift.repository.TipologiaRepository;
 import it.popso.popsogift.service.TipologiaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,20 +22,7 @@ public class TipologiaController {
     private static Logger logger = LoggerFactory.getLogger(TipologiaController.class);
 
     @Autowired
-    private final TipologiaService tipologiaService;
-
-    @Autowired
-    TipologiaRepository tipologiaRepository;
-
-    public TipologiaController(TipologiaService tipologiaService, TipologiaRepository tipologiaRepository) {
-        this.tipologiaService = tipologiaService;
-        this.tipologiaRepository = tipologiaRepository;
-    }
-
-    @Autowired
-    public TipologiaController(TipologiaService tipologiaService) {
-        this.tipologiaService = tipologiaService;
-    }
+    private TipologiaService tipologiaService;
 
 
     @GetMapping("/all")

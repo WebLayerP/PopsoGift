@@ -2,7 +2,6 @@ package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.SegnalazioneDTO;
 import it.popso.popsogift.entity.Segnalazione;
-import it.popso.popsogift.repository.SegnalazioneRepository;
 import it.popso.popsogift.service.SegnalazioneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,20 +22,7 @@ public class SegnalazioneController {
     private static Logger logger = LoggerFactory.getLogger(it.popso.popsogift.controllers.SegnalazioneController.class);
 
     @Autowired
-    private final SegnalazioneService segnalazioneService;
-
-    @Autowired
-    SegnalazioneRepository segnalazioneRepository;
-
-    public SegnalazioneController(SegnalazioneService segnalazioneService, SegnalazioneRepository segnalazioneRepository) {
-        this.segnalazioneService = segnalazioneService;
-        this.segnalazioneRepository = segnalazioneRepository;
-    }
-
-    @Autowired
-    public SegnalazioneController(SegnalazioneService segnalazioneService) {
-        this.segnalazioneService = segnalazioneService;
-    }
+    private SegnalazioneService segnalazioneService;
 
 
     @GetMapping("/all")

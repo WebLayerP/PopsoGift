@@ -2,7 +2,9 @@ package it.popso.popsogift.service;
 
 
 import it.popso.popsogift.dto.CampagnaDTO;
+import it.popso.popsogift.dto.CampagnaGroup;
 import it.popso.popsogift.dto.OggettoDTO;
+import it.popso.popsogift.dto.StatoDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.entity.Filiale;
 import it.popso.popsogift.entity.Oggetto;
@@ -15,6 +17,7 @@ import it.popso.popsogift.repository.FilialeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,5 +91,35 @@ public class CampagnaService {
             throw new DataIntegrityViolationException(e.getMessage());
         }
         return campagnaInserita;
+    }
+    public CampagnaGroup getAllCampagneGroupByStato(){
+        List<Object[]>  results = campagnaRepository.findAllCampagnaGroupByStato();
+        List<CampagnaDTO> listaCampagneSegnalazioni = new ArrayList<>();
+        Integer contatoreSegnalazioni = 0;
+        CampagnaGroup campagnaGroup = new CampagnaGroup();
+        Integer anno = LocalDate.now().getYear();
+        campagnaGroup.setAnno(anno);
+        campagnaGroup.setDataUltimoAggiornamento(campagnaRepository.findMaxDataAggiornamentoForYear(anno));
+        for(Object[] o: results){
+            if(o[8]!= null) {
+                contatoreSegnalazioni++;
+                CampagnaDTO campagnaDTO = new CampagnaDTO();
+                campagnaDTO.setIdCampagna(((Float) o[8]).intValue());
+                campagnaDTO.setTitoloCampagna(o[6].toString());
+                listaCampagneSegnalazioni.add(campagnaDTO);
+            }
+            if(((Float) o[1]).intValue() == StatoDTO.IN_CORSO.getIdStato()){
+                campagnaGroup.setNumeroCampagneInCorso(((Float) o[0]).intValue());
+            }
+            if(((Float) o[1]).intValue() == StatoDTO.BOZZA.getIdStato()){
+                campagnaGroup.setNumeroCampagneBozza(((Float) o[0]).intValue());
+            }
+            if(((Float) o[1]).intValue() == StatoDTO.CHIUSA.getIdStato()){
+                campagnaGroup.setNumeroCampagneChiuse(((Float) o[0]).intValue());
+            }
+        }
+        campagnaGroup.setListaCampagneConSegnalazioni(listaCampagneSegnalazioni);
+        campagnaGroup.setNumeroCampagneConSegnalazioni(contatoreSegnalazioni);
+        return campagnaGroup;
     }
 }

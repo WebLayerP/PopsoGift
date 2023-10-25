@@ -2,7 +2,6 @@ package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.entity.Beneficiario;
-import it.popso.popsogift.repository.BeneficiarioRepository;
 import it.popso.popsogift.service.BeneficiarioService;
 import it.popso.popsogift.service.NdgMockService;
 import org.slf4j.Logger;
@@ -23,19 +22,10 @@ public class BeneficiarioController {
     public static final String PERFORMANCE_END="[END path=/beneficiario/???]";
     private static Logger logger = LoggerFactory.getLogger(BeneficiarioController.class);
     @Autowired
-    private final BeneficiarioService beneficiarioService;
-
-    @Autowired
-    private BeneficiarioRepository beneficiarioRepository;
+    private BeneficiarioService beneficiarioService;
 
     @Autowired
     private NdgMockService ndgMockService;
-
-    public BeneficiarioController(BeneficiarioService beneficiarioService, BeneficiarioRepository beneficiarioRepository, NdgMockService ndgMockService) {
-        this.beneficiarioService = beneficiarioService;
-        this.beneficiarioRepository = beneficiarioRepository;
-        this.ndgMockService = ndgMockService;
-    }
 
     @GetMapping("/all")
     public List<Beneficiario> getAllBeneficiario(@RequestHeader("Ruolo") String ruolo,

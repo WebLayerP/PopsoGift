@@ -1,7 +1,6 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Stato;
-import it.popso.popsogift.repository.StatoRepository;
 import it.popso.popsogift.service.StatoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +21,7 @@ public class StatoController {
     private static Logger logger = LoggerFactory.getLogger(StatoController.class);
 
     @Autowired
-    private final StatoService statoService;
-
-    @Autowired
-    private StatoRepository statoRepository;
-
-    public StatoController(StatoService statoService, StatoRepository statoRepository) {
-        this.statoService = statoService;
-        this.statoRepository = statoRepository;
-    }
-
-    @Autowired
-    public StatoController(StatoService statoService) {
-        this.statoService = statoService;
-    }
+    private StatoService statoService;
 
 
     @GetMapping("/all")

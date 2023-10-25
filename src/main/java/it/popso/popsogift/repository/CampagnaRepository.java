@@ -3,21 +3,16 @@ package it.popso.popsogift.repository;
 import it.popso.popsogift.entity.Campagna;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @Transactional
 public interface CampagnaRepository extends JpaRepository<Campagna, Integer> {
-
-    @Query("SELECT COUNT(c.idCampagna), s.idStato,c.dataAggiornamento, c.titoloCampagna, c.idCampagna FROM Campagna c JOIN c.stato s JOIN c.segnalazione st " +
-            "WHERE YEAR(c.dataInizioModifiche) = YEAR(CURRENT_DATE) " +
-            "OR YEAR(c.dataFineModifiche) = YEAR(CURRENT_DATE) " +
-            "GROUP BY s.idStato,c.dataAggiornamento, c.titoloCampagna, c.idCampagna")
-    List<Object[]> findAllCampagnaGroupByStatoSegn();
 
     @Query(value = "select * \n" +
             "from (select count(c.stato) stato_count, c.stato as id_st\n" +
@@ -32,6 +27,8 @@ public interface CampagnaRepository extends JpaRepository<Campagna, Integer> {
             "     Left OUTER JOIN ROOT.SEGNALAZIONE\n" +
             "     on id_c = segnalazione.id_campagna", nativeQuery = true)
     List<Object[]> findAllCampagnaGroupByStato();
+    @Query("SELECT MAX (c.dataAggiornamento) FROM Campagna c WHERE YEAR (c.dataAggiornamento)= :anno")
+    Date findMaxDataAggiornamentoForYear(@Param("anno") Integer anno);
 
 }
 

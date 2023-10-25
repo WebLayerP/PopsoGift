@@ -1,7 +1,6 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.entity.Gruppo;
-import it.popso.popsogift.repository.GruppoRepository;
 import it.popso.popsogift.service.GruppoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +22,7 @@ public class GruppoController {
     private static Logger logger = LoggerFactory.getLogger(GruppoController.class);
 
     @Autowired
-    private final GruppoService gruppoService;
-
-    @Autowired
-    private GruppoRepository gruppoRepository;
-
-    public GruppoController(GruppoService gruppoService, GruppoRepository gruppoRepository) {
-        this.gruppoService = gruppoService;
-        this.gruppoRepository = gruppoRepository;
-    }
+    private GruppoService gruppoService;
 
     @Autowired
     public GruppoController(GruppoService gruppoService) {

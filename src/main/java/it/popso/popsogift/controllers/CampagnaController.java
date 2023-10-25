@@ -1,8 +1,8 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.CampagnaDTO;
+import it.popso.popsogift.dto.CampagnaGroup;
 import it.popso.popsogift.entity.Campagna;
-import it.popso.popsogift.repository.CampagnaRepository;
 import it.popso.popsogift.service.CampagnaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/campagna")
@@ -25,15 +23,8 @@ public class CampagnaController {
     private static Logger logger = LoggerFactory.getLogger(CampagnaController.class);
 
     @Autowired
-    private final CampagnaService campagnaService;
+    private CampagnaService campagnaService;
 
-    @Autowired
-    CampagnaRepository campagnaRepository;
-
-    public CampagnaController(CampagnaService campagnaService, CampagnaRepository campagnaRepository) {
-        this.campagnaService = campagnaService;
-        this.campagnaRepository = campagnaRepository;
-    }
 
     @Autowired
     public CampagnaController(CampagnaService campagnaService) {
@@ -71,16 +62,9 @@ public class CampagnaController {
     }
 
     @GetMapping("/bystato")
-    public List<Campagna> getCampagneByStato(){
-
-        List<Object[]>  results = campagnaRepository.findAllCampagnaGroupByStato();
-        //List<Object[]>  resultsTwo = campagnaRepository.findAllCampagnaGroupByStatoSegn();
-        List<Campagna> campagne = new ArrayList<>();
-//        for(Object[] result: results){
-//            Campagna campagna = (Campagna) result[1];
-//            campagne.add(campagna);
-//        }
-        return campagne;
+    public CampagnaGroup getCampagneByStato(@RequestHeader("Ruolo") String ruolo,
+                                            @RequestHeader("Matricola")String matricola){
+        return campagnaService.getAllCampagneGroupByStato();
     }
 
     @GetMapping("/test")

@@ -2,7 +2,6 @@ package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.TagDTO;
 import it.popso.popsogift.entity.Tag;
-import it.popso.popsogift.repository.TagRepository;
 import it.popso.popsogift.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,21 +22,7 @@ public class TagController {
     private static Logger logger = LoggerFactory.getLogger(TagController.class);
 
     @Autowired
-    private final TagService tagService;
-
-    @Autowired
-    TagRepository tagRepository;
-
-    public TagController(TagService tagService, TagRepository tagRepository) {
-        this.tagService = tagService;
-        this.tagRepository = tagRepository;
-    }
-
-    @Autowired
-    public TagController(TagService tagService) {
-        this.tagService = tagService;
-    }
-
+    private TagService tagService;
 
     @GetMapping("/all")
     public List<Tag> getAllTag(@RequestHeader("Ruolo") String ruolo,

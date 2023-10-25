@@ -2,6 +2,8 @@ package it.popso.popsogift.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class OggettoDTO {
 
@@ -12,4 +14,6 @@ public class OggettoDTO {
     private String codice;
     private CategoriaDTO categoria;
     private FornitoreDTO fornitore;
+    private Date dataAggiornamento;
+    private Date dataInserimento;
 }

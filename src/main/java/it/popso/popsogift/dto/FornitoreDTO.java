@@ -3,6 +3,7 @@ package it.popso.popsogift.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 public class FornitoreDTO implements Serializable {
@@ -17,4 +18,6 @@ public class FornitoreDTO implements Serializable {
     private String citta;
     private String provincia;
     private String partitaIva;
+    private Date dataAggiornamento;
+    private Date dataInserimento;
 }

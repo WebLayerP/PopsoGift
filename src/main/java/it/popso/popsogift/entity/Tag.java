@@ -44,4 +44,6 @@ public class Tag {
             joinColumns = @JoinColumn(name = "ID_TAG"),
             inverseJoinColumns = @JoinColumn(name = "NDG"))
     private List<Beneficiario> listaBeneficiari;
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
 }

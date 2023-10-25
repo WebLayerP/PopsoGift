@@ -30,6 +30,9 @@ public class Beneficiario {
     private Date dataEstinzione;
     @Column(name="MOTIVO_ESTINZIONE")
     private String motivoEstinzione;
+
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.MERGE
@@ -54,6 +57,14 @@ public class Beneficiario {
 
     public void setDataInserimento(Date dataInserimento) {
         this.dataInserimento = dataInserimento;
+    }
+
+    public Date getDataAggiornamento() {
+        return dataAggiornamento;
+    }
+
+    public void setDataAggiornamento(Date dataAggiornamento) {
+        this.dataAggiornamento = dataAggiornamento;
     }
 
     public String getNote() {

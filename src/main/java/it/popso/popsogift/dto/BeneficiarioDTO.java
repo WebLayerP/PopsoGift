@@ -11,6 +11,7 @@ public class BeneficiarioDTO {
 
     private String ndg;
     private Date dataInserimento;
+    private Date dataAggiornamento;
     private String note;
     private StatoBeneficiarioDTO statoBeneficiario;
     private Filiale filiale;

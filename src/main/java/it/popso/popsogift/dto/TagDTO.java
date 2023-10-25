@@ -11,5 +11,6 @@ public class TagDTO {
     private Integer numeroOggetti;
     private Date dataInserimento;
     private String creatoDa;
+    private Date dataAggiornamento;
 
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Table(name ="SEGNALAZIONE")
 @Data
@@ -25,4 +27,8 @@ public class Segnalazione {
     @ManyToOne
     @JoinColumn(name="ID_BENEFICIARIO")
     private Beneficiario beneficiario;
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
+    @Column(name="DATA_INSERIMENTO")
+    private Date dataInserimento;
 }

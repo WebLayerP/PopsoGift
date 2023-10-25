@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,11 @@ public class Gruppo {
             inverseJoinColumns = @JoinColumn(name = "NDG"))
     private List<Beneficiario> listaBeneficiari;
 
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
+    @Column(name="DATA_INSERIMENTO")
+    private Date dataInserimento;
+
     public Integer getIdGruppo() {
         return idGruppo;
     }
@@ -39,6 +45,22 @@ public class Gruppo {
 
     public String getNome() {
         return nome;
+    }
+
+    public Date getDataAggiornamento() {
+        return dataAggiornamento;
+    }
+
+    public void setDataAggiornamento(Date dataAggiornamento) {
+        this.dataAggiornamento = dataAggiornamento;
+    }
+
+    public Date getDataInserimento() {
+        return dataInserimento;
+    }
+
+    public void setDataInserimento(Date dataInserimento) {
+        this.dataInserimento = dataInserimento;
     }
 
     public void setNome(String nome) {

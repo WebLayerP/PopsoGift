@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Table(name ="FORNITORE")
 @Data
@@ -34,4 +36,8 @@ public class Fornitore {
     private String provincia;
     @Column(name="PIVA")
     private String partitaIva;
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
+    @Column(name="DATA_INSERIMENTO")
+    private Date dataInserimento;
 }

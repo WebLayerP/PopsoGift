@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Table(name ="OGGETTO")
 @Data
@@ -28,5 +30,12 @@ public class Oggetto {
     @ManyToOne
     @JoinColumn(name="FORNITORE")
     private Fornitore fornitore;
+    @Column(name="DATA_AGGIORNAMENTO")
+    private Date dataAggiornamento;
+    @Column(name="DATA_INSERIMENTO")
+    private Date dataInserimento;
+    @ManyToOne
+    @JoinColumn(name="TIPOLOGIA")
+    private TipologiaOggetto tipologiaOggetto;
 
 }

@@ -1,7 +1,7 @@
 package it.popso.popsogift.controllers;
 
+import it.popso.popsogift.dto.OggettoOverview;
 import it.popso.popsogift.entity.Oggetto;
-import it.popso.popsogift.repository.OggettoRepository;
 import it.popso.popsogift.service.OggettoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,21 +23,21 @@ public class OggettoController {
     private static Logger logger = LoggerFactory.getLogger(OggettoController.class);
 
     @Autowired
-    private final OggettoService oggettoService;
+    private OggettoService oggettoService;
 
-    @Autowired
-    OggettoRepository oggettoRepository;
+    @GetMapping("/oggettoOverview")
+    public OggettoOverview getOggettoOverview(@RequestHeader("Ruolo") String ruolo,
+                                                    @RequestHeader("Matricola")String matricola) {
+        logger.info("Chiamata oggettoOverview");
+        String performanceLog=PERFORMANCE_START.replace("???","/all");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        OggettoOverview oggettoOverview = oggettoService.getOggettoOverview();
+        performanceLog = PERFORMANCE_END.replace("???", oggettoOverview+ "\nRicerca dati oggetto completata in "+(System.currentTimeMillis() - start)+" millisecondi");
+        loggerPerformance.debug(performanceLog);
+        return oggettoOverview;
 
-    public OggettoController(OggettoService oggettoService, OggettoRepository oggettoRepository) {
-        this.oggettoService = oggettoService;
-        this.oggettoRepository = oggettoRepository;
     }
-
-    @Autowired
-    public OggettoController(OggettoService oggettoService) {
-        this.oggettoService = oggettoService;
-    }
-
 
     @GetMapping("/all")
     public List<Oggetto> getAllOggetto(@RequestHeader("Ruolo") String ruolo,

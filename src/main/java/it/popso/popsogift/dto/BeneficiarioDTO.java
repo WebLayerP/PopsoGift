@@ -18,5 +18,6 @@ public class BeneficiarioDTO {
     private Date dataEstinzione;
     private String motivoEstinzione;
     private List<GruppoDTO> listaGruppi;
+    private Boolean privacy;
 
 }

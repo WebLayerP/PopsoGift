@@ -43,6 +43,9 @@ public class Beneficiario {
             inverseJoinColumns = @JoinColumn(name = "GRUPPO"))
     private List<Gruppo> listaGruppi;
 
+    @Column(name="PRIVACY")
+    private Boolean privacy;
+
     public String getNdg() {
         return ndg;
     }
@@ -113,5 +116,13 @@ public class Beneficiario {
 
     public void setListaGruppi(List<Gruppo> listaGruppi) {
         this.listaGruppi = listaGruppi;
+    }
+
+    public Boolean getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(Boolean privacy) {
+        this.privacy = privacy;
     }
 }

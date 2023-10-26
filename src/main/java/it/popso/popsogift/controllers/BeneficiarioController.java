@@ -1,5 +1,6 @@
 package it.popso.popsogift.controllers;
 
+import it.popso.popsogift.dto.AnagraficaOverview;
 import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.entity.Beneficiario;
 import it.popso.popsogift.service.BeneficiarioService;
@@ -20,6 +21,7 @@ public class BeneficiarioController {
     public static final Logger loggerPerformance = LoggerFactory.getLogger("PERFORMANCE."+BeneficiarioController.class);
     public static final String PERFORMANCE_START="[START path=/beneficiario/???]";
     public static final String PERFORMANCE_END="[END path=/beneficiario/???]";
+    public static final String MILLISECONDI = " millisecondi";
     private static Logger logger = LoggerFactory.getLogger(BeneficiarioController.class);
     @Autowired
     private BeneficiarioService beneficiarioService;
@@ -36,7 +38,7 @@ public class BeneficiarioController {
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         listaBeneficiario = beneficiarioService.getAllBeneficiario();
-        performanceLog = PERFORMANCE_END.replace("???", listaBeneficiario+ "\nRicerca dati beneficiario completata in "+(System.currentTimeMillis() - start)+" millisecondi");
+        performanceLog = PERFORMANCE_END.replace("???", listaBeneficiario+ "\nRicerca dati beneficiario completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return listaBeneficiario;
 
@@ -53,9 +55,23 @@ public class BeneficiarioController {
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         beneficiarioInserito = beneficiarioService.saveBeneficiario(beneficiarioDTO);
-        performanceLog = PERFORMANCE_END.replace("???", beneficiarioInserito+ "\nInserimento nuovo beneficiario completato in "+(System.currentTimeMillis() - start)+" millisecondi");
+        performanceLog = PERFORMANCE_END.replace("???", beneficiarioInserito+ "\nInserimento nuovo beneficiario completato in "+(System.currentTimeMillis() - start)+MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(beneficiarioInserito, HttpStatus.CREATED);
+    }
+    @GetMapping("/getAnagraficaOverview")
+    public AnagraficaOverview getAnagraficaOverview(@RequestHeader("Ruolo") String ruolo,
+                                                                    @RequestHeader("Matricola")String matricola) {
+        logger.info("Chiamata getAnagraficaOverview");
+        AnagraficaOverview anagraficaOverview;
+        String performanceLog=PERFORMANCE_START.replace("???","/getAnagraficaOverview");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        anagraficaOverview = beneficiarioService.getAnagraficaOverview();
+        performanceLog = PERFORMANCE_END.replace("???", anagraficaOverview+ "\nGetAnagraficaOverview completata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return anagraficaOverview;
+
     }
 }
 

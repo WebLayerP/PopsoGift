@@ -61,11 +61,6 @@ public class CampagnaController {
         return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);
     }
 
-    @GetMapping("/bystato")
-    public CampagnaGroup getCampagneByStato(@RequestHeader("Ruolo") String ruolo,
-                                            @RequestHeader("Matricola")String matricola){
-        return campagnaService.getAllCampagneGroupByStato();
-    }
 
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint() {

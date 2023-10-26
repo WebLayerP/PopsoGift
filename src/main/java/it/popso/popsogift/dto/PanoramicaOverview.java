@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AnagraficaOverview {
+public class PanoramicaOverview {
 
     private int numeroBeneficiari;
     private Date dataAggiornamento;

@@ -1,6 +1,5 @@
 package it.popso.popsogift.service;
 
-import it.popso.popsogift.dto.AnagraficaOverview;
 import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.entity.Beneficiario;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
@@ -11,7 +10,6 @@ import it.popso.popsogift.repository.BeneficiarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,22 +46,6 @@ public class BeneficiarioService {
         }catch(org.springframework.transaction.CannotCreateTransactionException e){
             throw new CannotCreateTransactionException(e.getMessage());
         }
-    }
-    public AnagraficaOverview getAnagraficaOverview() {
-        List<Object[]> beneficiariAndPrivacy = beneficiarioRepository.countBeneficiariAndPrivacy();
-        AnagraficaOverview anagraficaOverview = new AnagraficaOverview();
-        for (Object[] o : beneficiariAndPrivacy) {
-            if(o[0] != null) {
-                anagraficaOverview.setNumeroBeneficiari(((Long) o[0]).intValue());
-            }
-            if(o[1] != null) {
-                anagraficaOverview.setNumeroPrivacyKO(((Long) o[1]).intValue());
-            }
-            if(o[2] != null) {
-                anagraficaOverview.setDataAggiornamento(((Date) o[2]));
-            }
-        }
-        return anagraficaOverview;
     }
 }
 

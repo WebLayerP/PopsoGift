@@ -1,6 +1,5 @@
 package it.popso.popsogift.controllers;
 
-import it.popso.popsogift.dto.OggettoOverview;
 import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.service.OggettoService;
 import org.slf4j.Logger;
@@ -25,19 +24,6 @@ public class OggettoController {
     @Autowired
     private OggettoService oggettoService;
 
-    @GetMapping("/oggettoOverview")
-    public OggettoOverview getOggettoOverview(@RequestHeader("Ruolo") String ruolo,
-                                                    @RequestHeader("Matricola")String matricola) {
-        logger.info("Chiamata oggettoOverview");
-        String performanceLog=PERFORMANCE_START.replace("???","/all");
-        loggerPerformance.info(performanceLog);
-        long start = System.currentTimeMillis();
-        OggettoOverview oggettoOverview = oggettoService.getOggettoOverview();
-        performanceLog = PERFORMANCE_END.replace("???", oggettoOverview+ "\nRicerca dati oggetto completata in "+(System.currentTimeMillis() - start)+" millisecondi");
-        loggerPerformance.debug(performanceLog);
-        return oggettoOverview;
-
-    }
 
     @GetMapping("/all")
     public List<Oggetto> getAllOggetto(@RequestHeader("Ruolo") String ruolo,

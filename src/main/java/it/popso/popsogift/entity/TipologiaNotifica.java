@@ -8,13 +8,13 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name ="TIPOLOGIA_OGGETTO")
+@Table(name ="TIPOLOGIA_NOTIFICA")
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TipologiaOggetto {
+public class TipologiaNotifica {
     @Id
     @Column(name="ID_TIPOLOGIA")
     private Integer idTipologia;
     @Column(name="DESCRIZIONE")
-    private String nomeTipologia;
+    private String descrizione;
 }

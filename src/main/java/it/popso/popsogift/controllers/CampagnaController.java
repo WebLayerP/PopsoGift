@@ -1,7 +1,6 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.CampagnaDTO;
-import it.popso.popsogift.dto.CampagnaGroup;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.service.CampagnaService;
 import org.slf4j.Logger;

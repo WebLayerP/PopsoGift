@@ -17,8 +17,6 @@ public class NotificaDTO {
 
     private Boolean letta;
 
-    private Date scadenza;
-
     private String ruolo;
 
     private Date dataInserimento;

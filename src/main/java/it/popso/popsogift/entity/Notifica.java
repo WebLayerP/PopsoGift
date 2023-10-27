@@ -20,10 +20,6 @@ public class Notifica {
     private String titolo;
     @Column(name="DESCRIZIONE")
     private String descrizione;
-    @Column(name="LETTA")
-    private Boolean letta;
-    @Column(name="SCADENZA")
-    private Date scadenza;
     @Column(name="RUOLO")
     private String ruolo;
     @Column(name="DATA_INSERIMENTO")

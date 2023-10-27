@@ -14,7 +14,7 @@ public interface NotificaMapper {
     @Mapping(target="tipologiaNotifica", source = "tipologiaNotifica.descrizione")
     @Mapping(target="campagna", ignore = true)
     @Mapping(target="filiale", ignore = true)
-    @Mapping(target="scadenza", ignore = true)
+    @Mapping(target="letta", ignore = true)
     @Mapping(target="ruolo", ignore = true)
     NotificaDTO notificaToNotificaDto(Notifica notifica);
 

@@ -21,7 +21,7 @@ public class StatoService {
     public List<Stato> getAllStato() {
         try{
             return statoRepository.findAll();
-        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+        }catch(CannotCreateTransactionException e){
             throw new CannotCreateTransactionException(e.getMessage());
         }
     }

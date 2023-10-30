@@ -12,16 +12,12 @@ import java.util.List;
 public class TipologiaService {
 
     @Autowired
-    private final TipologiaRepository tipologiaRepository;
-
-    public TipologiaService(TipologiaRepository tipologiaRepository) {
-        this.tipologiaRepository = tipologiaRepository;
-    }
+    private TipologiaRepository tipologiaRepository;
 
     public List<Tipologia> getAllTipologia() {
         try {
             return tipologiaRepository.findAll();
-        }catch(org.springframework.transaction.CannotCreateTransactionException e){
+        }catch(CannotCreateTransactionException e){
             throw new CannotCreateTransactionException(e.getMessage());
         }
     }

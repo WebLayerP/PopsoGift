@@ -16,6 +16,9 @@ import java.util.List;
 @Service
 public class OverviewService {
 
+        public static final String RE = "RE";
+        public static final String RA = "RA";
+        public static final String RF = "RF";
         @Autowired
         private CampagnaRepository campagnaRepository;
 
@@ -28,10 +31,16 @@ public class OverviewService {
         @Autowired
         private FornitoreRepository fornitoreRepository;
 
-        public CampagnaGroup getCampagneOverview(){
-                List<Object[]>  results = campagnaRepository.findAllCampagnaGroupByStato();
+        public CampagnaGroup getCampagneOverview(String ruolo, List<String> codiciFiliale){
+                List<Object[]>  results = new ArrayList<>();
+                if(ruolo.equals(RE)){
+                        results = campagnaRepository.findAllCampagnaGroupByStato();
+                }
+                else if(ruolo.equals(RA) || ruolo.equals(RF)){
+                        results = campagnaRepository.findAllCampagnaGroupByStatoFiliali(codiciFiliale);
+                }
                 List<CampagnaDTO> listaCampagneSegnalazioni = new ArrayList<>();
-                Integer contatoreSegnalazioni = 0;
+                int contatoreSegnalazioni = 0;
                 CampagnaGroup campagnaGroup = new CampagnaGroup();
                 Integer anno = LocalDate.now().getYear();
                 campagnaGroup.setAnno(anno);

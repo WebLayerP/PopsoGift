@@ -31,6 +31,31 @@ public class OverviewService {
         @Autowired
         private FornitoreRepository fornitoreRepository;
 
+        public CampagnaOverview getCampagnaOverview(int idCampagna){
+                List<Object[]>  results = campagnaRepository.findAllCampagnaByIdCampagna(idCampagna);
+                CampagnaOverview campagnaOverview = new CampagnaOverview();
+                for(Object[] o: results){
+                        if(o[1]!= null) {
+                                campagnaOverview.setTipologia(((Float) o[1]).intValue());
+                        }
+                        if(o[2]!= null) {
+                                campagnaOverview.setNumeroOmaggi(((Float) o[2]).intValue());
+                        }
+                        if(o[3] != null){
+                                campagnaOverview.setTotCosto((((Float) o[3]).longValue()));
+                        }
+                        if(o[4] != null){
+                                campagnaOverview.setDataFineCampagna((Date) o[4]);
+                        }
+                        if(o[6] != null) campagnaOverview.setFilialiInAttesa((((Float) o[6]).intValue()));
+                        if(o[7] != null){
+                                campagnaOverview.setFilialiConfermate((((Float) o[7]).intValue()));
+                        }
+                }
+                return campagnaOverview;
+        }
+
+
         public CampagnaGroup getCampagneOverview(String ruolo, List<String> codiciFiliale){
                 List<Object[]>  results = new ArrayList<>();
                 if(ruolo.equals(RE)){

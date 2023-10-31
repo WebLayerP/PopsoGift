@@ -19,6 +19,8 @@ public class Campagna {
     @ManyToOne
     @JoinColumn(name="TIPOLOGIA")
     private Tipologia tipologia;
+    @Column(name="DATA_FINE")
+    private Date dataFine;
     @Column(name="DATA_INIZIO_MODIFICHE")
     private Date dataInizioModifiche;
     @Column(name="DATA_FINE_MODIFICHE")
@@ -135,6 +137,14 @@ public class Campagna {
 
     public Date getDataInserimento() {
         return dataInserimento;
+    }
+
+    public Date getDataFine() {
+        return dataFine;
+    }
+
+    public void setDataFine(Date dataFine) {
+        this.dataFine = dataFine;
     }
 
     public void setDataInserimento(Date dataInserimento) {

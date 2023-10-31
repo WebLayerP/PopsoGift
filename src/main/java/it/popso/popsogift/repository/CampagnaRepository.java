@@ -15,6 +15,10 @@ import java.util.List;
 @Transactional
 public interface CampagnaRepository extends JpaRepository<Campagna, Integer> {
 
+    @Query(value= Constants.CAMPAGNA_OVERVIEW,nativeQuery = true)
+    List<Object[]> findAllCampagnaByIdCampagna(@Param("idCampagna") int idCampagna);
+
+
     @Query(value= Constants.CAMPAGNE_OVERVIEW,nativeQuery = true)
     List<Object[]> findAllCampagnaGroupByStato();
 

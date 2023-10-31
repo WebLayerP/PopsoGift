@@ -1,5 +1,6 @@
 package it.popso.popsogift.controllers;
 
+import it.popso.popsogift.dto.CampagnaOverview;
 import it.popso.popsogift.dto.PanoramicaOverview;
 import it.popso.popsogift.dto.CampagnaGroup;
 import it.popso.popsogift.dto.OggettoOverview;
@@ -29,6 +30,21 @@ public class OverviewController {
         this.overviewService = overviewService;
     }
 
+    @GetMapping("/campagna/{idCampagna}")
+    public CampagnaOverview getCampagnaOverview(@PathVariable Integer idCampagna,
+                                                @RequestHeader("Ruolo") String ruolo,
+                                             @RequestHeader("Matricola")String matricola)
+    {
+        logger.info("Chiamata getCampagnaOverview");
+        CampagnaOverview campagnaOverview;
+        String performanceLog = PERFORMANCE_START.replace("???", "campagna");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        campagnaOverview = overviewService.getCampagnaOverview(idCampagna);
+        performanceLog = PERFORMANCE_END.replace("???", campagnaOverview + "\nGetCampagnaOverview completata in " + (System.currentTimeMillis() - start) + MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return campagnaOverview;
+    }
     @GetMapping("/campagne")
     public CampagnaGroup getCampagneOverview(@RequestHeader("Ruolo") String ruolo,
                                              @RequestHeader("Matricola")String matricola,
@@ -40,7 +56,7 @@ public class OverviewController {
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         campagnaGroup = overviewService.getCampagneOverview(ruolo,codiciFiliale);
-        performanceLog = PERFORMANCE_END.replace("???", campagnaGroup + "\nGetCampagnaOverview completata in " + (System.currentTimeMillis() - start) + MILLISECONDI);
+        performanceLog = PERFORMANCE_END.replace("???", campagnaGroup + "\nGetCampagneOverview completata in " + (System.currentTimeMillis() - start) + MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return campagnaGroup;
     }

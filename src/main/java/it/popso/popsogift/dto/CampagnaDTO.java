@@ -20,6 +20,7 @@ public class CampagnaDTO {
     private Date dataInserimento;
     private String matricola;
     private StatoDTO stato;
+    private Integer numeroSegnalazioni;
 
     public CampagnaDTO() {
         //SONAR

@@ -12,12 +12,14 @@ public interface CampagnaMapper {
     @Mapping(target="tipologia", ignore = true)
     @Mapping(target="stato", ignore = true)
     @Mapping(target="listaOmaggi", ignore = true)
+    @Mapping(target="listaFiliali", ignore = true)
     CampagnaDTO campagnaToCampagnaDTO(Campagna campagna);
 
 
     @Mapping(target="tipologia", ignore = true)
     @Mapping(target="stato", ignore = true)
     @Mapping(target="listaOmaggi", ignore = true)
+    @Mapping(target="listaFiliali", ignore = true)
     Campagna campagnaDTOToEntity(CampagnaDTO campagnaDTO);
 
 }

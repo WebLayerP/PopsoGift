@@ -13,5 +13,4 @@ public class CampagnaGroup {
     private int numeroCampagneInCorso;
     private int numeroCampagneChiuse;
     private int numeroCampagneBozza;
-    private int numeroCampagneConSegnalazioni;
 }

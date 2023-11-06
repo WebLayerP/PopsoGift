@@ -6,18 +6,13 @@ public class Constants {
         //SONAR
     }
 
-    public static final String CAMPAGNE_OVERVIEW = "select stato_count,stato, id_c, titolo_campagna, id, autore, descrizione, id_beneficiario, id_c, data_inserimento, data_aggiornamento \n" +
-            "from (select count(c.stato) stato_count, c.stato as id_st\n" +
-            "from campagna c \n" +
-            "       where (EXTRACT(YEAR FROM c.data_inizio_modifiche) = EXTRACT(YEAR FROM CURRENT_DATE)\n" +
-            "                OR EXTRACT(YEAR FROM c.data_fine_modifiche) = EXTRACT(YEAR FROM CURRENT_DATE))\n" +
-            "        GROUP by c.stato)\n" +
-            "        RIGHT OUTER JOIN (select id_campagna as id_c, titolo_campagna, stato from CAMPAGNA campagna\n" +
-            "        where (EXTRACT(YEAR FROM campagna.data_inizio_modifiche) = EXTRACT(YEAR FROM CURRENT_DATE)\n" +
-            "                OR EXTRACT(YEAR FROM campagna.data_fine_modifiche) = EXTRACT(YEAR FROM CURRENT_DATE)))\n" +
-            "        on stato = id_st\n" +
-            "     LEFT OUTER JOIN SEGNALAZIONE\n" +
-            "     on id_c = segnalazione.id_campagna";
+    public static final String CAMPAGNE_OVERVIEW = "select COUNT(distinct id_c) OVER (PARTITION BY stato) AS stato_count,stato, id_c, titolo_campagna, id, autore, descrizione, id_beneficiario, id_c, data_inserimento, data_aggiornamento \n" +
+            "from (select id_campagna as id_c, titolo_campagna,  stato\n" +
+            "from CAMPAGNA campagna \n" +
+            "       where (EXTRACT(YEAR FROM campagna.data_inizio_modifiche) = EXTRACT(YEAR FROM CURRENT_DATE)\n" +
+            "                OR EXTRACT(YEAR FROM campagna.data_fine_modifiche) = EXTRACT(YEAR FROM CURRENT_DATE))) campagnaPerDate\n" +
+            "        LEFT OUTER JOIN SEGNALAZIONE\n" +
+            "        on id_c = segnalazione.id_campagna";
     public static final String CAMPAGNE_OVERVIEW_FILIALI= "\nJOIN REL_CAMPAGNA_FILIALE campFil\n" +
             "     on id_c=campFil.id_campagna\n" +
             "     WHERE campFil.codice_filiale IN (?1)";

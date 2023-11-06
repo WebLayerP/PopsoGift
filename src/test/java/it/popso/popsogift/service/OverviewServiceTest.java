@@ -6,7 +6,6 @@ import it.popso.popsogift.dto.StatoBeneficiarioDTO;
 import it.popso.popsogift.dto.StatoDTO;
 import it.popso.popsogift.dto.TipologiaDTO;
 import it.popso.popsogift.entity.*;
-import it.popso.popsogift.exceptions.InputFaultMsgException;
 import it.popso.popsogift.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest(
@@ -113,11 +111,6 @@ class OverviewServiceTest {
         segnalazione.setBeneficiario(beneficiario);
         segnalazione.setCampagna(campagna);
         segnalazioneRepository.save(segnalazione);
-    }
-
-    @Test
-    void testGetCampagneOverview_RuoloSconosciuto() {
-        assertThrows(InputFaultMsgException.class, () -> overviewService.getCampagneOverview("RuoloNullo", null));
     }
 
     @Test

@@ -1,9 +1,7 @@
 package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.BeneficiarioDTO;
-import it.popso.popsogift.dto.GruppoDTO;
 import it.popso.popsogift.entity.Beneficiario;
-import it.popso.popsogift.entity.Gruppo;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.BeneficiarioMapper;
@@ -35,8 +33,9 @@ public class BeneficiarioService {
         this.beneficiarioRepository = beneficiarioRepository;
     }
 
-    public Beneficiario saveBeneficiario(BeneficiarioDTO beneficiarioDTO){
+    public BeneficiarioDTO saveBeneficiario(BeneficiarioDTO beneficiarioDTO){
         Beneficiario beneficiario = beneficiarioMapper.beneficiarioDTOToBeneficiario(beneficiarioDTO);
+        beneficiario.setListaGruppi(gruppoMapper.lgruppoDTOToGruppo(beneficiarioDTO.getListaGruppi()));
         beneficiario.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(beneficiarioDTO));
         Beneficiario beneficiarioInserito = null;
         try {
@@ -44,22 +43,20 @@ public class BeneficiarioService {
         } catch(DataIntegrityViolationException e){
             throw new DataIntegrityViolationException(e.getMessage());
         }
-        return beneficiarioInserito;
+        beneficiarioInserito.setListaGruppi(gruppoMapper.lgruppoDTOToGruppo(beneficiarioDTO.getListaGruppi()));
+        BeneficiarioDTO benDTO = beneficiarioMapper.beneficiarioToBeneficiarioDTO(beneficiarioInserito);
+        benDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(beneficiarioInserito.getListaGruppi()));
+        return benDTO;
     }
 
     public List<BeneficiarioDTO> getAllBeneficiario() {
         List<BeneficiarioDTO> listaBeneficiariDTO = new ArrayList<>();
-        List<GruppoDTO> listaGruppiDTO = new ArrayList<>();
         try {
             List<Beneficiario> listaBeneficiari = beneficiarioRepository.findAll();
             for(Beneficiario b: listaBeneficiari) {
                 BeneficiarioDTO beneficiarioDTO = beneficiarioMapper.beneficiarioToBeneficiarioDTO(b);
                 beneficiarioDTO.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(b));
-                for(Gruppo g: b.getListaGruppi()) {
-                    GruppoDTO gruppoDTO = gruppoMapper.gruppoToGruppoDTO(g);
-                    listaGruppiDTO.add(gruppoDTO);
-                }
-                beneficiarioDTO.setListaGruppi(listaGruppiDTO);
+                beneficiarioDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(b.getListaGruppi()));
                 listaBeneficiariDTO.add(beneficiarioDTO);
             }
             return listaBeneficiariDTO;

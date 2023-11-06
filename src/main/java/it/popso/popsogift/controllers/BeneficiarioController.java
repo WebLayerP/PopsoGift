@@ -1,7 +1,6 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.BeneficiarioDTO;
-import it.popso.popsogift.entity.Beneficiario;
 import it.popso.popsogift.service.BeneficiarioService;
 import it.popso.popsogift.service.NdgMockService;
 import org.slf4j.Logger;
@@ -44,12 +43,13 @@ public class BeneficiarioController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<Beneficiario> createBeneficiario(@RequestHeader("Ruolo") String ruolo,
+    public ResponseEntity<BeneficiarioDTO> createBeneficiario(@RequestHeader("Ruolo") String ruolo,
                                                            @RequestHeader("Matricola")String matricola,
                                                            @RequestBody BeneficiarioDTO beneficiarioDTO) {
         logger.info("Chiamata createBeneficiario");
-        Beneficiario beneficiarioInserito;
-        beneficiarioDTO.setNdg(ndgMockService.getNdgMocked()); //TODO modifica da apportare quando avremo ANAGRAFE
+        BeneficiarioDTO beneficiarioInserito;
+        beneficiarioDTO.setNdg("70");
+        //beneficiarioDTO.setNdg(ndgMockService.getNdgMocked()); //TODO modifica da apportare quando avremo ANAGRAFE
         String performanceLog=PERFORMANCE_START.replace("???","insert");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();

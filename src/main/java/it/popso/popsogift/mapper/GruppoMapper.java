@@ -6,6 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface GruppoMapper {
     @Mapping(target="listaBeneficiari", ignore = true)
@@ -13,4 +15,6 @@ public interface GruppoMapper {
 
     @Mapping(target="listaBeneficiari", ignore = true)
     Gruppo gruppoDTOToGruppo(GruppoDTO gruppoDTO);
+    List<Gruppo> lgruppoDTOToGruppo(List<GruppoDTO> gruppo);
+    List<GruppoDTO> lgruppoToGruppoDTO(List<Gruppo> gruppo);
 }

@@ -29,10 +29,10 @@ public class BeneficiarioController {
     private NdgMockService ndgMockService;
 
     @GetMapping("/all")
-    public List<Beneficiario> getAllBeneficiario(@RequestHeader("Ruolo") String ruolo,
+    public List<BeneficiarioDTO> getAllBeneficiario(@RequestHeader("Ruolo") String ruolo,
                                                  @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllBeneficiario");
-        List<Beneficiario> listaBeneficiario;
+        List<BeneficiarioDTO> listaBeneficiario;
         String performanceLog=PERFORMANCE_START.replace("???","/all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();

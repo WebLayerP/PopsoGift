@@ -2,6 +2,7 @@ package it.popso.popsogift.mapper;
 
 import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.dto.StatoBeneficiarioDTO;
+import it.popso.popsogift.entity.Beneficiario;
 import it.popso.popsogift.entity.StatoBeneficiario;
 import org.springframework.stereotype.Component;
 
@@ -14,5 +15,9 @@ public class StatoBeneficiarioMapper {
         statoBeneficiario.setIdStato(statoBeneficiarioDTO.getIdStato());
         statoBeneficiario.setNomeStato(StatoBeneficiarioDTO.fromIdStato(statoBeneficiario.getIdStato()));
         return statoBeneficiario;
+    }
+    public StatoBeneficiarioDTO getStatoBeneficiario(Beneficiario beneficiario) {
+        StatoBeneficiario statoBeneficiario = beneficiario.getStatoBeneficiario();
+        return statoBeneficiario.getNomeStato();
     }
 }

@@ -9,9 +9,11 @@ import org.mapstruct.NullValueCheckStrategy;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface BeneficiarioMapper {
     @Mapping(target="statoBeneficiario", ignore = true)
+    @Mapping(target="listaGruppi", ignore = true)
     BeneficiarioDTO beneficiarioToBeneficiarioDTO(Beneficiario beneficiario);
 
     @Mapping(target="statoBeneficiario", ignore = true)
+    @Mapping(target="listaGruppi", ignore = true)
     Beneficiario beneficiarioDTOToBeneficiario(BeneficiarioDTO beneficiarioDTO);
 
 }

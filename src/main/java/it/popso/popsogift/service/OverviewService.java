@@ -8,6 +8,7 @@ import it.popso.popsogift.repository.OggettoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,31 +66,25 @@ public class OverviewService {
                         results = campagnaRepository.findAllCampagnaGroupByStatoFiliali(codiciFiliale);
                 }
                 List<CampagnaDTO> listaCampagneSegnalazioni = new ArrayList<>();
-                int contatoreSegnalazioni = 0;
                 CampagnaGroup campagnaGroup = new CampagnaGroup();
                 Integer anno = LocalDate.now().getYear();
                 campagnaGroup.setAnno(anno);
                 campagnaGroup.setDataUltimoAggiornamento(campagnaRepository.findMaxDataAggiornamentoForYear(anno));
                 for(Object[] o: results){
-                        if(o[8]!= null) {
-                                contatoreSegnalazioni++;
-                                CampagnaDTO campagnaDTO = new CampagnaDTO();
-                                campagnaDTO.setIdCampagna(((Float) o[8]).intValue());
-                                campagnaDTO.setTitoloCampagna(o[6].toString());
-                                listaCampagneSegnalazioni.add(campagnaDTO);
+                        listaSegnalazioniPerCampagna(o, listaCampagneSegnalazioni);
+                        int idStato = castObjectIntValue(o[1]);
+                        int numeroCampagne = castObjectIntValue(o[0]);
+                        if(idStato == StatoDTO.IN_CORSO.getIdStato()){
+                                campagnaGroup.setNumeroCampagneInCorso(numeroCampagne);
                         }
-                        if(((Float) o[1]).intValue() == StatoDTO.IN_CORSO.getIdStato()){
-                                campagnaGroup.setNumeroCampagneInCorso(((Float) o[0]).intValue());
+                        if(idStato == StatoDTO.BOZZA.getIdStato()){
+                                campagnaGroup.setNumeroCampagneBozza(numeroCampagne);
                         }
-                        if(((Float) o[1]).intValue() == StatoDTO.BOZZA.getIdStato()){
-                                campagnaGroup.setNumeroCampagneBozza(((Float) o[0]).intValue());
-                        }
-                        if(((Float) o[1]).intValue() == StatoDTO.CHIUSA.getIdStato()){
-                                campagnaGroup.setNumeroCampagneChiuse(((Float) o[0]).intValue());
+                        if(idStato == StatoDTO.CHIUSA.getIdStato()){
+                                campagnaGroup.setNumeroCampagneChiuse(numeroCampagne);
                         }
                 }
                 campagnaGroup.setListaCampagneConSegnalazioni(listaCampagneSegnalazioni);
-                campagnaGroup.setNumeroCampagneConSegnalazioni(contatoreSegnalazioni);
                 return campagnaGroup;
         }
 
@@ -122,5 +117,39 @@ public class OverviewService {
                 result.setNumeroFornitori(fornitoreRepository.findNumeroFornitoriTorali());
                 result.setDataUltimoAggiornamento(oggettoRepository.findMaxByDataAggiornamento());
                 return result;
+        }
+
+
+        private void listaSegnalazioniPerCampagna(Object[] o, List<CampagnaDTO> listaCampagneSegnalazioni){
+                if(o[4]!= null) {
+                        int numeroSegnalazioniPerCampagna = 0;
+                        if(listaCampagneSegnalazioni.stream()
+                                .noneMatch(c -> c.getIdCampagna().equals((castObjectIntValue(o[8]))))){
+                                numeroSegnalazioniPerCampagna ++;
+                                CampagnaDTO campagnaDTO = new CampagnaDTO();
+                                campagnaDTO.setIdCampagna((castObjectIntValue(o[8])));
+                                campagnaDTO.setTitoloCampagna(o[3].toString());
+                                campagnaDTO.setNumeroSegnalazioni(numeroSegnalazioniPerCampagna);
+                                listaCampagneSegnalazioni.add(campagnaDTO);
+                        }
+                        else{
+                                listaCampagneSegnalazioni.stream()
+                                        .filter(campagnaDTO -> campagnaDTO.getIdCampagna().equals((castObjectIntValue(o[8])))).findFirst()
+                                        .ifPresent(campagna -> campagna.setNumeroSegnalazioni(campagna.getNumeroSegnalazioni()+1));
+                        }
+
+                }
+        }
+
+        private int castObjectIntValue(Object o){
+                if(o instanceof Float)
+                        return ((Float) o).intValue();
+                if(o instanceof Long)
+                        return ((Long) o).intValue();
+                if(o instanceof Double)
+                        return ((Double) o).intValue();
+                if(o instanceof BigDecimal)
+                        return ((BigDecimal) o).intValue();
+                return ((Integer) o).intValue();
         }
 }

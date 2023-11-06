@@ -324,6 +324,16 @@
             <artifactId>cxf-xjc-runtime</artifactId>
             <version>4.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>6.0.5</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -486,79 +496,73 @@
 
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>io.fabric8</groupId>-->
-<!--                <artifactId>docker-maven-plugin</artifactId>-->
-<!--                <version>0.34.1</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>prepare-oracle-env</id>-->
-<!--                        <phase>pre-integration-test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>build</goal>-->
-<!--                            <goal>start</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>remove-oracle-env</id>-->
-<!--                        <phase>post-integration-test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>stop</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <autoCreateCustomNetworks>true</autoCreateCustomNetworks>-->
-<!--                    <skip>${docker.skip}</skip>-->
-<!--                    <images>-->
-<!--                        <image>-->
-<!--                            <alias>oracle-xe-db</alias>-->
-<!--                            <name>${docker.image.oracle.name}</name>-->
-<!--                            <run>-->
-<!--                                <ports>-->
-<!--                                    <port>1521:1521</port>-->
-<!--                                </ports>-->
-<!--                                <network>-->
-<!--                                    <mode>bridge</mode>-->
-<!--                                </network>-->
-<!--                                <volumes>-->
-<!--                                    <bind>-->
-<!--                                        <volume>${project.basedir}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d</volume>-->
-<!--                                    </bind>-->
-<!--                                </volumes>-->
-<!--                                <namingStrategy>alias</namingStrategy>-->
-<!--                                <log>-->
-<!--                                    <date>default</date>-->
-<!--                                    <color>cyan</color>-->
-<!--                                </log>-->
-<!--                                <wait>-->
-<!--                                    &lt;!&ndash; Regular expression which is applied against the log output of an container-->
-<!--                                        and blocks until the pattern is matched. You can use (?s) in the pattern-->
-<!--                                        to switch on multi line matching. &ndash;&gt;-->
-<!--                                    &lt;!&ndash; NOTA: su windows log non funziona&ndash;&gt;-->
-<!--                                    &lt;!&ndash;log>END_SETUP_DATABASE</log&ndash;&gt;-->
-<!--                                    &lt;!&ndash; Time in milliseconds to block. &ndash;&gt;-->
-<!--                                    <time>10000</time>-->
-<!--                                    <kill>11000</kill>-->
-<!--                                    <shutdown>500</shutdown>-->
-<!--                                </wait>-->
-<!--                            </run>-->
-<!--                        </image>-->
-<!--                    </images>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--                <version>2.22.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>integration-test</goal>-->
-<!--                            <goal>verify</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.34.1</version>
+                <executions>
+                    <execution>
+                        <id>prepare-oracle-env</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>remove-oracle-env</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
+                    <skip>${docker.skip}</skip>
+                    <images>
+                        <image>
+                            <alias>oracle-xe-db</alias>
+                            <name>${docker.image.oracle.name}</name>
+                            <run>
+                                <ports>
+                                    <port>1521:1521</port>
+                                </ports>
+                                <network>
+                                    <mode>bridge</mode>
+                                </network>
+                                <volumes>
+                                    <bind>
+                                        <volume>${project.basedir}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d</volume>
+                                    </bind>
+                                </volumes>
+                                <namingStrategy>alias</namingStrategy>
+                                <log>
+                                    <date>default</date>
+                                    <color>cyan</color>
+                                </log>
+                                <wait>
+                                    <time>10000</time>
+                                    <kill>11000</kill>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
          </plugins>
     </build>
 </project>

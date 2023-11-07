@@ -3,6 +3,7 @@ package it.popso.popsogift.mapper;
 import it.popso.popsogift.dto.CategoriaDTO;
 import it.popso.popsogift.dto.OggettoDTO;
 import it.popso.popsogift.entity.Categoria;
+import it.popso.popsogift.entity.Oggetto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +15,10 @@ public class CategoriaMapper {
         categoria.setIdCategoria(categoriaDTO.getIdCategoria());
         categoria.setNomeCategoria(CategoriaDTO.fromIdCategoria(categoria.getIdCategoria()));
         return categoria;
+    }
+
+    public CategoriaDTO getCategoriaDTO(Oggetto oggetto){
+        return oggetto.getCategoria().getNomeCategoria();
     }
 }
 

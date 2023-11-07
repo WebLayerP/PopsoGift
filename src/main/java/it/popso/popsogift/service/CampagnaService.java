@@ -2,6 +2,7 @@ package it.popso.popsogift.service;
 
 
 import it.popso.popsogift.dto.CampagnaDTO;
+import it.popso.popsogift.dto.FilialeDTO;
 import it.popso.popsogift.dto.OggettoDTO;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.entity.Filiale;
@@ -28,6 +29,8 @@ public class CampagnaService {
     private CampagnaMapper campagnaMapper;
 
     @Autowired
+    private FilialeMapper filialeMapper;
+    @Autowired
     private FornitoreMapper fornitoreMapper;
 
     @Autowired
@@ -45,9 +48,18 @@ public class CampagnaService {
     @Autowired
     private StatoMapper statoMapper;
 
-    public List<Campagna> getAllCampagne() {
+    public List<CampagnaDTO> getAllCampagne() {
         try {
-            return campagnaRepository.findAll();
+            List<Campagna> campagne = campagnaRepository.findAll();
+            List<CampagnaDTO> listaCampagneDTO = new ArrayList<>();
+            for(Campagna c: campagne){
+                CampagnaDTO campagnaDTO = campagnaMapper.campagnaToCampagnaDTO(c);
+                List<FilialeDTO> listaFiliali = filialeMapper.listaFilialeToDTO(c.getListaFiliali());
+                campagnaDTO.setListaFiliali(listaFiliali);
+                listaCampagneDTO.add(campagnaDTO);
+            }
+
+            return listaCampagneDTO;
         }catch(org.springframework.transaction.CannotCreateTransactionException e){
             throw new CannotCreateTransactionException(e.getMessage());
         }

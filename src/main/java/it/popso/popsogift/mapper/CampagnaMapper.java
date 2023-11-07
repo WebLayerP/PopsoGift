@@ -6,6 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface CampagnaMapper {
 
@@ -21,6 +23,9 @@ public interface CampagnaMapper {
     @Mapping(target="listaOmaggi", ignore = true)
     @Mapping(target="listaFiliali", ignore = true)
     Campagna campagnaDTOToEntity(CampagnaDTO campagnaDTO);
+
+    List<Campagna> listaCampagnaDTOToEntity(List<CampagnaDTO> campagnaDTO);
+    List<CampagnaDTO> listaCampagnaToDTO(List<Campagna> campagna);
 
 }
 

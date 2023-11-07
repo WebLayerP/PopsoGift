@@ -32,10 +32,10 @@ public class CampagnaController {
 
 
     @GetMapping("/all")
-    public List<Campagna> getAllCampagne(@RequestHeader("Ruolo") String ruolo,
+    public List<CampagnaDTO> getAllCampagne(@RequestHeader("Ruolo") String ruolo,
                                          @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllCampagne");
-        List<Campagna> listaCampagne;
+        List<CampagnaDTO> listaCampagne;
         String performanceLog=PERFORMANCE_START.replace("???","all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();

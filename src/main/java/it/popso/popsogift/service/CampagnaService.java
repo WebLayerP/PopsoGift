@@ -5,7 +5,6 @@ import it.popso.popsogift.dto.CampagnaDTO;
 import it.popso.popsogift.dto.FilialeDTO;
 import it.popso.popsogift.dto.OggettoDTO;
 import it.popso.popsogift.entity.Campagna;
-import it.popso.popsogift.entity.Filiale;
 import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
@@ -79,20 +78,22 @@ public class CampagnaService {
                 throw new InputFaultMsgException("Categoria non impostata");
             }
             try {
-                oggetto.setFornitore(fornitoreMapper.fornitoreDTOToFornitore(oggettoDTO));
+                oggetto.setFornitore(fornitoreMapper.fornitoreDTOToFornitore(oggettoDTO.getFornitore()));
             }catch(NullPointerException e){
                 throw new InputFaultMsgException("Fornitore non impostato");
             }
             listaOggetti.add(oggetto);
         }
         campagna.setListaOmaggi(listaOggetti);
-        for (Filiale filiale: campagna.getListaFiliali()) {
-            if (!filialeRepository.existsById(filiale.getCodiceFiliale()))
+        for (FilialeDTO filialeDTO : campagnaDTO.getListaFiliali()) {
+            if (!filialeRepository.existsById(filialeDTO.getCodiceFiliale()))
                 try {
-                    filialeRepository.save(filiale);
-                }catch(DataIntegrityViolationException e){
+                    filialeRepository.save(filialeMapper.filialeDTOToFiliale(filialeDTO));
+                } catch (DataIntegrityViolationException e) {
                     throw new DataIntegrityViolationException(e.getMessage());
                 }
+
+            campagna.setListaFiliali(filialeMapper.listaFilialeDTOToEntity(campagnaDTO.getListaFiliali()));
         }
         try {
             campagnaInserita = campagnaRepository.save(campagna);

@@ -29,14 +29,20 @@ public class FornitoreService {
             pageable = PageRequest.of(page, size, Sort.by(orderBy).ascending());
         else
             pageable = PageRequest.of(page, size, Sort.by(orderBy).descending());
-
         Page<Fornitore> risultati = fornitoreRepository.findAll(pageable);
+        return fornitoreMapper.toListFornitoreDTO(risultati.getContent());
+    }
+
+    public List<FornitoreDTO> findFornitoriFiltered(int page, int size, String ragioneSociale, String partitaIva) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Fornitore> risultati = fornitoreRepository.findByRagioneSocialeAndPartitaIva(ragioneSociale, partitaIva, pageable);
 
         return fornitoreMapper.toListFornitoreDTO(risultati.getContent());
     }
+
     public FornitoreDTO saveFornitore(FornitoreDTO fornitoreDTO){
         Fornitore fornitore = fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO);
-        Fornitore fornitoreInserito = null;
+        Fornitore fornitoreInserito;
         try {
             fornitoreInserito = fornitoreRepository.save(fornitore);
         } catch(org.springframework.dao.DataIntegrityViolationException e){

@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/fornitori")
 public class FornitoreController {
 
+    public static final String MILLISECONDI = " millisecondi";
     @Autowired
     private FornitoreService fornitoreService;
 
@@ -25,7 +26,7 @@ public class FornitoreController {
     private static Logger logger = LoggerFactory.getLogger(FornitoreController.class);
 
     @GetMapping("/listaFornitoriOrdered")
-    public List<FornitoreDTO> getCampagnaOverview(@RequestParam ("page") int page,
+    public List<FornitoreDTO> listaFornitoriOrdered(@RequestParam ("page") int page,
                                                   @RequestParam ("size")int size,
                                                   @RequestParam("order") String order,
                                                   @RequestParam("orderBy")String orderBy)
@@ -36,7 +37,27 @@ public class FornitoreController {
             loggerPerformance.info(performanceLog);
             long start = System.currentTimeMillis();
             List<FornitoreDTO> listaFornitori = fornitoreService.findFornitoriOrdered(page, size, order, orderBy);
-            performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca ordinata fornitori completata in "+(System.currentTimeMillis() - start)+" millisecondi");
+            performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca ordinata fornitori completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
+            loggerPerformance.debug(performanceLog);
+            return listaFornitori;
+        }catch (Exception e){
+            throw new ApplicationFault(e.getMessage());
+        }
+    }
+
+    @GetMapping("/listaFornitoriFiltered")
+    public List<FornitoreDTO> listaFornitoriFiltered(@RequestParam ("page") int page,
+                                                  @RequestParam ("size")int size,
+                                                  @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
+                                                  @RequestParam(value = "partitaIva" , required = false) String partitaIva)
+    {
+        try{
+            logger.info("Chiamata Lista Fornitori Filtered");
+            String performanceLog=PERFORMANCE_START.replace("???","all");
+            loggerPerformance.info(performanceLog);
+            long start = System.currentTimeMillis();
+            List<FornitoreDTO> listaFornitori = fornitoreService.findFornitoriFiltered(page, size, ragioneSociale, partitaIva);
+            performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca fornitori filtrati completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
             loggerPerformance.debug(performanceLog);
             return listaFornitori;
         }catch (Exception e){
@@ -54,7 +75,7 @@ public class FornitoreController {
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         fornitoreInserito = fornitoreService.saveFornitore(fornitoreDTO);
-        performanceLog = PERFORMANCE_END.replace("???", fornitoreInserito+ "\nInserimento nuovo fornitore completato in "+(System.currentTimeMillis() - start)+" millisecondi");
+        performanceLog = PERFORMANCE_END.replace("???", fornitoreInserito+ "\nInserimento nuovo fornitore completato in "+(System.currentTimeMillis() - start)+MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(fornitoreInserito, HttpStatus.CREATED);
     }

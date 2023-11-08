@@ -114,7 +114,7 @@ public class OverviewService {
                         else if ((int) o[0] == 2 )
                                 result.setNumeroOggettiDigitali((long)o[1]);
                 }
-                result.setNumeroFornitori(fornitoreRepository.findNumeroFornitoriTorali());
+                result.setNumeroFornitori(fornitoreRepository.findNumeroFornitoriTotali());
                 result.setDataUltimoAggiornamento(oggettoRepository.findMaxByDataAggiornamento());
                 return result;
         }

@@ -2,6 +2,7 @@ package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.FornitoreDTO;
 import it.popso.popsogift.entity.Fornitore;
+import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.FornitoreMapper;
 import it.popso.popsogift.repository.FornitoreRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FornitoreService {
@@ -49,5 +51,20 @@ public class FornitoreService {
             throw new DataIntegrityViolationException(e.getMessage());
         }
         return fornitoreMapper.fornitoreToDTO(fornitoreInserito);
+    }
+    public FornitoreDTO fornitoreById(Integer id) {
+        Optional<Fornitore> fornitore = fornitoreRepository.findById(id);
+        if(fornitore.isEmpty()){
+            throw new ApplicationFaultMsgException("Il fornitore con id " + id + " non è stato trovato");
+        }
+        return fornitoreMapper.fornitoreToDTO(fornitore.get());
+    }
+    public void updateFornitore (Integer id, FornitoreDTO fornitoreDTO){
+        if(fornitoreById(id)!= null) {
+            fornitoreRepository.save(fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO));
+        }
+        else{
+            throw new ApplicationFaultMsgException("Errore modifica fornitore");
+        }
     }
 }

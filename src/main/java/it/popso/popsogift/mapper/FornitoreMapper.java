@@ -3,6 +3,7 @@ package it.popso.popsogift.mapper;
 import it.popso.popsogift.dto.FornitoreDTO;
 import it.popso.popsogift.entity.Fornitore;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface FornitoreMapper {
     FornitoreDTO fornitoreToDTO(Fornitore fornitore);
 
     List<FornitoreDTO> toListFornitoreDTO(List<Fornitore> fornitore);
+
+    void updateFornitoreFromDTO(FornitoreDTO fornitoreDTO, @MappingTarget Fornitore fornitore);
 }

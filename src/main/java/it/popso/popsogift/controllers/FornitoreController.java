@@ -1,5 +1,7 @@
 package it.popso.popsogift.controllers;
 
+import it.popso.popsogift.dto.Esito;
+import it.popso.popsogift.dto.EsitoRisposta;
 import it.popso.popsogift.dto.FornitoreDTO;
 import it.popso.popsogift.exceptions.ApplicationFault;
 import it.popso.popsogift.service.FornitoreService;
@@ -64,20 +66,49 @@ public class FornitoreController {
             throw new ApplicationFault(e.getMessage());
         }
     }
-
     @PostMapping("/aggiungiFornitore")
     public ResponseEntity<FornitoreDTO> createFornitore(@RequestHeader("Ruolo") String ruolo,
                                                         @RequestHeader("Matricola")String matricola,
                                                         @RequestBody FornitoreDTO fornitoreDTO) {
         logger.info("Chiamata aggiungiFornitore");
         FornitoreDTO fornitoreInserito;
-        String performanceLog=PERFORMANCE_START.replace("???","insert");
+        String performanceLog=PERFORMANCE_START.replace("???","aggiungiFornitore");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         fornitoreInserito = fornitoreService.saveFornitore(fornitoreDTO);
-        performanceLog = PERFORMANCE_END.replace("???", fornitoreInserito+ "\nInserimento nuovo fornitore completato in "+(System.currentTimeMillis() - start)+MILLISECONDI);
+        performanceLog = PERFORMANCE_END.replace("???", fornitoreInserito+ "\nInserimento nuovo fornitore completato in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(fornitoreInserito, HttpStatus.CREATED);
+    }
+    @PutMapping("/modificaFornitore/{id}")
+    public ResponseEntity<EsitoRisposta> updateFornitore(@RequestHeader("Ruolo") String ruolo,
+                                                         @RequestHeader("Matricola")String matricola,
+                                                         @PathVariable Integer id,
+                                                         @RequestBody FornitoreDTO fornitoreDTO) {
+        logger.info("Chiamata modificaFornitore");
+        String performanceLog=PERFORMANCE_START.replace("???","modificaFornitore");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        fornitoreService.updateFornitore(id,fornitoreDTO);
+        performanceLog = PERFORMANCE_END.replace("???", fornitoreDTO+ "\nModifica fornitore completata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        EsitoRisposta esitoRisposta = new EsitoRisposta(Esito.OK,"Fornitore modificato con successo");
+        return new ResponseEntity<>(esitoRisposta,HttpStatus.OK);
+    }
+
+    @GetMapping("/fornitore/{id}")
+    public ResponseEntity<FornitoreDTO> getFornitoreById(@RequestHeader("Ruolo") String ruolo,
+                                                         @RequestHeader("Matricola")String matricola,
+                                                         @PathVariable Integer id) {
+        logger.info("Chiamata getFornitoreById");
+        FornitoreDTO fornitoreRichiesto;
+        String performanceLog = PERFORMANCE_START.replace("???", "getFornitoreById");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        fornitoreRichiesto = fornitoreService.fornitoreById(id);
+        performanceLog = PERFORMANCE_END.replace("???", fornitoreRichiesto + "\nRichiesta fornitore completata in " + (System.currentTimeMillis() - start) + MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(fornitoreRichiesto, HttpStatus.OK);
     }
 
 

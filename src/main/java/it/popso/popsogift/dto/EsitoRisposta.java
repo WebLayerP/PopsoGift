@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class EsitoDTO {
-    private String codice;
+public class EsitoRisposta {
+    private Esito codice;
     private String messaggio;
 }

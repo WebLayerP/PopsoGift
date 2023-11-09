@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class FornitoreDTO implements Serializable {
@@ -23,5 +24,6 @@ public class FornitoreDTO implements Serializable {
     private Boolean statoCancellazione;
     private Date dataCancellazione;
     private String idCancellazione;
+    private List<OggettoDTO> listaOggetti;
 }
 

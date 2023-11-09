@@ -2,52 +2,57 @@ package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.FornitoreDTO;
 import it.popso.popsogift.entity.Fornitore;
+import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.FornitoreMapper;
 import it.popso.popsogift.repository.FornitoreRepository;
+import it.popso.popsogift.repository.OggettoRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class FornitoreService {
 
+    public static final String DATA_INSERIMENTO = "dataInserimento";
+    public static final String ORDER_TYPE_ASC = "ASC";
     @Autowired
     private FornitoreRepository fornitoreRepository;
 
     @Autowired
+    private OggettoRepository oggettoRepository;
+
+    @Autowired
     private FornitoreMapper fornitoreMapper;
 
-    public List<FornitoreDTO> findFornitoriOrdered(int page, int size, String order, String orderBy) {
+    public List<FornitoreDTO> findFornitoriOrdered(int page, int size, String order, String orderBy, String ragioneSociale, String partitaIva) {
         Pageable pageable;
-        if(order.equals("ASC"))
-            pageable = PageRequest.of(page, size, Sort.by(orderBy).ascending());
+        if(ORDER_TYPE_ASC.equals(order))
+            pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? DATA_INSERIMENTO: orderBy).ascending());
         else
-            pageable = PageRequest.of(page, size, Sort.by(orderBy).descending());
-        Page<Fornitore> risultati = fornitoreRepository.findAll(pageable);
-        return fornitoreMapper.toListFornitoreDTO(risultati.getContent());
-    }
-
-    public List<FornitoreDTO> findFornitoriFiltered(int page, int size, String ragioneSociale, String partitaIva) {
-        Pageable pageable = PageRequest.of(page, size);
+            pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? DATA_INSERIMENTO: orderBy).descending());
         Page<Fornitore> risultati = fornitoreRepository.findByRagioneSocialeAndPartitaIva(ragioneSociale, partitaIva, pageable);
-
         return fornitoreMapper.toListFornitoreDTO(risultati.getContent());
     }
 
     public FornitoreDTO saveFornitore(FornitoreDTO fornitoreDTO){
+        fornitoreDTO.setIdFornitore(null);
         Fornitore fornitore = fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO);
+        fornitore.setDataInserimento(new Date());
         Fornitore fornitoreInserito;
         try {
             fornitoreInserito = fornitoreRepository.save(fornitore);
+            aggiornaOggettoDaListaFornitori(fornitoreInserito);
         } catch(org.springframework.dao.DataIntegrityViolationException e){
             throw new DataIntegrityViolationException(e.getMessage());
         }
@@ -61,29 +66,45 @@ public class FornitoreService {
         return fornitoreMapper.fornitoreToDTO(fornitore.get());
     }
     public void updateFornitore (Integer id, FornitoreDTO fornitoreDTO){
-        if(fornitoreById(id)!= null) {
-            fornitoreRepository.save(fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO));
+        FornitoreDTO fornitoreByID = fornitoreById(id);
+        if( fornitoreByID != null) {
+            fornitoreDTO.setIdFornitore(id);
+            fornitoreDTO.setDataInserimento(fornitoreByID.getDataInserimento());
+            fornitoreDTO.setDataAggiornamento(new Date());
+            Fornitore fornitore = fornitoreRepository.save(fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO));
+            aggiornaOggettoDaListaFornitori(fornitore);
         }
         else{
             throw new ApplicationFaultMsgException("Errore modifica fornitore");
         }
     }
-    public Boolean deleteLogicaFornitore(Integer id, String matricola){
-        Optional<Fornitore> fornitoreTrovato = fornitoreRepository.findById(id);
-        if(fornitoreTrovato.isPresent()) {
-            Fornitore fornitore = fornitoreTrovato.get();
-            boolean stato = !fornitore.getStatoCancellazione();
-            if (stato) {
-                fornitore.setDataCancellazione(java.sql.Date.valueOf(LocalDate.now()));
+
+    private void aggiornaOggettoDaListaFornitori(Fornitore fornitoreInserito){
+        if (fornitoreInserito!=null && !CollectionUtils.isEmpty(fornitoreInserito.getListaOggetti())){
+            fornitoreInserito.getListaOggetti().forEach(oggetto -> {
+                Optional<Oggetto> oggettoDaSalvare = oggettoRepository.findById(oggetto.getIdOggetto());
+                oggettoDaSalvare.ifPresent(o -> {
+                    o.setDataAggiornamento(new Date());
+                    o.setFornitore(fornitoreInserito);
+                    oggettoRepository.save(o);
+                });
+            });
+        }
+    }
+    public void deleteLogicaFornitore(Integer id, String matricola){
+        try {
+            Fornitore fornitore = fornitoreRepository.findByIdFornitoreAndStatoCancellazione(id, Boolean.valueOf(false));
+            if (fornitore != null) {
+                fornitore.setDataCancellazione(new Date());
                 fornitore.setIdCancellazione(matricola);
                 fornitore.setStatoCancellazione(true);
                 fornitoreRepository.save(fornitore);
-                return true;
             }
+            else{
+                throw new ApplicationFaultMsgException("Fornitore non presente o in stato cancellato");
+            }
+        } catch(Exception e){
+            throw new ApplicationFaultMsgException(e.getMessage());
         }
-        else{
-            return false;
-        }
-        return false;
     }
 }

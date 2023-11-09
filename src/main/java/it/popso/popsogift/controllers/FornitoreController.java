@@ -29,16 +29,19 @@ public class FornitoreController {
 
     @GetMapping("/listaFornitoriOrdered")
     public List<FornitoreDTO> listaFornitoriOrdered(@RequestParam ("page") int page,
-                                                    @RequestParam ("size")int size,
-                                                    @RequestParam("order") String order,
-                                                    @RequestParam("orderBy")String orderBy)
+                                                    @RequestParam (value = "size")int size,
+                                                    @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
+                                                    @RequestParam(value = "partitaIva" , required = false) String partitaIva,
+                                                    @RequestParam(value = "order", required = false) String order,
+                                                    @RequestParam(value ="orderBy", required = false)String orderBy)
+
     {
         try{
             logger.info("Chiamata Lista Fornitori Ordered");
             String performanceLog=PERFORMANCE_START.replace("???","all");
             loggerPerformance.info(performanceLog);
             long start = System.currentTimeMillis();
-            List<FornitoreDTO> listaFornitori = fornitoreService.findFornitoriOrdered(page, size, order, orderBy);
+            List<FornitoreDTO> listaFornitori = fornitoreService.findFornitoriOrdered(page, size, order, orderBy,ragioneSociale, partitaIva);
             performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca ordinata fornitori completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
             loggerPerformance.debug(performanceLog);
             return listaFornitori;
@@ -47,25 +50,6 @@ public class FornitoreController {
         }
     }
 
-    @GetMapping("/listaFornitoriFiltered")
-    public List<FornitoreDTO> listaFornitoriFiltered(@RequestParam ("page") int page,
-                                                     @RequestParam ("size")int size,
-                                                     @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
-                                                     @RequestParam(value = "partitaIva" , required = false) String partitaIva)
-    {
-        try{
-            logger.info("Chiamata Lista Fornitori Filtered");
-            String performanceLog=PERFORMANCE_START.replace("???","all");
-            loggerPerformance.info(performanceLog);
-            long start = System.currentTimeMillis();
-            List<FornitoreDTO> listaFornitori = fornitoreService.findFornitoriFiltered(page, size, ragioneSociale, partitaIva);
-            performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca fornitori filtrati completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
-            loggerPerformance.debug(performanceLog);
-            return listaFornitori;
-        }catch (Exception e){
-            throw new ApplicationFault(e.getMessage());
-        }
-    }
     @PostMapping("/aggiungiFornitore")
     public ResponseEntity<FornitoreDTO> createFornitore(@RequestHeader("Ruolo") String ruolo,
                                                         @RequestHeader("Matricola")String matricola,
@@ -80,6 +64,7 @@ public class FornitoreController {
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(fornitoreInserito, HttpStatus.CREATED);
     }
+
     @PutMapping("/modificaFornitore/{id}")
     public ResponseEntity<EsitoRisposta> updateFornitore(@RequestHeader("Ruolo") String ruolo,
                                                          @RequestHeader("Matricola")String matricola,
@@ -121,16 +106,9 @@ public class FornitoreController {
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         HttpStatus status;
-        boolean stato = fornitoreService.deleteLogicaFornitore(id,matricola);
-        if(stato){
-            esitoRisposta =new EsitoRisposta(Esito.OK,"Fornitore cancellato con successo");
-            status = HttpStatus.OK;
-        }
-        else {
-            esitoRisposta = new EsitoRisposta(Esito.ERRORE, "Errore nella cancellazione del fornitore con id " + id);
-            status = HttpStatus.BAD_REQUEST;
-        }
-
+        fornitoreService.deleteLogicaFornitore(id,matricola);
+        esitoRisposta =new EsitoRisposta(Esito.OK,"Fornitore cancellato con successo");
+        status = HttpStatus.OK;
         performanceLog = PERFORMANCE_END.replace("???", "Chiamata cancellazione fornitore con id: " + id + " effettuata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(esitoRisposta,status);

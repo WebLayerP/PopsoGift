@@ -39,9 +39,6 @@ public class CampagnaService {
     private OggettoMapper oggettoMapper;
 
     @Autowired
-    private CategoriaMapper categoriaMapper;
-
-    @Autowired
     private FilialeRepository filialeRepository;
 
     @Autowired
@@ -72,11 +69,6 @@ public class CampagnaService {
         List<Oggetto> listaOggetti = new ArrayList<>();
         for(OggettoDTO oggettoDTO: campagnaDTO.getListaOmaggi()){
             Oggetto oggetto = oggettoMapper.oggettoDTOToOggetto(oggettoDTO);
-            try {
-                oggetto.setCategoria(categoriaMapper.getCategoria(oggettoDTO));
-            }catch(NullPointerException e){
-                throw new InputFaultMsgException("Categoria non impostata");
-            }
             try {
                 oggetto.setFornitore(fornitoreMapper.fornitoreDTOToFornitore(oggettoDTO.getFornitore()));
             }catch(NullPointerException e){

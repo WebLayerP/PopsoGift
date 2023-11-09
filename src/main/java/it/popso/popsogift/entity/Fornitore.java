@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name ="FORNITORE")
@@ -45,4 +46,6 @@ public class Fornitore {
     private Date dataCancellazione;
     @Column(name="ID_CANCELLAZIONE")
     private String idCancellazione;
+    @OneToMany(mappedBy="fornitore")
+    private List<Oggetto> listaOggetti;
 }

@@ -18,4 +18,6 @@ public interface FornitoreRepository extends JpaRepository <Fornitore, Integer> 
 
     @Query("SELECT f FROM Fornitore f WHERE (?1 IS NULL OR f.ragioneSociale = ?1) AND (?2 IS NULL OR f.partitaIva = ?2)")
     Page<Fornitore> findByRagioneSocialeAndPartitaIva(@Param("ragioneSociale") String ragioneSociale, @Param("partitaIva") String partitaIva, Pageable pageable);
+
+    Fornitore findByIdFornitoreAndStatoCancellazione(@Param("idFornitore") Integer idFornitore, @Param("statoCancellazione") Boolean stato);
 }

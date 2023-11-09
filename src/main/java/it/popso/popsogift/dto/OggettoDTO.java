@@ -2,10 +2,11 @@ package it.popso.popsogift.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class OggettoDTO {
+public class OggettoDTO implements Serializable {
 
     private Integer idOggetto;
     private String nome;

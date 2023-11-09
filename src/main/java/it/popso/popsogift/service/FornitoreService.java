@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,5 +67,23 @@ public class FornitoreService {
         else{
             throw new ApplicationFaultMsgException("Errore modifica fornitore");
         }
+    }
+    public Boolean deleteLogicaFornitore(Integer id, String matricola){
+        Optional<Fornitore> fornitoreTrovato = fornitoreRepository.findById(id);
+        if(fornitoreTrovato.isPresent()) {
+            Fornitore fornitore = fornitoreTrovato.get();
+            boolean stato = !fornitore.getStatoCancellazione();
+            if (stato) {
+                fornitore.setDataCancellazione(java.sql.Date.valueOf(LocalDate.now()));
+                fornitore.setIdCancellazione(matricola);
+                fornitore.setStatoCancellazione(true);
+                fornitoreRepository.save(fornitore);
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+        return false;
     }
 }

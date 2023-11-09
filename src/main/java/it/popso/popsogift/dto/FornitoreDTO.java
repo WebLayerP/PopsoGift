@@ -20,4 +20,8 @@ public class FornitoreDTO implements Serializable {
     private String partitaIva;
     private Date dataAggiornamento;
     private Date dataInserimento;
+    private Boolean statoCancellazione;
+    private Date dataCancellazione;
+    private String idCancellazione;
 }
+

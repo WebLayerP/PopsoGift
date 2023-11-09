@@ -39,4 +39,10 @@ public class Fornitore {
     private Date dataAggiornamento;
     @Column(name="DATA_INSERIMENTO")
     private Date dataInserimento;
+    @Column(name="STATO_CANCELLAZIONE")
+    private Boolean statoCancellazione;
+    @Column(name="DATA_CANCELLAZIONE")
+    private Date dataCancellazione;
+    @Column(name="ID_CANCELLAZIONE")
+    private String idCancellazione;
 }

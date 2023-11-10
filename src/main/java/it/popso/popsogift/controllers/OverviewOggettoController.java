@@ -14,19 +14,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/overview")
-public class OverviewController {
+public class OverviewOggettoController {
 
-    public static final Logger loggerPerformance = LoggerFactory.getLogger("PERFORMANCE." + OverviewController.class);
+    public static final Logger loggerPerformance = LoggerFactory.getLogger("PERFORMANCE." + OverviewOggettoController.class);
     public static final String PERFORMANCE_START = "[START path=/overview/???]";
     public static final String PERFORMANCE_END = "[END path=/overview/???]";
     public static final String MILLISECONDI = " millisecondi";
-    private static Logger logger = LoggerFactory.getLogger(OverviewController.class);
+    private static Logger logger = LoggerFactory.getLogger(OverviewOggettoController.class);
 
     @Autowired
     private OverviewService overviewService;
 
     @Autowired
-    public OverviewController(OverviewService overviewService) {
+    public OverviewOggettoController(OverviewService overviewService) {
         this.overviewService = overviewService;
     }
 

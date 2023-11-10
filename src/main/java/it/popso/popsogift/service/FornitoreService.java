@@ -1,6 +1,8 @@
 package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.FornitoreDTO;
+import it.popso.popsogift.dto.FornitoreListDTO;
+import it.popso.popsogift.dto.PaginazioneDTO;
 import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
@@ -18,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,14 +37,24 @@ public class FornitoreService {
     @Autowired
     private FornitoreMapper fornitoreMapper;
 
-    public List<FornitoreDTO> listaFornitori(int page, int size, String order, String orderBy, String ragioneSociale, String partitaIva) {
+    public FornitoreListDTO listaFornitori(int page, int size, String order, String orderBy, String ragioneSociale, String partitaIva) {
+        FornitoreListDTO result = new FornitoreListDTO();
+        PaginazioneDTO paginazioneDTO = new PaginazioneDTO();
         Pageable pageable;
         if(ORDER_TYPE_ASC.equals(order))
             pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? DATA_INSERIMENTO: orderBy).ascending());
         else
             pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? DATA_INSERIMENTO: orderBy).descending());
         Page<Fornitore> risultati = fornitoreRepository.findByRagioneSocialeAndPartitaIva(ragioneSociale, partitaIva, Boolean.FALSE, pageable);
-        return fornitoreMapper.toListFornitoreDTO(risultati.getContent());
+
+        paginazioneDTO.setNumeroPagine(risultati.getTotalPages());
+        paginazioneDTO.setNumeroElementiPerPagina(risultati.getSize());
+        paginazioneDTO.setNumeroPagina(risultati.getNumber());
+
+        result.setNumeroElementiTotali(risultati.getNumberOfElements());
+        result.setPaginazione(paginazioneDTO);
+        result.setResults(fornitoreMapper.toListFornitoreDTO(risultati.getContent()));
+        return result;
     }
 
     public FornitoreDTO saveFornitore(FornitoreDTO fornitoreDTO){

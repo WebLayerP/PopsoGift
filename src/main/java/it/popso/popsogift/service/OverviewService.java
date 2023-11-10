@@ -115,10 +115,7 @@ public class OverviewService {
                                 result.setNumeroOggettiDigitali((long)o[1]);
                 }
                 result.setNumeroFornitori(fornitoreRepository.findNumeroFornitoriTotali());
-                Date dataAggiornamento = oggettoRepository.findMaxByDataAggiornamento();
-                if(dataAggiornamento != null) {
-                        result.setDataUltimoAggiornamento(dataAggiornamento);
-                }
+                result.setDataUltimoAggiornamento(oggettoRepository.findMaxByDataAggiornamento());
                 return result;
         }
 

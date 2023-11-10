@@ -3,6 +3,7 @@ package it.popso.popsogift.controllers;
 import it.popso.popsogift.dto.Esito;
 import it.popso.popsogift.dto.EsitoRisposta;
 import it.popso.popsogift.dto.FornitoreDTO;
+import it.popso.popsogift.dto.FornitoreListDTO;
 import it.popso.popsogift.exceptions.ApplicationFault;
 import it.popso.popsogift.service.FornitoreService;
 import org.slf4j.Logger;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/fornitori")
@@ -28,12 +27,12 @@ public class FornitoreController {
     private static Logger logger = LoggerFactory.getLogger(FornitoreController.class);
 
     @GetMapping("/listaFornitori")
-    public List<FornitoreDTO> listaFornitori(@RequestParam ("page") int page,
-                                                    @RequestParam (value = "size")int size,
-                                                    @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
-                                                    @RequestParam(value = "partitaIva" , required = false) String partitaIva,
-                                                    @RequestParam(value = "order", required = false) String order,
-                                                    @RequestParam(value ="orderBy", required = false)String orderBy)
+    public ResponseEntity<FornitoreListDTO> listaFornitori(@RequestParam ("page") int page,
+                                                           @RequestParam (value = "size")int size,
+                                                           @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
+                                                           @RequestParam(value = "partitaIva" , required = false) String partitaIva,
+                                                           @RequestParam(value = "order", required = false) String order,
+                                                           @RequestParam(value ="orderBy", required = false)String orderBy)
 
     {
         try{
@@ -41,10 +40,10 @@ public class FornitoreController {
             String performanceLog=PERFORMANCE_START.replace("???","all");
             loggerPerformance.info(performanceLog);
             long start = System.currentTimeMillis();
-            List<FornitoreDTO> listaFornitori = fornitoreService.listaFornitori(page, size, order, orderBy,ragioneSociale, partitaIva);
+            FornitoreListDTO listaFornitori = fornitoreService.listaFornitori(page, size, order, orderBy,ragioneSociale, partitaIva);
             performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca ordinata fornitori completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
             loggerPerformance.debug(performanceLog);
-            return listaFornitori;
+            return new ResponseEntity<>(listaFornitori, HttpStatus.OK);
         }catch (Exception e){
             throw new ApplicationFault(e.getMessage());
         }

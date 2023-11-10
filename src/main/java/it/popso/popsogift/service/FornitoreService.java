@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,13 +36,13 @@ public class FornitoreService {
     @Autowired
     private FornitoreMapper fornitoreMapper;
 
-    public List<FornitoreDTO> findFornitoriOrdered(int page, int size, String order, String orderBy, String ragioneSociale, String partitaIva) {
+    public List<FornitoreDTO> listaFornitori(int page, int size, String order, String orderBy, String ragioneSociale, String partitaIva) {
         Pageable pageable;
         if(ORDER_TYPE_ASC.equals(order))
             pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? DATA_INSERIMENTO: orderBy).ascending());
         else
             pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? DATA_INSERIMENTO: orderBy).descending());
-        Page<Fornitore> risultati = fornitoreRepository.findByRagioneSocialeAndPartitaIva(ragioneSociale, partitaIva, pageable);
+        Page<Fornitore> risultati = fornitoreRepository.findByRagioneSocialeAndPartitaIva(ragioneSociale, partitaIva, Boolean.FALSE, pageable);
         return fornitoreMapper.toListFornitoreDTO(risultati.getContent());
     }
 
@@ -59,11 +60,11 @@ public class FornitoreService {
         return fornitoreMapper.fornitoreToDTO(fornitoreInserito);
     }
     public FornitoreDTO fornitoreById(Integer id) {
-        Optional<Fornitore> fornitore = fornitoreRepository.findById(id);
-        if(fornitore.isEmpty()){
+        Fornitore fornitore = fornitoreRepository.findByIdFornitoreAndStatoCancellazione(id, Boolean.FALSE);
+        if(Objects.isNull(fornitore)){
             throw new ApplicationFaultMsgException("Il fornitore con id " + id + " non è stato trovato");
         }
-        return fornitoreMapper.fornitoreToDTO(fornitore.get());
+        return fornitoreMapper.fornitoreToDTO(fornitore);
     }
     public void updateFornitore (Integer id, FornitoreDTO fornitoreDTO){
         FornitoreDTO fornitoreByID = fornitoreById(id);

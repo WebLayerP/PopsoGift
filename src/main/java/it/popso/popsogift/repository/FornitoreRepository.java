@@ -16,8 +16,8 @@ public interface FornitoreRepository extends JpaRepository <Fornitore, Integer> 
     @Query("select count(f.idFornitore) from Fornitore f")
     int findNumeroFornitoriTotali();
 
-    @Query("SELECT f FROM Fornitore f WHERE (?1 IS NULL OR f.ragioneSociale = ?1) AND (?2 IS NULL OR f.partitaIva = ?2)")
-    Page<Fornitore> findByRagioneSocialeAndPartitaIva(@Param("ragioneSociale") String ragioneSociale, @Param("partitaIva") String partitaIva, Pageable pageable);
+    @Query("SELECT f FROM Fornitore f WHERE f.statoCancellazione = ?3 AND (?1 IS NULL OR f.ragioneSociale = ?1) AND (?2 IS NULL OR f.partitaIva = ?2)")
+    Page<Fornitore> findByRagioneSocialeAndPartitaIva(@Param("ragioneSociale") String ragioneSociale, @Param("partitaIva") String partitaIva, @Param("statoCancellazione") Boolean statoCancellazione, Pageable pageable);
 
     Fornitore findByIdFornitoreAndStatoCancellazione(@Param("idFornitore") Integer idFornitore, @Param("statoCancellazione") Boolean stato);
 }

@@ -27,8 +27,8 @@ public class FornitoreController {
     public static final String PERFORMANCE_END="[END path=/fornitore/???]";
     private static Logger logger = LoggerFactory.getLogger(FornitoreController.class);
 
-    @GetMapping("/listaFornitoriOrdered")
-    public List<FornitoreDTO> listaFornitoriOrdered(@RequestParam ("page") int page,
+    @GetMapping("/listaFornitori")
+    public List<FornitoreDTO> listaFornitori(@RequestParam ("page") int page,
                                                     @RequestParam (value = "size")int size,
                                                     @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
                                                     @RequestParam(value = "partitaIva" , required = false) String partitaIva,
@@ -41,7 +41,7 @@ public class FornitoreController {
             String performanceLog=PERFORMANCE_START.replace("???","all");
             loggerPerformance.info(performanceLog);
             long start = System.currentTimeMillis();
-            List<FornitoreDTO> listaFornitori = fornitoreService.findFornitoriOrdered(page, size, order, orderBy,ragioneSociale, partitaIva);
+            List<FornitoreDTO> listaFornitori = fornitoreService.listaFornitori(page, size, order, orderBy,ragioneSociale, partitaIva);
             performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca ordinata fornitori completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
             loggerPerformance.debug(performanceLog);
             return listaFornitori;
@@ -113,6 +113,4 @@ public class FornitoreController {
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(esitoRisposta,status);
     }
-
-
 }

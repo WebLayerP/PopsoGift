@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class BeneficiarioDataInitializer {
@@ -33,7 +34,7 @@ public class BeneficiarioDataInitializer {
 
     public void initializeBeneficiarioData() {
     Beneficiario beneficiario = new Beneficiario();
-    beneficiario.setNdg("1");
+    beneficiario.setNdg(UUID.randomUUID().toString().substring(0,4));
     beneficiario.setDataInserimento(new Date());
     StatoBeneficiario statoBeneficiario = new StatoBeneficiario();
     statoBeneficiario.setIdStato(1);
@@ -58,5 +59,33 @@ public class BeneficiarioDataInitializer {
     beneficiario.setNote("nessuna");
     beneficiario.setPrivacy(Boolean.FALSE);
     beneficiarioRepository.save(beneficiario);
+    }
+
+    public void insertNewBeneficiario() {
+        Beneficiario beneficiario = new Beneficiario();
+        beneficiario.setNdg("2");
+        beneficiario.setDataInserimento(new Date());
+        StatoBeneficiario statoBeneficiario = new StatoBeneficiario();
+        statoBeneficiario.setIdStato(1);
+        statoBeneficiario.setNomeStato(StatoBeneficiarioDTO.OK);
+        statoBeneficiarioRepository.save(statoBeneficiario);
+        beneficiario.setStatoBeneficiario(statoBeneficiario);
+        Gruppo gruppo = new Gruppo();
+        gruppo.setDataAggiornamento(new Date());
+        gruppo.setDescrizione("descr");
+        gruppo.setDataInserimento(new Date());
+        gruppo.setIdGruppo(1);
+        gruppo.setNome("nomeGruppo");
+        List<Gruppo> listaGruppi = new ArrayList<>();
+        listaGruppi.add(gruppo);
+        beneficiario.setListaGruppi(listaGruppi);
+        gruppoRepository.save(gruppo);
+        Filiale filiale = new Filiale();
+        filiale.setCodiceFiliale("F0189");
+        filialeRepository.save(filiale);
+        beneficiario.setFiliale(filiale);
+        beneficiario.setNote("nessuna");
+        beneficiario.setPrivacy(Boolean.TRUE);
+        beneficiarioRepository.save(beneficiario);
     }
 }

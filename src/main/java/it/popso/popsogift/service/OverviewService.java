@@ -101,7 +101,6 @@ public class OverviewService {
                         if(o[2] != null) {
                                 panoramicaOverview.setDataAggiornamento(((Date) o[2]));
                         }
-                        //TODO manca settare anche mailKO e indirizziKO
                 }
                 return panoramicaOverview;
         }

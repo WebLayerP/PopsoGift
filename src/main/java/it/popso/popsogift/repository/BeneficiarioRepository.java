@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Integer> {
-    @Query("SELECT COUNT(b), COUNT (CASE WHEN b.privacy = false THEN 1 ELSE 0 END), MAX(b.dataAggiornamento) FROM Beneficiario b")
+    @Query("SELECT COUNT(b), SUM (CASE WHEN b.privacy = false THEN 1 ELSE 0 END), MAX(b.dataAggiornamento) FROM Beneficiario b")
     List<Object[]> countBeneficiariAndPrivacy();
 }

@@ -45,7 +45,7 @@ public class BeneficiarioControllerTest {
     }
 
     @Test
-    public void overviewOggetto_withoutheader_thenStatus400()
+    public void overviewBeneficiario_withoutheader_thenStatus400()
             throws Exception {
 
         // Inizializza il logger per il test

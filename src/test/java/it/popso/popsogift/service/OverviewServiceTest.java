@@ -61,7 +61,7 @@ class OverviewServiceTest {
     private StatoBeneficiario statoBeneficiario = new StatoBeneficiario();
 
     @BeforeEach
-    public void init() throws SQLException {
+    public void init() {
 
         stato.setIdStato(1);
         stato.setNomeStato(StatoDTO.IN_CORSO);
@@ -83,7 +83,6 @@ class OverviewServiceTest {
         beneficiario.setNdg("12345");
         beneficiario.setDataInserimento(new Date());
         beneficiario.setStatoBeneficiario(statoBeneficiario);
-        beneficiario.setFiliale(filiale);
         beneficiarioRepository.save(beneficiario);
 
         campagna

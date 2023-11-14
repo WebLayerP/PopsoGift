@@ -17,15 +17,19 @@ public class Constants {
             "     on id_c=campFil.id_campagna\n" +
             "     WHERE campFil.codice_filiale IN (?1)";
 
-    public static final String CAMPAGNA_OVERVIEW ="SELECT * FROM (SELECT c.id_campagna, c.tipologia,COUNT(o.id_oggetto) AS tot_omaggi,sum(o.prezzo) AS tot_costo, c.data_fine\n" +
-            "FROM campagna c\n" +
-            "LEFT JOIN rel_campagna_oggetto rco ON c.id_campagna = rco.id_campagna\n" +
-            "LEFT JOIN oggetto o ON o.id_oggetto = rco.id_oggetto\n" +
-            "WHERE c.id_campagna = :idCampagna\n" +
-            "GROUP BY c.id_campagna, c.tipologia, c.data_fine) campagnaOverview\n" +
-            "LEFT JOIN (SELECT C.ID_CAMPAGNA, SUM(CASE WHEN sf.confermato = 0 THEN 1 ELSE 0 END) AS filiali_in_attesa,\n" +
-            "SUM(CASE WHEN sf.confermato = 1 THEN 1 ELSE 0 END) AS filiali_confermate\n" +
-            "FROM campagna c LEFT OUTER JOIN rel_campagna_filiale sf ON c.id_campagna = sf.id_campagna WHERE c.id_campagna = :idCampagna\n" +
-            "GROUP BY c.id_campagna) filialeOverview\n" +
-            "ON campagnaOverview.id_campagna = filialeOverview.id_campagna";
+    public static final String CAMPAGNA_OVERVIEW = "SELECT campagna.id_campagna, campagna.tipologia, campagna.tot_omaggi, campagna.prezzo_totale, campagna.data_fine, \n" +
+            "                  filiale.filiali_confermate, filiale.filiali_in_attesa \n" +
+            "                  FROM (SELECT c.id_campagna,c.data_fine, c.tipologia, COUNT(o.id_oggetto) AS tot_omaggi, sum(o.prezzo) as prezzo_totale  \n" +
+            "                  FROM campagna c LEFT OUTER JOIN rel_campagna_filiale cf ON c.id_campagna = cf.id_campagna  \n" +
+            "                  left join rel_beneficiario_filiale bf on cf.codice_filiale = bf.codice_filiale \n" +
+            "                  left JOIN rel_beneficiario_oggetto_campagna boc ON bf.ndg = boc.ndg AND boc.id_campagna=?1\n" +
+            "                  left JOIN oggetto O ON boc.id_oggetto = O.id_oggetto \n" +
+            "                  WHERE c.id_campagna = ?1\n" +
+            "                  GROUP BY c.data_fine, c.tipologia, C.id_campagna) campagna \n" +
+            "                  RIGHT OUTER JOIN (SELECT c.id_campagna, SUM(CASE WHEN sf.confermato = 0 THEN 1 ELSE 0 END) AS filiali_in_attesa,  \n" +
+            "                      SUM(CASE WHEN sf.confermato = 1 THEN 1 ELSE 0 END) AS filiali_confermate  \n" +
+            "                      FROM campagna c LEFT OUTER JOIN rel_campagna_filiale sf ON c.id_campagna = sf.id_campagna WHERE c.id_campagna = ?1\n" +
+            "                      GROUP BY c.id_campagna) filiale \n" +
+            "                      ON campagna.id_campagna = filiale.id_campagna";
+
 }

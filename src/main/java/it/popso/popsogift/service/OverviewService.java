@@ -37,20 +37,20 @@ public class OverviewService {
                 CampagnaOverview campagnaOverview = new CampagnaOverview();
                 for(Object[] o: results){
                         if(o[1]!= null) {
-                                campagnaOverview.setTipologia(((Float) o[1]).intValue());
+                                campagnaOverview.setTipologia(castObjectIntValue(o[1]));
                         }
                         if(o[2]!= null) {
-                                campagnaOverview.setNumeroOmaggi(((Float) o[2]).intValue());
+                                campagnaOverview.setNumeroOmaggi(castObjectIntValue(o[2]));
                         }
                         if(o[3] != null){
-                                campagnaOverview.setTotCosto((((Float) o[3]).longValue()));
+                                campagnaOverview.setTotCosto(castObjectIntValue(o[3]));
                         }
                         if(o[4] != null){
                                 campagnaOverview.setDataFineCampagna((Date) o[4]);
                         }
-                        if(o[6] != null) campagnaOverview.setFilialiInAttesa((((Float) o[6]).intValue()));
-                        if(o[7] != null){
-                                campagnaOverview.setFilialiConfermate((((Float) o[7]).intValue()));
+                        if(o[5] != null) campagnaOverview.setFilialiInAttesa(castObjectIntValue(o[5]));
+                        if(o[6] != null){
+                                campagnaOverview.setFilialiConfermate(castObjectIntValue(o[6]));
                         }
                 }
                 return campagnaOverview;

@@ -43,12 +43,6 @@ public class CampagnaDataInitializer {
         tipologia.setNomeTipologia(TipologiaDTO.FISICA);
         tipologiaRepository.save(tipologia);
 
-        Filiale filiale = new Filiale();
-        filiale.setCodiceFiliale("F0001");
-        filialeRepository.save(filiale);
-        List<Filiale> listaFiliali = new ArrayList<>();
-        listaFiliali.add(filiale);
-
         StatoBeneficiario statoBeneficiario = new StatoBeneficiario();
         statoBeneficiario.setIdStato(1);
         statoBeneficiario.setNomeStato(StatoBeneficiarioDTO.OK);
@@ -58,8 +52,16 @@ public class CampagnaDataInitializer {
         beneficiario.setNdg("12345");
         beneficiario.setDataInserimento(new Date());
         beneficiario.setStatoBeneficiario(statoBeneficiario);
-        beneficiario.setFiliale(filiale);
         beneficiarioRepository.save(beneficiario);
+
+        Filiale filiale = new Filiale();
+        filiale.setCodiceFiliale("F0001");
+        List<Beneficiario> listaBeneficiari = new ArrayList<>();
+        listaBeneficiari.add(beneficiario);
+        filiale.setListaBeneficiari(listaBeneficiari);
+        filialeRepository.save(filiale);
+        List<Filiale> listaFiliali = new ArrayList<>();
+        listaFiliali.add(filiale);
 
         Campagna campagna = new Campagna();
         campagna

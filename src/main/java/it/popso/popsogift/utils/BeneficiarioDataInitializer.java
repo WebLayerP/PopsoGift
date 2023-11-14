@@ -2,7 +2,6 @@ package it.popso.popsogift.utils;
 
 import it.popso.popsogift.dto.StatoBeneficiarioDTO;
 import it.popso.popsogift.entity.Beneficiario;
-import it.popso.popsogift.entity.Filiale;
 import it.popso.popsogift.entity.Gruppo;
 import it.popso.popsogift.entity.StatoBeneficiario;
 import it.popso.popsogift.repository.BeneficiarioRepository;
@@ -51,10 +50,6 @@ public class BeneficiarioDataInitializer {
     listaGruppi.add(gruppo);
     beneficiario.setListaGruppi(listaGruppi);
     gruppoRepository.save(gruppo);
-    Filiale filiale = new Filiale();
-    filiale.setCodiceFiliale("F0189");
-    filialeRepository.save(filiale);
-    beneficiario.setFiliale(filiale);
     beneficiario.setDataAggiornamento(new Date());
     beneficiario.setNote("nessuna");
     beneficiario.setPrivacy(Boolean.FALSE);
@@ -80,10 +75,6 @@ public class BeneficiarioDataInitializer {
         listaGruppi.add(gruppo);
         beneficiario.setListaGruppi(listaGruppi);
         gruppoRepository.save(gruppo);
-        Filiale filiale = new Filiale();
-        filiale.setCodiceFiliale("F0189");
-        filialeRepository.save(filiale);
-        beneficiario.setFiliale(filiale);
         beneficiario.setNote("nessuna");
         beneficiario.setPrivacy(Boolean.TRUE);
         beneficiarioRepository.save(beneficiario);

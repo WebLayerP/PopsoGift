@@ -1,7 +1,6 @@
 package it.popso.popsogift.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import it.popso.popsogift.entity.Filiale;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,7 +15,6 @@ public class BeneficiarioDTO {
     private Date dataAggiornamento;
     private String note;
     private StatoBeneficiarioDTO statoBeneficiario;
-    private Filiale filiale;
     private Date dataEstinzione;
     private String motivoEstinzione;
     private List<GruppoDTO> listaGruppi;

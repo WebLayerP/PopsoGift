@@ -23,9 +23,6 @@ public class Beneficiario {
     @ManyToOne
     @JoinColumn(name="STATO")
     private StatoBeneficiario statoBeneficiario;
-    @ManyToOne
-    @JoinColumn(name="CODICE_FILIALE")
-    private Filiale filiale;
     @Column(name="DATA_ESTINZIONE")
     private Date dataEstinzione;
     @Column(name="MOTIVO_ESTINZIONE")
@@ -42,6 +39,16 @@ public class Beneficiario {
             joinColumns = @JoinColumn(name = "NDG"),
             inverseJoinColumns = @JoinColumn(name = "GRUPPO"))
     private List<Gruppo> listaGruppi;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_BENEFICIARIO_OGGETTO_CAMPAGNA",
+            joinColumns = @JoinColumn(name = "NDG"),
+            inverseJoinColumns = @JoinColumn(name = "ID_OGGETTO"))
+    private List<Oggetto> listaOggetti;
 
     @Column(name="PRIVACY")
     private Boolean privacy;
@@ -85,15 +92,6 @@ public class Beneficiario {
     public void setStatoBeneficiario(StatoBeneficiario statoBeneficiario) {
         this.statoBeneficiario = statoBeneficiario;
     }
-
-    public Filiale getFiliale() {
-        return filiale;
-    }
-
-    public void setFiliale(Filiale filiale) {
-        this.filiale = filiale;
-    }
-
     public Date getDataEstinzione() {
         return dataEstinzione;
     }
@@ -124,5 +122,13 @@ public class Beneficiario {
 
     public void setPrivacy(Boolean privacy) {
         this.privacy = privacy;
+    }
+
+    public List<Oggetto> getListaOggetti() {
+        return listaOggetti;
+    }
+
+    public void setListaOggetti(List<Oggetto> listaOggetti) {
+        this.listaOggetti = listaOggetti;
     }
 }

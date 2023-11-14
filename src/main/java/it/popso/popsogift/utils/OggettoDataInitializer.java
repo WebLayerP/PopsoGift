@@ -63,7 +63,7 @@ public class OggettoDataInitializer {
         oggetto.setCodice("46456");
         oggetto.setCategoria(categoria);
         oggetto.setNome("nome");
-        oggetto.setPrezzo("645");
+        oggetto.setPrezzo(Double.valueOf("345"));
         oggetto.setDataAggiornamento(Date.from(LocalDate.of(2023, 10, 2).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
         oggettoRepository.save(oggetto);
         Oggetto oggettoTwo = new Oggetto();
@@ -97,7 +97,7 @@ public class OggettoDataInitializer {
         oggettoTwo.setCodice("46456");
         oggettoTwo.setCategoria(categoriaTwo);
         oggettoTwo.setNome("nome");
-        oggettoTwo.setPrezzo("645");
+        oggettoTwo.setPrezzo(Double.valueOf("645"));
         oggettoTwo.setDataAggiornamento(Date.from(LocalDate.of(2023, 10, 2).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
         oggettoRepository.save(oggettoTwo);
     }

@@ -12,7 +12,7 @@ public class OggettoDTO implements Serializable {
 
     private Integer idOggetto;
     private String nome;
-    private Long prezzo;
+    private Double prezzo;
     private String descrizione;
     private String codice;
     private CategoriaDTO categoria;

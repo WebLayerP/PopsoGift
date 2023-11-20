@@ -12,6 +12,10 @@ public enum StatoBeneficiarioDTO implements Serializable {
 
     private Integer idStato;
 
+    StatoBeneficiarioDTO() {
+        // Costruttore vuoto
+    }
+
     StatoBeneficiarioDTO(Integer idStato) {
         this.idStato = idStato;
     }

@@ -28,7 +28,7 @@ public class FornitoreController {
     public static final String PERFORMANCE_END="[END path=/fornitore/???]";
     private static Logger logger = LoggerFactory.getLogger(FornitoreController.class);
 
-    @GetMapping("/listaFornitori")
+    @GetMapping
     public ResponseEntity<FornitoreListDTO> listaFornitori(@RequestParam ("page") int page,
                                                            @RequestParam (value = "size")int size,
                                                            @RequestParam(value = "ragioneSociale" , required = false)String ragioneSociale,
@@ -51,7 +51,7 @@ public class FornitoreController {
         }
     }
 
-    @PostMapping("/aggiungiFornitore")
+    @PostMapping
     public ResponseEntity<FornitoreDTO> createFornitore(@RequestHeader("Ruolo") String ruolo,
                                                         @RequestHeader("Matricola")String matricola,
                                                         @RequestBody FornitoreDTO fornitoreDTO) {
@@ -66,7 +66,7 @@ public class FornitoreController {
         return new ResponseEntity<>(fornitoreInserito, HttpStatus.CREATED);
     }
 
-    @PutMapping("/modificaFornitore/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<EsitoRisposta> updateFornitore(@RequestHeader("Ruolo") String ruolo,
                                                          @RequestHeader("Matricola")String matricola,
                                                          @PathVariable Integer id,
@@ -82,7 +82,7 @@ public class FornitoreController {
         return new ResponseEntity<>(esitoRisposta,HttpStatus.OK);
     }
 
-    @GetMapping("/fornitore/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FornitoreDTO> getFornitoreById(@RequestHeader("Ruolo") String ruolo,
                                                          @RequestHeader("Matricola")String matricola,
                                                          @PathVariable Integer id) {
@@ -97,7 +97,7 @@ public class FornitoreController {
         return new ResponseEntity<>(fornitoreRichiesto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cancellaFornitore/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<EsitoRisposta> cancellaFornitore(@RequestHeader("Ruolo") String ruolo,
                                                            @RequestHeader("Matricola")String matricola,
                                                            @PathVariable Integer id) {

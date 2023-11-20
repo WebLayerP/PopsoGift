@@ -1,18 +1,7 @@
 package it.popso.popsogift.config;
 
-import com.atlassian.oai.validator.OpenApiInteractionValidator;
-import com.atlassian.oai.validator.springmvc.OpenApiValidationFilter;
-import com.atlassian.oai.validator.springmvc.OpenApiValidationInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.atlassian.oai.validator.whitelist.ValidationErrorsWhitelist;
-import org.springframework.data.jpa.repository.config.*;
-
-import javax.servlet.Filter;
-import java.io.IOException;
 
 @Configuration
 public class OpenApiValidationConfig implements WebMvcConfigurer {

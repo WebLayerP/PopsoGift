@@ -46,6 +46,6 @@ public class Fornitore {
     private Date dataCancellazione;
     @Column(name="ID_CANCELLAZIONE")
     private String idCancellazione;
-    @OneToMany(mappedBy="fornitore")
+    @OneToMany(mappedBy="fornitore", fetch = FetchType.EAGER)
     private List<Oggetto> listaOggetti;
 }

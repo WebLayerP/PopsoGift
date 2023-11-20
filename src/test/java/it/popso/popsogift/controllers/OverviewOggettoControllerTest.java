@@ -62,4 +62,33 @@ public class OverviewOggettoControllerTest {
         }
     }
 
+    @Test
+    public void overviewCatalogoDetail_thenStatus200()
+            throws Exception {
+
+        // Inizializza il logger per il test
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(overviewOggettoController)
+                .build();
+
+            mockMvc.perform(get("/overview/campagna/10")
+                            .header("ruolo", "RE")
+                            .header("matricola", "12345")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+    }
+
+    @Test
+    public void overviewCatalogoDetail_withoutheader_thenStatus400()
+            throws Exception {
+
+        // Inizializza il logger per il test
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(overviewOggettoController)
+                .build();
+
+            mockMvc.perform(get("/overview/campagna/1")
+                            .header("matricola", "12345")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest());
+    }
+
 }

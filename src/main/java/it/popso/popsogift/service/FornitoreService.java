@@ -81,8 +81,10 @@ public class FornitoreService {
             fornitoreDTO.setIdFornitore(id);
             fornitoreDTO.setDataInserimento(fornitoreByID.getDataInserimento());
             fornitoreDTO.setDataAggiornamento(new Date());
-            Fornitore fornitore = fornitoreRepository.save(fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO));
+            Fornitore fornitore = fornitoreMapper.fornitoreDTOToFornitore(fornitoreDTO);
             aggiornaOggettoDaListaFornitori(fornitore);
+            fornitoreRepository.save(fornitore);
+
         }
         else{
             throw new ApplicationFaultMsgException("Errore modifica fornitore");

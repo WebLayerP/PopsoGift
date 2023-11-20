@@ -24,6 +24,6 @@ public interface FornitoreMapper {
     OggettoDTO mapToOggettoDTO(Oggetto oggetto);
 
     default CategoriaDTO maptoCategoriaDTO(Categoria categoria){
-        return categoria.getNomeCategoria();
+        return null!=categoria ? categoria.getNomeCategoria(): null;
     }
 }

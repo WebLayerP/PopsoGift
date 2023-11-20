@@ -3,6 +3,7 @@ package it.popso.popsogift.service;
 import it.popso.popsogift.PopsogiftApplication;
 import it.popso.popsogift.dto.OggettoOverview;
 import it.popso.popsogift.utils.OggettoDataInitializer;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -38,6 +39,11 @@ class OverviewOggettoServiceTest {
     @BeforeAll
     public void setup() {
         oggettoDataInitializer.initializeOggettoData();
+    }
+
+    @AfterAll
+    public void removeSetUp() {
+        oggettoDataInitializer.removeData();
     }
 
 

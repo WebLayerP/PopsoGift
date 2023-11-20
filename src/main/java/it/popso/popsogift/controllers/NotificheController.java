@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notifica")
+@RequestMapping("/notifiche")
 public class NotificheController {
 
     public static final Logger loggerPerformance = LoggerFactory.getLogger("PERFORMANCE."+NotificheController.class);
@@ -23,7 +23,7 @@ public class NotificheController {
     @Autowired
     private NotificaService notificaService;
 
-    @GetMapping("/allNotifiche")
+    @GetMapping
     public List<NotificaDTO> getAllNotifiche(@RequestHeader("Ruolo") String ruolo,
                                              @RequestHeader("Matricola")String matricola,
 
@@ -31,7 +31,7 @@ public class NotificheController {
         return notificaService.getAllNotifiche(codFiliale, ruolo, matricola);
     }
 
-    @GetMapping("/leggiNotifica/{id}")
+    @PutMapping("/{id}")
     public EsitoRisposta leggiNotifica(@RequestHeader("Ruolo") String ruolo,
                                        @RequestHeader("Matricola")String matricola,
                                        @PathVariable int id) {

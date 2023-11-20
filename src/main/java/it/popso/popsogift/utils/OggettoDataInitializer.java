@@ -1,10 +1,12 @@
 package it.popso.popsogift.utils;
 
 import it.popso.popsogift.dto.CategoriaDTO;
+import it.popso.popsogift.dto.OggettoDTO;
 import it.popso.popsogift.entity.Categoria;
 import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.entity.TipologiaOggetto;
+import it.popso.popsogift.mapper.OggettoMapper;
 import it.popso.popsogift.repository.CategoriaRepository;
 import it.popso.popsogift.repository.FornitoreRepository;
 import it.popso.popsogift.repository.OggettoRepository;
@@ -29,6 +31,9 @@ public class OggettoDataInitializer {
     private OggettoRepository oggettoRepository;
 
     @Autowired
+    private OggettoMapper oggettoMapper;
+
+    @Autowired
     private CategoriaRepository categoriaRepository;
 
     public void initializeOggettoData(){
@@ -42,7 +47,6 @@ public class OggettoDataInitializer {
         Fornitore fornitore = new Fornitore();
         fornitore.setCap("34552");
         fornitore.setDataInserimento(new Date());
-        fornitore.setIdFornitore(1);
         fornitore.setIndirizzo("via");
         fornitore.setEmail("test@test.it");
         fornitore.setCitta("citta");
@@ -54,8 +58,7 @@ public class OggettoDataInitializer {
         fornitore.setStatoCancellazione(Boolean.FALSE);
         tipologiaOggettoRepository.save(tipologia);
         categoriaRepository.save(categoria);
-        fornitoreRepository.save(fornitore);
-        oggetto.setFornitore(fornitore);
+        oggetto.setFornitore(fornitoreRepository.save(fornitore));
         oggetto.setIdOggetto(1);
         oggetto.setDescrizione("descr");
         oggetto.setDataInserimento(new Date());
@@ -88,8 +91,7 @@ public class OggettoDataInitializer {
         fornitoreTwo.setStatoCancellazione(Boolean.FALSE);
         tipologiaOggettoRepository.save(tipologiaTwo);
         categoriaRepository.save(categoriaTwo);
-        fornitoreRepository.save(fornitoreTwo);
-        oggettoTwo.setFornitore(fornitoreTwo);
+        oggettoTwo.setFornitore(fornitoreRepository.save(fornitoreTwo));
         oggettoTwo.setIdOggetto(2);
         oggettoTwo.setDescrizione("descr");
         oggettoTwo.setDataInserimento(new Date());
@@ -100,5 +102,20 @@ public class OggettoDataInitializer {
         oggettoTwo.setPrezzo(Double.valueOf("645"));
         oggettoTwo.setDataAggiornamento(Date.from(LocalDate.of(2023, 10, 2).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
         oggettoRepository.save(oggettoTwo);
+    }
+
+    public void removeData(){
+        oggettoRepository.deleteAll();
+        fornitoreRepository.deleteAll();
+        categoriaRepository.deleteAll();
+        tipologiaOggettoRepository.deleteAll();
+
+    }
+
+    public OggettoDTO oggettoDTOById(){
+        Oggetto oggetto = oggettoRepository.findAll().get(0);
+        if(oggetto!=null)
+            oggetto.setFornitore(null);
+        return oggettoMapper.oggettoToOggettoDTO(oggetto);
     }
 }

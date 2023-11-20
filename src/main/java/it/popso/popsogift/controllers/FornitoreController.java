@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/fornitori")
 public class FornitoreController {
@@ -111,5 +113,23 @@ public class FornitoreController {
         performanceLog = PERFORMANCE_END.replace("???", "Chiamata cancellazione fornitore con id: " + id + " effettuata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(esitoRisposta,status);
+    }
+    @GetMapping("/lista")
+    public ResponseEntity<List<FornitoreDTO>> getFornitori(@RequestHeader("Ruolo") String ruolo,
+                                                           @RequestHeader("Matricola")String matricola)
+
+    {
+        try{
+            logger.info("Chiamata getFornitori");
+            String performanceLog=PERFORMANCE_START.replace("???","fornitori");
+            loggerPerformance.info(performanceLog);
+            long start = System.currentTimeMillis();
+            List<FornitoreDTO> listaFornitori = fornitoreService.getFornitori();
+            performanceLog = PERFORMANCE_END.replace("???", listaFornitori+ "\nRicerca fornitori completata in "+(System.currentTimeMillis() - start)+ MILLISECONDI);
+            loggerPerformance.debug(performanceLog);
+            return new ResponseEntity<>(listaFornitori, HttpStatus.OK);
+        }catch (Exception e){
+            throw new ApplicationFault(e.getMessage());
+        }
     }
 }

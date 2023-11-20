@@ -19,9 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FornitoreService {
@@ -118,5 +116,16 @@ public class FornitoreService {
         } catch(Exception e){
             throw new ApplicationFaultMsgException(e.getMessage());
         }
+    }
+    public List<FornitoreDTO> getFornitori(){
+        List<FornitoreDTO> fornitori = fornitoreMapper.toListFornitoreDTO(fornitoreRepository.findAll());
+        List<FornitoreDTO> listaFornitoriOut= new ArrayList<>();
+        for(FornitoreDTO f: fornitori){
+            FornitoreDTO fornitoreDTO = new FornitoreDTO();
+            fornitoreDTO.setIdFornitore(f.getIdFornitore());
+            fornitoreDTO.setRagioneSociale(f.getRagioneSociale());
+            listaFornitoriOut.add(fornitoreDTO);
+        }
+        return listaFornitoriOut;
     }
 }

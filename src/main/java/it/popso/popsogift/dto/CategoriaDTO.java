@@ -1,20 +1,13 @@
 package it.popso.popsogift.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+
 import java.io.Serializable;
 
-public enum CategoriaDTO implements Serializable {
-
-    CATEGORIA1(1),
-    CATEGORIA2(2),
-    CATEGORIA3(3);
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
+public class CategoriaDTO implements Serializable {
     private Integer idCategoria;
-
-    CategoriaDTO(Integer idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-
-    public Integer getIdCategoria() {
-        return idCategoria;
-    }
+    private String nomeCategoria;
 }

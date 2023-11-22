@@ -12,7 +12,7 @@ public class TipologiaMapper {
         TipologiaDTO tipologiaDTO = campagnaDTO.getTipologia();
         Tipologia tipologia = new Tipologia();
         tipologia.setIdTipologia(tipologiaDTO.getIdTipologia());
-        tipologia.setNomeTipologia(TipologiaDTO.fromIdTipologia(tipologia.getIdTipologia()));
+        tipologia.setNomeTipologia(tipologiaDTO);
         return tipologia;
     }
 }

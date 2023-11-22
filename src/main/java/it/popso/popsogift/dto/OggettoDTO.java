@@ -22,5 +22,5 @@ public class OggettoDTO implements Serializable {
     private TipologiaOggettoDTO tipologia;
     private Date dataAggiornamento;
     private Date dataInserimento;
-    private transient List<TagDTO> tag;
+    private List<TagDTO> tag;
 }

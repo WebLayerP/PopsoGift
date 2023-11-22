@@ -5,6 +5,12 @@ public class Constants {
     private Constants() {
         //SONAR
     }
+//    ###### VARIABILI #######################
+
+    public static final String DATA_INSERIMENTO = "data_Inserimento";
+    public static final String ORDER_TYPE_ASC = "ASC";
+
+//    ###### QUERY ###########################
 
     public static final String CAMPAGNE_OVERVIEW = "select COUNT(distinct id_c) OVER (PARTITION BY stato) AS stato_count,stato, id_c, titolo_campagna, id, autore, descrizione, id_beneficiario, id_c, data_inserimento, data_aggiornamento \n" +
             "from (select id_campagna as id_c, titolo_campagna,  stato\n" +
@@ -32,4 +38,11 @@ public class Constants {
             "                      GROUP BY c.id_campagna) filiale \n" +
             "                      ON campagna.id_campagna = filiale.id_campagna";
 
+    public static final String OMAGGI_FILTRATI = "SELECT o.id_oggetto, o.codice as codiceOmaggio, o.descrizione, o.prezzo , tipologia.descrizione as tipologia, t.nome as tag , f.ragione_sociale \n" +
+            "FROM Oggetto o \n" +
+            "    left join tipologia_oggetto tipologia on o.tipologia= tipologia.id_tipologia\n" +
+            "    left join fornitore f on f.id_fornitore = O.FORNITORE\n" +
+            "    left Join rel_oggetto_tag r on r.id_Oggetto = o.id_Oggetto \n" +
+            "    left join tag t on t.id_tag= r.id_tag\n" +
+            "WHERE (?1 IS NULL OR tipologia.descrizione = ?1) AND (?2 IS NULL OR f.ragione_sociale= ?2) AND (?3 IS NULL OR t.nome = ?3)";
 }

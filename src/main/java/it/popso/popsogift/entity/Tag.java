@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name="TAG")
@@ -26,24 +25,6 @@ public class Tag {
     private Date dataInserimento;
     @Column(name="AUTORE")
     private String creatoDa;
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.MERGE
-            })
-    @JoinTable(
-            name = "REL_OGGETTO_TAG",
-            joinColumns = @JoinColumn(name = "ID_TAG"),
-            inverseJoinColumns = @JoinColumn(name = "ID_OGGETTO"))
-    private List<Oggetto> listaOggetti;
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.MERGE
-            })
-    @JoinTable(
-            name = "REL_BENEFICIARIO_TAG",
-            joinColumns = @JoinColumn(name = "ID_TAG"),
-            inverseJoinColumns = @JoinColumn(name = "NDG"))
-    private List<Beneficiario> listaBeneficiari;
     @Column(name="DATA_AGGIORNAMENTO")
     private Date dataAggiornamento;
 }

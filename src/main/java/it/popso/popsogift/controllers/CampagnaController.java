@@ -1,6 +1,8 @@
 package it.popso.popsogift.controllers;
 
 import it.popso.popsogift.dto.CampagnaDTO;
+import it.popso.popsogift.dto.Esito;
+import it.popso.popsogift.dto.EsitoRisposta;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.service.CampagnaService;
 import org.slf4j.Logger;
@@ -46,9 +48,9 @@ public class CampagnaController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<Campagna> createCampagna( @RequestHeader("Ruolo") String ruolo,
-                                                    @RequestHeader("Matricola")String matricola,
-                                                    @RequestBody CampagnaDTO campagnaDTO) {
+    public ResponseEntity<EsitoRisposta> createCampagna( @RequestHeader("Ruolo") String ruolo,
+                                                         @RequestHeader("Matricola")String matricola,
+                                                         @RequestBody CampagnaDTO campagnaDTO) {
         logger.info("Chiamata createCampagna");
         Campagna campagnaInserita;
         String performanceLog=PERFORMANCE_START.replace("???","insert");
@@ -57,7 +59,8 @@ public class CampagnaController {
         campagnaInserita = campagnaService.saveCampagna(campagnaDTO);
         performanceLog = PERFORMANCE_END.replace("???", campagnaInserita+ "\nInserimento nuova campagna completato in "+(System.currentTimeMillis() - start)+" millisecondi");
         loggerPerformance.debug(performanceLog);
-        return new ResponseEntity<>(campagnaInserita, HttpStatus.CREATED);
+        EsitoRisposta esitoRisposta = new EsitoRisposta(Esito.OK,"Campagna aggiunta con successo");
+        return new ResponseEntity<>(esitoRisposta,HttpStatus.OK);
     }
 
 

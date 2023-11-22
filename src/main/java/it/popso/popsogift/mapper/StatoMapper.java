@@ -11,7 +11,7 @@ public class StatoMapper {
         StatoDTO statoDTO = campagnaDTO.getStato();
         Stato stato = new Stato();
         stato.setIdStato(statoDTO.getIdStato());
-        stato.setNomeStato(StatoDTO.fromIdStato(stato.getIdStato()));
+        stato.setNomeStato(statoDTO);
         return stato;
     }
 }

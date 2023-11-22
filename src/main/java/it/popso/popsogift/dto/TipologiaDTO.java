@@ -1,7 +1,8 @@
 package it.popso.popsogift.dto;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.io.Serializable;
-import java.util.Objects;
 
 public enum TipologiaDTO implements Serializable {
     FISICA(1),
@@ -14,17 +15,8 @@ public enum TipologiaDTO implements Serializable {
     TipologiaDTO(Integer idTipologia) {
         this.idTipologia = idTipologia;
     }
-
+    @JsonValue
     public Integer getIdTipologia() {
         return idTipologia;
-    }
-
-    public static TipologiaDTO fromIdTipologia(Integer idTipologia) {
-        for (TipologiaDTO tipologiaDTO : TipologiaDTO.values()) {
-            if (Objects.equals(tipologiaDTO.getIdTipologia(), idTipologia)) {
-                return tipologiaDTO;
-            }
-        }
-        throw new IllegalArgumentException("Tipologia non valida: " + idTipologia);
     }
 }

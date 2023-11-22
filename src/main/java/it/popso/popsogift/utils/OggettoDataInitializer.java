@@ -1,7 +1,7 @@
 package it.popso.popsogift.utils;
 
-import it.popso.popsogift.dto.CategoriaDTO;
 import it.popso.popsogift.dto.OggettoDTO;
+import it.popso.popsogift.dto.TipologiaOggettoDTO;
 import it.popso.popsogift.entity.Categoria;
 import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.entity.Oggetto;
@@ -40,10 +40,9 @@ public class OggettoDataInitializer {
         Oggetto oggetto = new Oggetto();
         TipologiaOggetto tipologia = new TipologiaOggetto();
         tipologia.setIdTipologia(1);
-        tipologia.setNomeTipologia("FISICA");
+        tipologia.setNomeTipologia(TipologiaOggettoDTO.FISICO);
         Categoria categoria = new Categoria();
-        categoria.setIdCategoria(1);
-        categoria.setNomeCategoria(CategoriaDTO.CATEGORIA1);
+        categoria.setNomeCategoria("CATEGORIA1");
         Fornitore fornitore = new Fornitore();
         fornitore.setCap("34552");
         fornitore.setDataInserimento(new Date());
@@ -62,7 +61,7 @@ public class OggettoDataInitializer {
         oggetto.setIdOggetto(1);
         oggetto.setDescrizione("descr");
         oggetto.setDataInserimento(new Date());
-        oggetto.setTipologiaOggetto(tipologia);
+        oggetto.setTipologia(tipologia);
         oggetto.setCodice("46456");
         oggetto.setCategoria(categoria);
         oggetto.setNome("nome");
@@ -72,10 +71,9 @@ public class OggettoDataInitializer {
         Oggetto oggettoTwo = new Oggetto();
         TipologiaOggetto tipologiaTwo = new TipologiaOggetto();
         tipologiaTwo.setIdTipologia(2);
-        tipologiaTwo.setNomeTipologia("DIGITALE");
+        tipologiaTwo.setNomeTipologia(TipologiaOggettoDTO.DIGITALE);
         Categoria categoriaTwo = new Categoria();
-        categoriaTwo.setIdCategoria(1);
-        categoria.setNomeCategoria(CategoriaDTO.CATEGORIA1);
+        categoria.setNomeCategoria("CATEGORIA2");
         Fornitore fornitoreTwo = new Fornitore();
         fornitoreTwo.setCap("34552");
         fornitoreTwo.setDataInserimento(new Date());
@@ -95,7 +93,7 @@ public class OggettoDataInitializer {
         oggettoTwo.setIdOggetto(2);
         oggettoTwo.setDescrizione("descr");
         oggettoTwo.setDataInserimento(new Date());
-        oggettoTwo.setTipologiaOggetto(tipologiaTwo);
+        oggettoTwo.setTipologia(tipologiaTwo);
         oggettoTwo.setCodice("46456");
         oggettoTwo.setCategoria(categoriaTwo);
         oggettoTwo.setNome("nome");

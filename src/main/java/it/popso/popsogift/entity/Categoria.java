@@ -10,6 +10,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Categoria {
     @Id
-    @Column(name="DESCRIZIONE")
+    @Column(name="NOME")
     private String nomeCategoria;
 }

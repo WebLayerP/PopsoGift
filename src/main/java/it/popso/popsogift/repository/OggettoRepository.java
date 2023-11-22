@@ -15,7 +15,7 @@ public interface OggettoRepository extends JpaRepository<Oggetto, Integer>{
 
      @Query("SELECT MAX(o.dataAggiornamento) FROM Oggetto o")
      Date findMaxByDataAggiornamento();
-     @Query("select o.tipologiaOggetto.idTipologia, count(o.idOggetto) as numero from Oggetto o group by o.tipologiaOggetto.idTipologia")
+     @Query("select o.tipologia.idTipologia, count(o.idOggetto) as numero from Oggetto o group by o.tipologia.idTipologia")
      List<Object[]> numeroOggettiGroupByTipologia();
 
 }

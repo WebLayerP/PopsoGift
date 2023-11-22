@@ -2,10 +2,14 @@ package it.popso.popsogift.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 @Entity
+@Getter
+@Setter
 @Table(name="CAMPAGNA")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Campagna {
@@ -55,107 +59,4 @@ public class Campagna {
     @OneToMany(mappedBy="campagna")
     private List<Segnalazione> segnalazione;
 
-    public Stato getStato() {
-        return stato;
-    }
-
-    public void setStato(Stato stato) {
-        this.stato = stato;
-    }
-
-    public List<Segnalazione> getSegnalazione() {
-        return segnalazione;
-    }
-
-    public void setSegnalazione(List<Segnalazione> segnalazione) {
-        this.segnalazione = segnalazione;
-    }
-
-    public List<Oggetto> getListaOmaggi() {
-        return listaOmaggi;
-    }
-
-    public void setListaOmaggi(List<Oggetto> listaOmaggi) {
-        this.listaOmaggi = listaOmaggi;
-    }
-
-    public List<Filiale> getListaFiliali() {
-        return listaFiliali;
-    }
-
-    public void setListaFiliali(List<Filiale> listaFiliali) {
-        this.listaFiliali = listaFiliali;
-    }
-
-    public Integer getIdCampagna() {
-        return idCampagna;
-    }
-
-    public void setIdCampagna(Integer idCampagna) {
-        this.idCampagna = idCampagna;
-    }
-
-    public String getTitoloCampagna() {
-        return titoloCampagna;
-    }
-
-    public void setTitoloCampagna(String titoloCampagna) {
-        this.titoloCampagna = titoloCampagna;
-    }
-
-    public Tipologia getTipologia() {
-        return tipologia;
-    }
-
-    public void setTipologia(Tipologia tipologia) {
-        this.tipologia = tipologia;
-    }
-
-    public Date getDataInizioModifiche() {
-        return dataInizioModifiche;
-    }
-
-    public void setDataInizioModifiche(Date dataInizioModifiche) {
-        this.dataInizioModifiche = dataInizioModifiche;
-    }
-
-    public Date getDataFineModifiche() {
-        return dataFineModifiche;
-    }
-
-    public void setDataFineModifiche(Date dataFineModifiche) {
-        this.dataFineModifiche = dataFineModifiche;
-    }
-
-    public Date getDataAggiornamento() {
-        return dataAggiornamento;
-    }
-
-    public void setDataAggiornamento(Date dataAggiornamento) {
-        this.dataAggiornamento = dataAggiornamento;
-    }
-
-    public Date getDataInserimento() {
-        return dataInserimento;
-    }
-
-    public Date getDataFine() {
-        return dataFine;
-    }
-
-    public void setDataFine(Date dataFine) {
-        this.dataFine = dataFine;
-    }
-
-    public void setDataInserimento(Date dataInserimento) {
-        this.dataInserimento = dataInserimento;
-    }
-
-    public String getMatricola() {
-        return matricola;
-    }
-
-    public void setMatricola(String matricola) {
-        this.matricola = matricola;
-    }
 }

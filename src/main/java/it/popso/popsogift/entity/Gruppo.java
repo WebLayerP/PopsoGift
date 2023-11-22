@@ -4,11 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property="idGruppo")
 @Table(name="GRUPPO")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,51 +39,4 @@ public class Gruppo {
     @Column(name="DATA_INSERIMENTO")
     private Date dataInserimento;
 
-    public Integer getIdGruppo() {
-        return idGruppo;
-    }
-
-    public void setIdGruppo(Integer idGruppo) {
-        this.idGruppo = idGruppo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Date getDataAggiornamento() {
-        return dataAggiornamento;
-    }
-
-    public void setDataAggiornamento(Date dataAggiornamento) {
-        this.dataAggiornamento = dataAggiornamento;
-    }
-
-    public Date getDataInserimento() {
-        return dataInserimento;
-    }
-
-    public void setDataInserimento(Date dataInserimento) {
-        this.dataInserimento = dataInserimento;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescrizione() {
-        return descrizione;
-    }
-
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
-
-    public List<Beneficiario> getListaBeneficiari() {
-        return listaBeneficiari;
-    }
-
-    public void setListaBeneficiari(List<Beneficiario> listaBeneficiari) {
-        this.listaBeneficiari = listaBeneficiari;
-    }
 }

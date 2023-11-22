@@ -4,11 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name="BENEFICIARIO")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property="ndg")
@@ -53,82 +57,4 @@ public class Beneficiario {
     @Column(name="PRIVACY")
     private Boolean privacy;
 
-    public String getNdg() {
-        return ndg;
-    }
-
-    public void setNdg(String ndg) {
-        this.ndg = ndg;
-    }
-
-    public Date getDataInserimento() {
-        return dataInserimento;
-    }
-
-    public void setDataInserimento(Date dataInserimento) {
-        this.dataInserimento = dataInserimento;
-    }
-
-    public Date getDataAggiornamento() {
-        return dataAggiornamento;
-    }
-
-    public void setDataAggiornamento(Date dataAggiornamento) {
-        this.dataAggiornamento = dataAggiornamento;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public StatoBeneficiario getStatoBeneficiario() {
-        return statoBeneficiario;
-    }
-
-    public void setStatoBeneficiario(StatoBeneficiario statoBeneficiario) {
-        this.statoBeneficiario = statoBeneficiario;
-    }
-    public Date getDataEstinzione() {
-        return dataEstinzione;
-    }
-
-    public void setDataEstinzione(Date dataEstinzione) {
-        this.dataEstinzione = dataEstinzione;
-    }
-
-    public String getMotivoEstinzione() {
-        return motivoEstinzione;
-    }
-
-    public void setMotivoEstinzione(String motivoEstinzione) {
-        this.motivoEstinzione = motivoEstinzione;
-    }
-
-    public List<Gruppo> getListaGruppi() {
-        return listaGruppi;
-    }
-
-    public void setListaGruppi(List<Gruppo> listaGruppi) {
-        this.listaGruppi = listaGruppi;
-    }
-
-    public Boolean getPrivacy() {
-        return privacy;
-    }
-
-    public void setPrivacy(Boolean privacy) {
-        this.privacy = privacy;
-    }
-
-    public List<Oggetto> getListaOggetti() {
-        return listaOggetti;
-    }
-
-    public void setListaOggetti(List<Oggetto> listaOggetti) {
-        this.listaOggetti = listaOggetti;
-    }
 }

@@ -49,5 +49,11 @@ public class Oggetto {
             joinColumns = @JoinColumn(name = "ID_OGGETTO"),
             inverseJoinColumns = @JoinColumn(name = "ID_TAG"))
     private List<Tag> tag;
+    @Column(name="STATO_CANCELLAZIONE")
+    private Boolean statoCancellazione;
+    @Column(name="DATA_CANCELLAZIONE")
+    private Date dataCancellazione;
+    @Column(name="ID_CANCELLAZIONE")
+    private String idCancellazione;
 
 }

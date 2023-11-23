@@ -90,4 +90,21 @@ public class OggettoController {
         EsitoRisposta esitoRisposta = new EsitoRisposta(Esito.OK,"Oggetto aggiunto con successo");
         return new ResponseEntity<>(esitoRisposta,HttpStatus.OK);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EsitoRisposta> cancellaOggetto(@RequestHeader("Ruolo") String ruolo,
+                                                           @RequestHeader("Matricola")String matricola,
+                                                           @PathVariable Integer id) {
+        logger.info("Chiamata cancellaOggetto");
+        EsitoRisposta esitoRisposta;
+        String performanceLog=PERFORMANCE_START.replace("???","cancellaFornitore");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        HttpStatus status;
+        oggettoService.deleteLogicaOggetto(id,matricola);
+        esitoRisposta =new EsitoRisposta(Esito.OK,"Omaggio con l'id " + id +" cancellato con successo");
+        status = HttpStatus.OK;
+        performanceLog = PERFORMANCE_END.replace("???", "Chiamata cancellazione oggetto con id: " + id + " effettuata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(esitoRisposta,status);
+    }
 }

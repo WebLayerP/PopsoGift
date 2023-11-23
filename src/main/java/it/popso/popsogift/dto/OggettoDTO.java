@@ -23,4 +23,7 @@ public class OggettoDTO implements Serializable {
     private Date dataAggiornamento;
     private Date dataInserimento;
     private List<TagDTO> tag;
+    private Boolean statoCancellazione;
+    private Date dataCancellazione;
+    private String idCancellazione;
 }

@@ -5,6 +5,7 @@ import it.popso.popsogift.dto.OmaggiListDTO;
 import it.popso.popsogift.dto.OmaggioOverview;
 import it.popso.popsogift.dto.PaginazioneDTO;
 import it.popso.popsogift.entity.Oggetto;
+import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.OggettoMapper;
@@ -119,6 +120,22 @@ public class OggettoService {
 
     private void updateTags(Object[] o, List<String> tags) {
         tags.add(o[5].toString());
+    }
+    public void deleteLogicaOggetto(Integer id, String matricola){
+        try {
+            Oggetto oggetto = oggettoRepository.findByIdOggettoAndStatoCancellazione(id, Boolean.valueOf(false));
+            if (oggetto != null) {
+                oggetto.setDataCancellazione(new Date());
+                oggetto.setIdCancellazione(matricola);
+                oggetto.setStatoCancellazione(true);
+                oggettoRepository.save(oggetto);
+            }
+            else{
+                throw new ApplicationFaultMsgException("Oggetto non presente o in stato cancellato");
+            }
+        } catch(Exception e){
+            throw new ApplicationFaultMsgException(e.getMessage());
+        }
     }
 
 }

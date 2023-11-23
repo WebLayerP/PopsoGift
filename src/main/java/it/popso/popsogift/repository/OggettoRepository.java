@@ -23,4 +23,6 @@ public interface OggettoRepository extends JpaRepository<Oggetto, Integer>{
      List<Object[]> numeroOggettiGroupByTipologia();
      @Query(value = Constants.OMAGGI_FILTRATI, nativeQuery = true)
      Page<Object[]> findByTipologiaFornitoreTag(@Param("tipologia") String tipologia, @Param("fornitore") String fornitore, @Param("tag") String tag,  Pageable pageable);
+     Oggetto findByIdOggettoAndStatoCancellazione(@Param("idOggetto") Integer idOggetto, @Param("statoCancellazione") Boolean stato);
+
 }

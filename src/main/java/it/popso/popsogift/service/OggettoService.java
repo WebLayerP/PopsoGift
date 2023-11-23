@@ -70,9 +70,9 @@ public class OggettoService {
         PaginazioneDTO paginazioneDTO = new PaginazioneDTO();
         Pageable pageable;
         if(Constants.ORDER_TYPE_ASC.equals(order))
-            pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? Constants.DATA_INSERIMENTO: orderBy).ascending());
+            pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? Constants.DATA_INSERIMENTO_NATIVE : orderBy).ascending());
         else
-            pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? Constants.DATA_INSERIMENTO: orderBy).descending());
+            pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? Constants.DATA_INSERIMENTO_NATIVE : orderBy).descending());
         Page<Object[]> risultati = oggettoRepository.findByTipologiaFornitoreTag(tipologia, fornitore, tag, pageable);
         List<OmaggioOverview> listaOmaggi= new ArrayList<>();
         List<String> tags = new ArrayList<>();

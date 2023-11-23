@@ -31,6 +31,7 @@ public class TagService {
     public Tag saveTag(TagDTO tagDTO, String matricola){
         Tag tag = tagMapper.tagDTOToTag(tagDTO);
         try {
+            tag.setIdTag(null);
             tag.setDataInserimento(new Date());
             tag.setCreatoDa(matricola);
             tag = tagRepository.save(tag);
@@ -38,6 +39,21 @@ public class TagService {
             throw new ApplicationFaultMsgException(e.getMessage());
         }
         return tag;
+    }
+
+    public TagDTO updateTag(TagDTO tagDTO, int id){
+        Tag tag = tagMapper.tagDTOToTag(tagDTO);
+        try {
+            Tag tagSaved = tagRepository.findById(id).orElseThrow(() -> new ApplicationFaultMsgException("Nessun tag trovato corrispondente all'id ricercato"));
+            tag.setIdTag(id);
+            tag.setDataInserimento(tagSaved.getDataInserimento());
+            tag.setCreatoDa(tagSaved.getCreatoDa());
+            tag.setDataAggiornamento(new Date());
+            tagRepository.save(tag);
+        } catch(DataIntegrityViolationException e){
+            throw new ApplicationFaultMsgException(e.getMessage());
+        }
+        return tagMapper.tagToTagDTO(tag);
     }
 }
 

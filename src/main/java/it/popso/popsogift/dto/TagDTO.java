@@ -9,7 +9,15 @@ import java.io.Serializable;
 public class TagDTO implements Serializable{
 
     private String nomeTag;
-    private Integer idTag;
+    private int idTag;
     private String descrizione;
 
+    public TagDTO() {
+    }
+
+    public TagDTO(String nomeTag, int idTag, String descrizione) {
+        this.nomeTag = nomeTag;
+        this.idTag = idTag;
+        this.descrizione = descrizione;
+    }
 }

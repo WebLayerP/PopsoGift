@@ -1,9 +1,6 @@
 package it.popso.popsogift.controllers;
 
-import it.popso.popsogift.dto.Esito;
-import it.popso.popsogift.dto.EsitoRisposta;
-import it.popso.popsogift.dto.OggettoDTO;
-import it.popso.popsogift.dto.OmaggiListDTO;
+import it.popso.popsogift.dto.*;
 import it.popso.popsogift.service.OggettoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,5 +103,20 @@ public class OggettoController {
         performanceLog = PERFORMANCE_END.replace("???", "Chiamata cancellazione oggetto con id: " + id + " effettuata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(esitoRisposta,status);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<EsitoRisposta> updateOggetto(@RequestHeader("Ruolo") String ruolo,
+                                                         @RequestHeader("Matricola")String matricola,
+                                                         @PathVariable Integer id,
+                                                         @RequestBody OggettoDTO oggettoDTO) {
+        logger.info("Chiamata updateOggetto");
+        String performanceLog=PERFORMANCE_START.replace("???","modificaFornitore");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        oggettoService.updateOggetto(id,oggettoDTO);
+        performanceLog = PERFORMANCE_END.replace("???", oggettoDTO+ "\nModifica oggetto completata in "+(System.currentTimeMillis() - start)+MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        EsitoRisposta esitoRisposta = new EsitoRisposta(Esito.OK,"Oggetto modificato con successo");
+        return new ResponseEntity<>(esitoRisposta,HttpStatus.OK);
     }
 }

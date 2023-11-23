@@ -21,10 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OggettoService {
@@ -135,6 +132,28 @@ public class OggettoService {
             }
         } catch(Exception e){
             throw new ApplicationFaultMsgException(e.getMessage());
+        }
+    }
+    public OggettoDTO oggettoById(Integer id) {
+        Oggetto oggetto = oggettoRepository.findByIdOggettoAndStatoCancellazione(id, Boolean.FALSE);
+        if(Objects.isNull(oggetto)){
+            throw new ApplicationFaultMsgException("L'oggetto con id " + id + " non è stato trovato");
+        }
+        return oggettoMapper.oggettoToOggettoDTO(oggetto);
+    }
+    public void updateOggetto (Integer id, OggettoDTO oggettoDTO){
+        OggettoDTO oggettoByID = oggettoById(id);
+        if( oggettoByID != null) {
+            oggettoDTO.setIdOggetto(id);
+            oggettoDTO.setDataInserimento(oggettoByID.getDataInserimento());
+            oggettoDTO.setStatoCancellazione(false);
+            oggettoDTO.setDataAggiornamento(new Date());
+            Oggetto oggetto = oggettoMapper.oggettoDTOToOggetto(oggettoDTO);
+            oggettoRepository.save(oggetto);
+
+        }
+        else{
+            throw new ApplicationFaultMsgException("Errore modifica oggetto");
         }
     }
 

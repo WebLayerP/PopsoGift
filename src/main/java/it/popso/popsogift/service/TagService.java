@@ -1,6 +1,8 @@
 package it.popso.popsogift.service;
 
+import it.popso.popsogift.dto.PaginazioneDTO;
 import it.popso.popsogift.dto.TagDTO;
+import it.popso.popsogift.dto.TagListDTO;
 import it.popso.popsogift.dto.TagOutputDTO;
 import it.popso.popsogift.entity.Tag;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
@@ -8,7 +10,13 @@ import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.TagMapper;
 import it.popso.popsogift.repository.TagRepository;
+import it.popso.popsogift.utils.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,9 +30,30 @@ public class TagService {
     @Autowired
     private TagMapper tagMapper;
 
-    public List<Tag> getAllTag() {
+    public TagListDTO getAllTag(int page, int size, String order, String orderBy) {
+
+        TagListDTO result = new TagListDTO();
         try{
-            return tagRepository.findAll();
+            PaginazioneDTO paginazioneDTO = new PaginazioneDTO();
+            Pageable pageable;
+            if(Constants.ORDER_TYPE_ASC.equals(order))
+                pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? "dataInserimento": orderBy).ascending());
+            else
+                pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? "dataInserimento": orderBy).descending());
+
+            Page<Tag> risultati = tagRepository.findAll(pageable);
+
+            List<TagOutputDTO> listaResults = tagMapper.toListOutputDto(risultati.getContent());
+            listaResults.forEach(this::setNumeroOggettiAndBeneficiari);
+            paginazioneDTO.setNumeroPagine(risultati.getTotalPages());
+            paginazioneDTO.setNumeroElementiPerPagina(risultati.getSize());
+            paginazioneDTO.setNumeroPagina(risultati.getNumber());
+
+            result.setNumeroElementiTotali(risultati.getNumberOfElements());
+            result.setPaginazione(paginazioneDTO);
+            result.setResults(listaResults);
+
+            return result;
         }catch(org.springframework.transaction.CannotCreateTransactionException e){
             throw new CannotCreateTransactionException(e.getMessage());
         }
@@ -63,6 +92,11 @@ public class TagService {
         result.setNumeroBeneficiari(tagRepository.findNumeroBeneficiari(id));
         result.setNumeroOggetti(tagRepository.findNumeroOmaggi(id));
         return result ;
+    }
+
+    private void setNumeroOggettiAndBeneficiari(TagOutputDTO tag){
+        tag.setNumeroBeneficiari(tagRepository.findNumeroBeneficiari(tag.getIdTag()));
+        tag.setNumeroOggetti(tagRepository.findNumeroOmaggi(tag.getIdTag()));
     }
 }
 

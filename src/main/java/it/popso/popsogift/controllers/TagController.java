@@ -1,9 +1,6 @@
 package it.popso.popsogift.controllers;
 
-import it.popso.popsogift.dto.Esito;
-import it.popso.popsogift.dto.EsitoRisposta;
-import it.popso.popsogift.dto.TagDTO;
-import it.popso.popsogift.dto.TagOutputDTO;
+import it.popso.popsogift.dto.*;
 import it.popso.popsogift.entity.Tag;
 import it.popso.popsogift.service.TagService;
 import it.popso.popsogift.utils.Constants;
@@ -13,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tag")
@@ -30,17 +25,18 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping
-    public List<Tag> getAllTag(@RequestHeader("Ruolo") String ruolo,
-                               @RequestHeader("Matricola")String matricola) {
+    public ResponseEntity<TagListDTO> getAllTag(@RequestParam ("page") int page,
+                                                @RequestParam (value = "size")int size,
+                                                @RequestParam(value = "order", required = false) String order,
+                                                @RequestParam(value ="orderBy", required = false)String orderBy) {
         logger.info("Chiamata getAllTag");
-        List<Tag> listaTag;
         String performanceLog=PERFORMANCE_START.replace("???","/all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
-        listaTag = tagService.getAllTag();
-        performanceLog = PERFORMANCE_END.replace("???", listaTag+ "\nRicerca dati tag completata in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
+        TagListDTO result = tagService.getAllTag(page,size,order,orderBy);
+        performanceLog = PERFORMANCE_END.replace("???", result + "\nRicerca dati tag completata in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
         loggerPerformance.debug(performanceLog);
-        return listaTag;
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PostMapping

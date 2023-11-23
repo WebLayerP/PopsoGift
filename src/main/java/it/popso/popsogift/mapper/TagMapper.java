@@ -6,6 +6,8 @@ import it.popso.popsogift.entity.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface TagMapper {
 
@@ -14,5 +16,7 @@ public interface TagMapper {
     TagOutputDTO tagToTagOutputDTO(Tag tag);
 
     Tag tagDTOToTag(TagDTO tagDTO);
+
+    List<TagOutputDTO> toListOutputDto(List<Tag> tagList);
 
 }

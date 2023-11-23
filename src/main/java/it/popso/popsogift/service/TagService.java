@@ -1,6 +1,7 @@
 package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.TagDTO;
+import it.popso.popsogift.dto.TagOutputDTO;
 import it.popso.popsogift.entity.Tag;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
@@ -54,6 +55,14 @@ public class TagService {
             throw new ApplicationFaultMsgException(e.getMessage());
         }
         return tagMapper.tagToTagDTO(tag);
+    }
+
+    public TagOutputDTO findTagById(int id){
+        Tag tag = tagRepository.findById(id).orElseThrow(() -> new ApplicationFaultMsgException("Nessun tag trovato corrispondente all'id ricercato"));
+        TagOutputDTO result = tagMapper.tagToTagOutputDTO(tag);
+        result.setNumeroBeneficiari(tagRepository.findNumeroBeneficiari(id));
+        result.setNumeroOggetti(tagRepository.findNumeroOmaggi(id));
+        return result ;
     }
 }
 

@@ -3,6 +3,7 @@ package it.popso.popsogift.controllers;
 import it.popso.popsogift.dto.Esito;
 import it.popso.popsogift.dto.EsitoRisposta;
 import it.popso.popsogift.dto.TagDTO;
+import it.popso.popsogift.dto.TagOutputDTO;
 import it.popso.popsogift.entity.Tag;
 import it.popso.popsogift.service.TagService;
 import it.popso.popsogift.utils.Constants;
@@ -61,14 +62,26 @@ public class TagController {
     public ResponseEntity<EsitoRisposta> updateTag(@PathVariable Integer id,
                                                    @RequestBody TagDTO tagDTO) {
         logger.info("Chiamata modificaTag");
-        String performanceLog=PERFORMANCE_START.replace("???","insert");
+        String performanceLog=PERFORMANCE_START.replace("???","update");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
         TagDTO tagModificato = tagService.updateTag(tagDTO, id);
         performanceLog = PERFORMANCE_END.replace("???", tagModificato+ "\nInserimento nuovo tag completato in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
         loggerPerformance.debug(performanceLog);
         EsitoRisposta esitoRisposta = new EsitoRisposta(Esito.OK,"Tag con id " + tagModificato.getIdTag() + " modificato con successo");
-        return new ResponseEntity<>(esitoRisposta, HttpStatus.CREATED);
+        return new ResponseEntity<>(esitoRisposta, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TagOutputDTO> findTag(@PathVariable Integer id) {
+        logger.info("Chiamata findTagById");
+        String performanceLog=PERFORMANCE_START.replace("???","findById");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        TagOutputDTO tag = tagService.findTagById(id);
+        performanceLog = PERFORMANCE_END.replace("???", tag+ "\nricerca tag per id completato in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 }
 

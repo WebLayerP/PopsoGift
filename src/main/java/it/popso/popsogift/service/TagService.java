@@ -2,6 +2,7 @@ package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.TagDTO;
 import it.popso.popsogift.entity.Tag;
+import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.TagMapper;
@@ -27,16 +28,16 @@ public class TagService {
             throw new CannotCreateTransactionException(e.getMessage());
         }
     }
-    public Tag saveTag(TagDTO tagDTO){
+    public Tag saveTag(TagDTO tagDTO, String matricola){
         Tag tag = tagMapper.tagDTOToTag(tagDTO);
-        Tag tagInserito;
         try {
             tag.setDataInserimento(new Date());
-            tagInserito = tagRepository.save(tag);
+            tag.setCreatoDa(matricola);
+            tag = tagRepository.save(tag);
         } catch(DataIntegrityViolationException e){
-            throw new DataIntegrityViolationException(e.getMessage());
+            throw new ApplicationFaultMsgException(e.getMessage());
         }
-        return tagInserito;
+        return tag;
     }
 }
 

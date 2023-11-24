@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public interface TagRepository extends JpaRepository<Tag,Integer> {
@@ -16,4 +18,6 @@ public interface TagRepository extends JpaRepository<Tag,Integer> {
 
     @Query(value = "SELECT COUNT(id_oggetto) FROM tag t join rel_oggetto_tag rot on t.id_tag = rot.id_tag WHERE t.id_tag = ?1", nativeQuery = true)
     Integer findNumeroOmaggi(@Param("idTag") int idTag);
+
+    List<Tag> findByNomeTagContaining(String nomeTag);
 }

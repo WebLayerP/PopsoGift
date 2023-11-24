@@ -62,6 +62,7 @@ public class TagService {
         Tag tag = tagMapper.tagDTOToTag(tagDTO);
         try {
             tag.setIdTag(null);
+            tag.setNomeTag(tag.getNomeTag().toUpperCase());
             tag.setDataInserimento(new Date());
             tag.setCreatoDa(matricola);
             tag = tagRepository.save(tag);
@@ -71,11 +72,18 @@ public class TagService {
         return tag;
     }
 
+    public List<TagDTO> dynamicSearch(String nomeTag){
+        List<TagDTO> listaTag = tagMapper.toListTagDto(tagRepository.findByNomeTagContaining(nomeTag));
+        listaTag.stream().forEach(t-> t.setDescrizione(null));
+        return listaTag;
+    }
+
     public TagDTO updateTag(TagDTO tagDTO, int id){
         Tag tag = tagMapper.tagDTOToTag(tagDTO);
         try {
             Tag tagSaved = tagRepository.findById(id).orElseThrow(() -> new ApplicationFaultMsgException("Nessun tag trovato corrispondente all'id ricercato"));
             tag.setIdTag(id);
+            tag.setNomeTag(tagDTO.getNomeTag().toUpperCase());
             tag.setDataInserimento(tagSaved.getDataInserimento());
             tag.setCreatoDa(tagSaved.getCreatoDa());
             tag.setDataAggiornamento(new Date());
@@ -89,8 +97,7 @@ public class TagService {
     public TagOutputDTO findTagById(int id){
         Tag tag = tagRepository.findById(id).orElseThrow(() -> new ApplicationFaultMsgException("Nessun tag trovato corrispondente all'id ricercato"));
         TagOutputDTO result = tagMapper.tagToTagOutputDTO(tag);
-        result.setNumeroBeneficiari(tagRepository.findNumeroBeneficiari(id));
-        result.setNumeroOggetti(tagRepository.findNumeroOmaggi(id));
+        setNumeroOggettiAndBeneficiari(result);
         return result ;
     }
 

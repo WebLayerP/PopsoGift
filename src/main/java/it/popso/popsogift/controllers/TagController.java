@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tag")
 public class TagController {
@@ -36,7 +38,20 @@ public class TagController {
         TagListDTO result = tagService.getAllTag(page,size,order,orderBy);
         performanceLog = PERFORMANCE_END.replace("???", result + "\nRicerca dati tag completata in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
         loggerPerformance.debug(performanceLog);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/lista-dinamica")
+    public ResponseEntity<List<TagDTO>> ricercaDinamica(@RequestParam ("tag") String tag) {
+        logger.info("Chiamata ricerca dinamica");
+        String performanceLog=PERFORMANCE_START.replace("???","tag/lista-dinamica");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        List<TagDTO> result = tagService.dynamicSearch(tag.toUpperCase());
+        performanceLog = PERFORMANCE_END.replace("???", result + "\nRicerca dinamica tag completata in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping

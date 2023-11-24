@@ -41,7 +41,7 @@ public class TagService {
             else
                 pageable = PageRequest.of(page, size, Sort.by(StringUtils.isBlank(orderBy) ? "dataInserimento": orderBy).descending());
 
-            Page<Tag> risultati = tagRepository.findAll(pageable);
+            Page<Tag> risultati = tagRepository.findByStatoCancellazione(Boolean.FALSE, pageable);
 
             List<TagOutputDTO> listaResults = tagMapper.toListOutputDto(risultati.getContent());
             listaResults.forEach(this::setNumeroOggettiAndBeneficiari);
@@ -64,6 +64,7 @@ public class TagService {
             tag.setIdTag(null);
             tag.setNomeTag(tag.getNomeTag().toUpperCase());
             tag.setDataInserimento(new Date());
+            tag.setStatoCancellazione(false);
             tag.setCreatoDa(matricola);
             tag = tagRepository.save(tag);
         } catch(DataIntegrityViolationException e){
@@ -73,7 +74,7 @@ public class TagService {
     }
 
     public List<TagDTO> dynamicSearch(String nomeTag){
-        List<TagDTO> listaTag = tagMapper.toListTagDto(tagRepository.findByNomeTagContaining(nomeTag));
+        List<TagDTO> listaTag = tagMapper.toListTagDto(tagRepository.findByNomeTagContainingAndStatoCancellazione(nomeTag, Boolean.FALSE));
         listaTag.stream().forEach(t-> t.setDescrizione(null));
         return listaTag;
     }
@@ -85,6 +86,7 @@ public class TagService {
             tag.setIdTag(id);
             tag.setNomeTag(tagDTO.getNomeTag().toUpperCase());
             tag.setDataInserimento(tagSaved.getDataInserimento());
+            tag.setStatoCancellazione(tagSaved.getStatoCancellazione());
             tag.setCreatoDa(tagSaved.getCreatoDa());
             tag.setDataAggiornamento(new Date());
             tagRepository.save(tag);
@@ -94,8 +96,20 @@ public class TagService {
         return tagMapper.tagToTagDTO(tag);
     }
 
+    public void deleteLogicaTag(int id, String matricola){
+        try {
+            Tag tag = tagRepository.findByIdTagAndStatoCancellazione(id, Boolean.valueOf(false)).orElseThrow(() -> new ApplicationFaultMsgException("Tag non presente o in stato cancellato"));
+            tag.setDataCancellazione(new Date());
+            tag.setIdCancellazione(matricola);
+            tag.setStatoCancellazione(true);
+            tagRepository.save(tag);
+        } catch(Exception e){
+            throw new ApplicationFaultMsgException(e.getMessage());
+        }
+    }
+
     public TagOutputDTO findTagById(int id){
-        Tag tag = tagRepository.findById(id).orElseThrow(() -> new ApplicationFaultMsgException("Nessun tag trovato corrispondente all'id ricercato"));
+        Tag tag = tagRepository.findByIdTagAndStatoCancellazione(id, Boolean.valueOf(false)).orElseThrow(() -> new ApplicationFaultMsgException("Nessun tag trovato corrispondente all'id ricercato"));
         TagOutputDTO result = tagMapper.tagToTagOutputDTO(tag);
         setNumeroOggettiAndBeneficiari(result);
         return result ;
@@ -105,5 +119,7 @@ public class TagService {
         tag.setNumeroBeneficiari(tagRepository.findNumeroBeneficiari(tag.getIdTag()));
         tag.setNumeroOggetti(tagRepository.findNumeroOmaggi(tag.getIdTag()));
     }
+
+
 }
 

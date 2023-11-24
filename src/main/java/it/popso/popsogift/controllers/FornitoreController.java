@@ -114,6 +114,7 @@ public class FornitoreController {
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(esitoRisposta,status);
     }
+
     @GetMapping("/lista")
     public ResponseEntity<List<FornitoreDTO>> getFornitori(@RequestHeader("Ruolo") String ruolo,
                                                            @RequestHeader("Matricola")String matricola)

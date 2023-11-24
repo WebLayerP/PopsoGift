@@ -94,6 +94,24 @@ public class TagController {
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(tag, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EsitoRisposta> cancellaFornitore(@RequestHeader("Ruolo") String ruolo,
+                                                           @RequestHeader("Matricola")String matricola,
+                                                           @PathVariable Integer id) {
+        logger.info("Chiamata cancellaTag");
+        EsitoRisposta esitoRisposta;
+        String performanceLog=PERFORMANCE_START.replace("???","cancellaTag");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        HttpStatus status;
+        tagService.deleteLogicaTag(id,matricola);
+        esitoRisposta =new EsitoRisposta(Esito.OK,"Tag cancellato con successo");
+        status = HttpStatus.OK;
+        performanceLog = PERFORMANCE_END.replace("???", "Chiamata cancellazione fornitore con id: " + id + " effettuata in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(esitoRisposta,status);
+    }
 }
 
 

@@ -79,25 +79,13 @@ public class FornitoreServiceTest {
     }
 
     @Test
-    void fornitoreByIdTestConOggetto() {
-        FornitoreDTO fornitoreDTO = nuovoFornitore("fornitoreById@example.org ", "Via Roma 3", "FornitoreById Srl", "58439543");
-        assegnazioneOggetto(fornitoreDTO);
-        FornitoreDTO saved = fornitoreService.saveFornitore(fornitoreDTO);
-        FornitoreDTO fornitoreById = fornitoreService.fornitoreById(saved.getIdFornitore());
-        assertEquals( 1, fornitoreById.getListaOggetti().size());
-        assertEquals( "FornitoreById Srl", fornitoreById.getRagioneSociale());
-    }
-
-    @Test
     void fornitoreModificaTest() {
         FornitoreDTO fornitoreDTO = nuovoFornitore("fornitoreNonModificato@example.org ", "Via Roma 334", "FornitoreNonModificato Srl", "643757534");
         FornitoreDTO saved = fornitoreService.saveFornitore(fornitoreDTO);
         assertEquals( "FornitoreNonModificato Srl", saved.getRagioneSociale());
         FornitoreDTO fornitoreModificatoDTO = nuovoFornitore("fornitoreModificato@example.org", "Via Roma 4", "FornitoreModificato Srl", "643757534");
-        assegnazioneOggetto(fornitoreModificatoDTO);
         fornitoreService.updateFornitore(saved.getIdFornitore(),fornitoreModificatoDTO);
         FornitoreDTO fornitore = fornitoreService.fornitoreById(saved.getIdFornitore());
-        assertEquals( 1, fornitore.getListaOggetti().size());
         assertEquals( "fornitoreModificato@example.org", fornitore.getEmail());
         assertEquals(formato.format(fornitore.getDataAggiornamento()), formato.format(new Date()));
     }

@@ -73,7 +73,7 @@ public class OggettoDataInitializer {
         tipologiaTwo.setIdTipologia(2);
         tipologiaTwo.setNomeTipologia(TipologiaOggettoDTO.DIGITALE);
         Categoria categoriaTwo = new Categoria();
-        categoria.setNomeCategoria("CATEGORIA2");
+        categoriaTwo.setNomeCategoria("CATEGORIA2");
         Fornitore fornitoreTwo = new Fornitore();
         fornitoreTwo.setCap("34552");
         fornitoreTwo.setDataInserimento(new Date());
@@ -112,8 +112,10 @@ public class OggettoDataInitializer {
 
     public OggettoDTO oggettoDTOById(){
         Oggetto oggetto = oggettoRepository.findAll().get(0);
-        if(oggetto!=null)
+        if(oggetto!=null){
             oggetto.setFornitore(null);
+            oggetto.setTag(null);
+        }
         return oggettoMapper.oggettoToOggettoDTO(oggetto);
     }
 }

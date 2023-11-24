@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TagOutputDTO implements Serializable {
-
+    private int idTag;
     private String nomeTag;
     private Integer numeroBeneficiari;
     private Integer numeroOggetti;

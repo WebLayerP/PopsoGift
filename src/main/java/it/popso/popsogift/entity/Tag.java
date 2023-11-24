@@ -27,4 +27,10 @@ public class Tag {
     private String creatoDa;
     @Column(name="DATA_AGGIORNAMENTO")
     private Date dataAggiornamento;
+    @Column(name="STATO_CANCELLAZIONE")
+    private Boolean statoCancellazione;
+    @Column(name="DATA_CANCELLAZIONE")
+    private Date dataCancellazione;
+    @Column(name="ID_CANCELLAZIONE")
+    private String idCancellazione;
 }

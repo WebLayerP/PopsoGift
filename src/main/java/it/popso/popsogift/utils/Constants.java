@@ -5,10 +5,13 @@ public class Constants {
     private Constants() {
         //SONAR
     }
-//    ###### VARIABILI #######################
+//    ###### PARAMETRI #######################
 
-    public static final String DATA_INSERIMENTO = "data_Inserimento";
+    public static final String DATA_INSERIMENTO_NATIVE = "data_Inserimento";
     public static final String ORDER_TYPE_ASC = "ASC";
+
+//    ###### COSTANTI ########################
+    public static final String MILLISECONDI = " millisecondi";
 
 //    ###### QUERY ###########################
 

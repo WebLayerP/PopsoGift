@@ -5,6 +5,7 @@ import it.popso.popsogift.dto.OggettoDTO;
 import it.popso.popsogift.dto.TagDTO;
 import it.popso.popsogift.dto.TipologiaOggettoDTO;
 import it.popso.popsogift.entity.Fornitore;
+import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.entity.Tag;
 import it.popso.popsogift.entity.TipologiaOggetto;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
@@ -161,6 +162,39 @@ public class OggettoServiceTest {
         assertEquals( "Bicchiere", oggettoById.getNome());
     }
 
+    @Test
+    void oggettoModificaTest() {
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
+        assertEquals( "Bicchiere", saved.getNome());
+        OggettoDTO oggettoModificatoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        assegnazioneTag(oggettoModificatoDTO);
+        oggettoService.updateOggetto(saved.getIdOggetto(),oggettoModificatoDTO);
+        OggettoDTO oggetto = oggettoService.oggettoById(saved.getIdOggetto());
+        assertEquals( 1, oggetto.getTag().size());
+        assertEquals( "005", oggetto.getCodice());
+        assertEquals(formato.format(oggetto.getDataAggiornamento()), formato.format(new Date()));
+    }
+
+    @Test
+    void oggettoModificaTestDatoNonPresente() {
+        OggettoDTO oggettoModificatoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        assegnazioneTag(oggettoModificatoDTO);
+        assertThrows(ApplicationFaultMsgException.class, () -> oggettoService.updateOggetto(1,oggettoModificatoDTO));
+    }
+
+
+    @Test
+    void deleteOggetto(){
+        OggettoDTO oggettoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
+        oggettoService.deleteLogicaOggetto(saved.getIdOggetto(), "34567");
+        Oggetto oggettoDeleted = oggettoRepository.findById(saved.getIdOggetto()).get();
+        assertEquals("34567", oggettoDeleted.getIdCancellazione());
+        assertEquals(true, oggettoDeleted.getStatoCancellazione());
+        assertEquals(formato.format(new Date()), formato.format(oggettoDeleted.getDataCancellazione()));
+
+    }
 
 
 }

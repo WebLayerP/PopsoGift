@@ -1,7 +1,9 @@
 package it.popso.popsogift.service;
 
 import it.popso.popsogift.PopsogiftApplication;
-import it.popso.popsogift.dto.*;
+import it.popso.popsogift.dto.OggettoDTO;
+import it.popso.popsogift.dto.TagDTO;
+import it.popso.popsogift.dto.TipologiaOggettoDTO;
 import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.entity.Tag;
 import it.popso.popsogift.entity.TipologiaOggetto;
@@ -13,7 +15,6 @@ import it.popso.popsogift.repository.OggettoRepository;
 import it.popso.popsogift.repository.TagRepository;
 import it.popso.popsogift.repository.TipologiaOggettoRepository;
 import it.popso.popsogift.utils.OggettoDataInitializer;
-import org.apache.commons.collections.ArrayStack;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -69,33 +70,34 @@ public class OggettoServiceTest {
     private OggettoDataInitializer oggettoDataInitializer;
 
     @AfterAll
-    public void afterSettings(){
+    public void afterSettings() {
         oggettoRepository.deleteAll();
     }
 
     @Test
     void inserisciOggettoTest() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere",2,TipologiaOggettoDTO.DIGITALE,23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
         OggettoDTO oggettoInserito = oggettoService.saveOggetto(oggettoDTO);
-        assertEquals( "CAT4", oggettoInserito.getCategoria());
-        assertEquals(formato.format(oggettoInserito.getDataInserimento()), formato.format(new Date()));
-    }
-    @Test
-    void inserisciOggettoTestConTag() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere",2,TipologiaOggettoDTO.DIGITALE,23.04);
-        assegnazioneTag(oggettoDTO);
-        OggettoDTO oggettoInserito = oggettoService.saveOggetto(oggettoDTO);
-        assertEquals( 1, oggettoInserito.getTag().size());
-        assertEquals( "Bicchiere", oggettoInserito.getNome());
+        assertEquals("CAT4", oggettoInserito.getCategoria());
         assertEquals(formato.format(oggettoInserito.getDataInserimento()), formato.format(new Date()));
     }
 
     @Test
-    void deleteOggettoNonPresente(){
+    void inserisciOggettoTestConTag() {
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        assegnazioneTag(oggettoDTO);
+        OggettoDTO oggettoInserito = oggettoService.saveOggetto(oggettoDTO);
+        assertEquals(1, oggettoInserito.getTag().size());
+        assertEquals("Bicchiere", oggettoInserito.getNome());
+        assertEquals(formato.format(oggettoInserito.getDataInserimento()), formato.format(new Date()));
+    }
+
+    @Test
+    void deleteOggettoNonPresente() {
         assertThrows(ApplicationFaultMsgException.class, () -> oggettoService.deleteLogicaOggetto(1934, "34567"));
     }
 
-    private OggettoDTO nuovoOggetto(String codice, String categoria, String descrizione, String nome, Integer numeroColli, TipologiaOggettoDTO tipologia,Double prezzo){
+    private OggettoDTO nuovoOggetto(String codice, String categoria, String descrizione, String nome, Integer numeroColli, TipologiaOggettoDTO tipologia, Double prezzo) {
         Fornitore actualFornitoreDTO = new Fornitore();
         actualFornitoreDTO.setCap("Cap");
         actualFornitoreDTO.setCitta("Roma");
@@ -125,7 +127,8 @@ public class OggettoServiceTest {
         actualOggettoDTO.setTipologia(tipologiaToSave.getNomeTipologia());
         return actualOggettoDTO;
     }
-    private void assegnazioneTag(OggettoDTO oggettoDTO){
+
+    private void assegnazioneTag(OggettoDTO oggettoDTO) {
         Tag tag = new Tag();
         tag.setNomeTag("nome");
         tag.setDataInserimento(new Date());
@@ -138,6 +141,27 @@ public class OggettoServiceTest {
         listaTag.add(tagMapper.tagToTagDTO(tag));
         oggettoDTO.setTag(listaTag);
     }
+
+    @Test
+    void oggettoByIdTest() {
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
+        OggettoDTO oggettoById = oggettoService.oggettoById(saved.getIdOggetto());
+        assertEquals(0, oggettoById.getTag().size());
+        assertEquals("Bicchiere", oggettoById.getNome());
+    }
+
+    @Test
+    void oggettoByIdTestConTag() {
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        assegnazioneTag(oggettoDTO);
+        OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
+        OggettoDTO oggettoById = oggettoService.oggettoById(saved.getIdOggetto());
+        assertEquals( 1, oggettoById.getTag().size());
+        assertEquals( "Bicchiere", oggettoById.getNome());
+    }
+
+
 
 }
 

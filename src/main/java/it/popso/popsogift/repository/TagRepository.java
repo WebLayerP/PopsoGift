@@ -16,10 +16,10 @@ import java.util.Optional;
 @Transactional
 public interface TagRepository extends JpaRepository<Tag,Integer> {
 
-    @Query(value = "SELECT COUNT(ndg) FROM tag t join rel_beneficiario_tag rbt on t.id_tag = rbt.id_tag WHERE t.id_tag = ?1", nativeQuery = true)
+    @Query(value = "SELECT COUNT(t) FROM Beneficiario b join b.tag t WHERE t.idTag = ?1")
     Integer findNumeroBeneficiari(@Param("idTag") int idTag);
 
-    @Query(value = "SELECT COUNT(id_oggetto) FROM tag t join rel_oggetto_tag rot on t.id_tag = rot.id_tag WHERE t.id_tag = ?1", nativeQuery = true)
+    @Query(value =  "SELECT COUNT(t) FROM Oggetto o join o.tag t WHERE t.idTag = ?1")
     Integer findNumeroOmaggi(@Param("idTag") int idTag);
 
     Page<Tag> findByStatoCancellazione(Boolean stato, Pageable pageable);

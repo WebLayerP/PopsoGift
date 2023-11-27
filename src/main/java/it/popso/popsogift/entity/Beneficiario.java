@@ -57,4 +57,14 @@ public class Beneficiario {
     @Column(name="PRIVACY")
     private Boolean privacy;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "REL_BENEFICIARIO_TAG",
+            joinColumns = @JoinColumn(name = "NDG"),
+            inverseJoinColumns = @JoinColumn(name = "ID_TAG"))
+    private List<Tag> tag;
+
 }

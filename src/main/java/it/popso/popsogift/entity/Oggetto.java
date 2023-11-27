@@ -40,7 +40,7 @@ public class Oggetto {
     @ManyToOne
     @JoinColumn(name = "TIPOLOGIA")
     private TipologiaOggetto tipologia;
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.MERGE
             })

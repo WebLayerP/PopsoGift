@@ -56,7 +56,8 @@ public class OggettoService {
                     oggetto.getCategoria().setNomeCategoria(oggetto.getCategoria().getNomeCategoria().toUpperCase());
                     categoriaRepository.save(oggetto.getCategoria());
                 }
-                oggettoRepository.save(oggetto);
+                Oggetto oggettoSaved = oggettoRepository.save(oggetto);
+                oggettoDTO.setIdOggetto(oggettoSaved.getIdOggetto());
             } catch (org.springframework.dao.DataIntegrityViolationException e) {
                 throw new DataIntegrityViolationException(e.getMessage());
             }

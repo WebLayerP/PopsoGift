@@ -14,14 +14,7 @@ public class Filiale {
     @Column(name="CODICE_FILIALE")
     private String codiceFiliale;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.MERGE
-            })
-    @JoinTable(
-            name = "REL_BENEFICIARIO_FILIALE",
-            joinColumns = @JoinColumn(name = "CODICE_FILIALE"),
-            inverseJoinColumns = @JoinColumn(name = "NDG"))
+    @OneToMany(mappedBy="filiale")
     private List<Beneficiario> listaBeneficiari;
 
 }

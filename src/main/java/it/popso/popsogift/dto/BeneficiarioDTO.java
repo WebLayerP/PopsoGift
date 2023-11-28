@@ -15,9 +15,12 @@ public class BeneficiarioDTO {
     private Date dataAggiornamento;
     private String note;
     private StatoBeneficiarioDTO statoBeneficiario;
-    private Date dataEstinzione;
     private String motivoEstinzione;
     private List<GruppoDTO> listaGruppi;
     private Boolean privacy;
+    private Boolean statoCancellazione;
+    private Date dataCancellazione;
+    private String idCancellazione;
+    private String matricolaProponente;
 
 }

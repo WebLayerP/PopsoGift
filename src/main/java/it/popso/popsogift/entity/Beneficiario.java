@@ -27,8 +27,6 @@ public class Beneficiario {
     @ManyToOne
     @JoinColumn(name="STATO")
     private StatoBeneficiario statoBeneficiario;
-    @Column(name="DATA_ESTINZIONE")
-    private Date dataEstinzione;
     @Column(name="MOTIVO_ESTINZIONE")
     private String motivoEstinzione;
 
@@ -66,5 +64,16 @@ public class Beneficiario {
             joinColumns = @JoinColumn(name = "NDG"),
             inverseJoinColumns = @JoinColumn(name = "ID_TAG"))
     private List<Tag> tag;
+    @Column(name="STATO_CANCELLAZIONE")
+    private Boolean statoCancellazione;
+    @Column(name="DATA_CANCELLAZIONE")
+    private Date dataCancellazione;
+    @Column(name="ID_CANCELLAZIONE")
+    private String idCancellazione;
+    @ManyToOne
+    @JoinColumn(name="FILIALE")
+    private Filiale filiale;
+    @Column(name="MATRICOLA_PROPONENTE")
+    private String matricolaProponente;
 
 }

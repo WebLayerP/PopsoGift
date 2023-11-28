@@ -58,6 +58,21 @@ public class BeneficiarioController {
         loggerPerformance.debug(performanceLog);
         return new ResponseEntity<>(beneficiarioInserito, HttpStatus.CREATED);
     }
+    @GetMapping("/dettaglio/{ndg}")
+    public ResponseEntity<BeneficiarioDTO> getBeneficiarioByNdg(@RequestHeader("Ruolo") String ruolo,
+                                                                @RequestHeader("Matricola")String matricola,
+                                                                @PathVariable String ndg) {
+        logger.info("Chiamata getBeneficiarioByNdg");
+        BeneficiarioDTO beneficiarioRichiesto;
+        String performanceLog = PERFORMANCE_START.replace("???", "getBeneficiarioByNdg");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        beneficiarioRichiesto = beneficiarioService.getBeneficiarioByNdg(ndg);
+        performanceLog = PERFORMANCE_END.replace("???", beneficiarioRichiesto + "\nRichiesta beneficiario completata in " + (System.currentTimeMillis() - start) + MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(beneficiarioRichiesto, HttpStatus.OK);
+
+    }
 
 }
 

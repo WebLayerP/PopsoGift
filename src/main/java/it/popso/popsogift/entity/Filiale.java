@@ -3,12 +3,15 @@ package it.popso.popsogift.entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name="FILIALE")
-@Data
+@Getter
+@Setter
 public class Filiale {
     @Id
     @Column(name="CODICE_FILIALE")

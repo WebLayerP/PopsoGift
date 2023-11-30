@@ -1,18 +1,20 @@
 package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.BeneficiarioDTO;
+import it.popso.popsogift.dto.BeneficiarioDettaglioDTO;
+import it.popso.popsogift.dto.FornitoreDTO;
 import it.popso.popsogift.entity.Beneficiario;
+import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
-import it.popso.popsogift.mapper.BeneficiarioMapper;
-import it.popso.popsogift.mapper.GruppoMapper;
-import it.popso.popsogift.mapper.StatoBeneficiarioMapper;
+import it.popso.popsogift.mapper.*;
 import it.popso.popsogift.repository.BeneficiarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +29,15 @@ public class BeneficiarioService {
 
     @Autowired
     private StatoBeneficiarioMapper statoBeneficiarioMapper;
+
+    @Autowired
+    private TagMapper tagMapper;
+
+    @Autowired
+    private OggettoMapper oggettoMapper;
+
+    @Autowired
+    private FilialeMapper filialeMapper;
 
     @Autowired
     private GruppoMapper gruppoMapper;
@@ -57,8 +68,7 @@ public class BeneficiarioService {
             List<Beneficiario> listaBeneficiari = beneficiarioRepository.findAll();
             for(Beneficiario b: listaBeneficiari) {
                 BeneficiarioDTO beneficiarioDTO = beneficiarioMapper.beneficiarioToBeneficiarioDTO(b);
-                beneficiarioDTO.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(b));
-                beneficiarioDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(b.getListaGruppi()));
+                setStatoBeneficiarioAndListaGruppi(b, beneficiarioDTO);
                 listaBeneficiariDTO.add(beneficiarioDTO);
             }
             return listaBeneficiariDTO;
@@ -66,12 +76,40 @@ public class BeneficiarioService {
             throw new CannotCreateTransactionException(e.getMessage());
         }
     }
-    public BeneficiarioDTO getBeneficiarioByNdg(String ndg) {
+    public BeneficiarioDettaglioDTO getBeneficiarioByNdg(String ndg) {
         Beneficiario beneficiario = beneficiarioRepository.findByNdgAndStatoCancellazione(ndg, Boolean.FALSE);
         if(Objects.isNull(beneficiario)){
             throw new ApplicationFaultMsgException("Il beneficiario con ndg " + ndg + " non è stato trovato");
         }
-        return beneficiarioMapper.beneficiarioToBeneficiarioDTO(beneficiario);
+        BeneficiarioDTO beneficiarioDTO = beneficiarioMapper.beneficiarioToBeneficiarioDTO(beneficiario);
+        BeneficiarioDettaglioDTO beneficiarioDettaglioDTO = beneficiarioMapper.beneficiarioDTOToBeneficiarioDettaglioDTO(beneficiarioDTO);
+        beneficiarioDettaglioDTO.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(beneficiario));
+        beneficiarioDettaglioDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(beneficiario.getListaGruppi()));
+//        beneficiarioDettaglioDTO.setListaOggetti(oggettoMapper.listaOggettiToDTO(beneficiario.getListaOggetti()));
+//        beneficiarioDettaglioDTO.setTag(tagMapper.toListTagDto(beneficiario.getTag()));
+
+        return beneficiarioMapper.beneficiarioDettaglioCompleto(beneficiarioDettaglioDTO);
+    }
+
+    private void setStatoBeneficiarioAndListaGruppi(Beneficiario beneficiario, BeneficiarioDTO beneficiarioDTO) {
+        beneficiarioDTO.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(beneficiario));
+        beneficiarioDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(beneficiario.getListaGruppi()));
+    }
+
+    public void updateBeneficiario (String ndg, BeneficiarioDettaglioDTO beneficiarioDettaglioDTO){
+        BeneficiarioDTO beneficiarioByNdg = beneficiarioMapper.beneficiarioDettaglioDTOToBeneficiarioDTO(getBeneficiarioByNdg(ndg));
+        if( beneficiarioByNdg != null) {
+            beneficiarioDettaglioDTO.setNdg(ndg);
+            beneficiarioDettaglioDTO.setDataInserimento(beneficiarioDettaglioDTO.getDataInserimento());
+            beneficiarioDettaglioDTO.setDataAggiornamento(new Date());
+            Beneficiario beneficiario = beneficiarioMapper.beneficiarioDettaglioDTOToBeneficiario(beneficiarioDettaglioDTO);
+            beneficiario.setListaGruppi(gruppoMapper.lgruppoDTOToGruppo(beneficiarioDettaglioDTO.getListaGruppi()));
+            beneficiario.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiarioD(beneficiarioDettaglioDTO));
+            beneficiarioRepository.save(beneficiario);
+        }
+        else{
+            throw new ApplicationFaultMsgException("Errore modifica beneficiario");
+        }
     }
 }
 

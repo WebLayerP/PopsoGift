@@ -29,4 +29,7 @@ public class RelCampagnaBeneficiarioOggetto {
     @JoinColumn(name = "ID_OGGETTO")
     private Oggetto oggetto;
 
+    @Column(name = "NUMERO_ITEM")
+    private Integer numeroItem;
+
 }

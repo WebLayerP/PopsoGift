@@ -70,5 +70,11 @@ public class CampagnaController {
     }
 
 
+    @GetMapping("/export")
+    public byte[] exportCsv(@RequestHeader("Ruolo") String ruolo,
+                            @RequestHeader("Matricola")String matricola) {
+        logger.info("Chiamata export CSV");
+        return  campagnaService.exportCampagne();
+    }
 }
 

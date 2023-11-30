@@ -1,23 +1,20 @@
 package it.popso.popsogift.mapper;
 
-import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.dto.StatoBeneficiarioDTO;
-import it.popso.popsogift.entity.Beneficiario;
 import it.popso.popsogift.entity.StatoBeneficiario;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class StatoBeneficiarioMapper {
+@Mapper(componentModel = "spring")
+public interface StatoBeneficiarioMapper {
 
-    public StatoBeneficiario getStatoBeneficiario(BeneficiarioDTO beneficiarioDTO) {
-        StatoBeneficiarioDTO statoBeneficiarioDTO = beneficiarioDTO.getStatoBeneficiario();
+    default StatoBeneficiario toStatoBeneficiario(StatoBeneficiarioDTO statoBeneficiarioDTO){
         StatoBeneficiario statoBeneficiario = new StatoBeneficiario();
         statoBeneficiario.setIdStato(statoBeneficiarioDTO.getIdStato());
-        statoBeneficiario.setNomeStato(StatoBeneficiarioDTO.fromIdStato(statoBeneficiario.getIdStato()));
+        statoBeneficiario.setNomeStato(statoBeneficiarioDTO);
         return statoBeneficiario;
     }
-    public StatoBeneficiarioDTO getStatoBeneficiario(Beneficiario beneficiario) {
-        StatoBeneficiario statoBeneficiario = beneficiario.getStatoBeneficiario();
+
+    default StatoBeneficiarioDTO mapStatoBeneficiarioDTOtoStatoBeneficiario(StatoBeneficiario statoBeneficiario){
         return statoBeneficiario.getNomeStato();
     }
 }

@@ -38,7 +38,7 @@ public class BeneficiarioService {
     public BeneficiarioDTO saveBeneficiario(BeneficiarioDTO beneficiarioDTO){
         Beneficiario beneficiario = beneficiarioMapper.beneficiarioDTOToBeneficiario(beneficiarioDTO);
         beneficiario.setListaGruppi(gruppoMapper.lgruppoDTOToGruppo(beneficiarioDTO.getListaGruppi()));
-        beneficiario.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(beneficiarioDTO));
+        beneficiario.setStatoBeneficiario(statoBeneficiarioMapper.toStatoBeneficiario(beneficiarioDTO.getStatoBeneficiario()));
         Beneficiario beneficiarioInserito = null;
         try {
             beneficiarioInserito = beneficiarioRepository.save(beneficiario);
@@ -57,7 +57,7 @@ public class BeneficiarioService {
             List<Beneficiario> listaBeneficiari = beneficiarioRepository.findAll();
             for(Beneficiario b: listaBeneficiari) {
                 BeneficiarioDTO beneficiarioDTO = beneficiarioMapper.beneficiarioToBeneficiarioDTO(b);
-                beneficiarioDTO.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(b));
+                beneficiarioDTO.setStatoBeneficiario(statoBeneficiarioMapper.mapStatoBeneficiarioDTOtoStatoBeneficiario(b.getStatoBeneficiario()));
                 beneficiarioDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(b.getListaGruppi()));
                 listaBeneficiariDTO.add(beneficiarioDTO);
             }

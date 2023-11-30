@@ -1,19 +1,26 @@
 package it.popso.popsogift.mapper;
 
-import it.popso.popsogift.dto.*;
-import it.popso.popsogift.entity.*;
-import org.mapstruct.*;
+import it.popso.popsogift.dto.BeneficiarioDTO;
+import it.popso.popsogift.dto.BeneficiarioDettaglioDTO;
+import it.popso.popsogift.dto.OggettoDTO;
+import it.popso.popsogift.dto.TipologiaOggettoDTO;
+import it.popso.popsogift.entity.Beneficiario;
+import it.popso.popsogift.entity.Categoria;
+import it.popso.popsogift.entity.Oggetto;
+import it.popso.popsogift.entity.TipologiaOggetto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring")
 public interface BeneficiarioMapper {
 
     @Mapping(target="statoBeneficiario", ignore = true)
     @Mapping(target="listaGruppi", ignore = true)
     @Mapping(target="filiale.listaBeneficiari", ignore = true)
-    @Mapping(target="listaOggetti",source= "listaOggetti")
     BeneficiarioDTO beneficiarioToBeneficiarioDTO(Beneficiario beneficiario);
+
+    @Mapping(target="fornitore.listaOggetti", ignore=true)
+    OggettoDTO oggettoToOggettoDTO(Oggetto oggetto);
 
     @Mapping(target="statoBeneficiario", ignore = true)
     @Mapping(target="listaGruppi", ignore = true)
@@ -29,9 +36,6 @@ public interface BeneficiarioMapper {
     @Mapping(target="listaGruppi", ignore = true)
     @Mapping(target="filiale.listaBeneficiari", ignore = true)
     Beneficiario beneficiarioDettaglioDTOToBeneficiario(BeneficiarioDettaglioDTO beneficiarioDettaglioDTO);
-
-    @Mapping(target = "fornitore", ignore = true)
-    void updateO2FromO1List(List<FornitoreDTO> oggetto1List, @MappingTarget List<Fornitore> oggetto2List);
 
     default Categoria toCategoria(String categoriaString){
         Categoria categoria = new Categoria();

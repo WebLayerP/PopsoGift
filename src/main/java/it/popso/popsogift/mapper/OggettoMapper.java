@@ -7,7 +7,6 @@ import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.entity.TipologiaOggetto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 import java.util.List;
 
@@ -22,8 +21,6 @@ public interface OggettoMapper {
 
     List<OggettoDTO> listaOggettiToDTO(List<Oggetto> oggetti);
 
-    @Named("noOggetti")
-    List<OggettoDTO> listaOggettiToDTOC(List<Oggetto> oggetti);
 
     default TipologiaOggetto toTipologiaOggetto(TipologiaOggettoDTO tipologiaOggettoDTO){
         TipologiaOggetto tipologiaOggetto = new TipologiaOggetto();
@@ -35,6 +32,7 @@ public interface OggettoMapper {
     default TipologiaOggettoDTO mapTipologiaOggettoDTOtoTipologia(TipologiaOggetto tipologiaOggetto){
         return tipologiaOggetto.getNomeTipologia();
     }
+
     default Categoria toCategoria(String categoriaString){
         Categoria categoria = new Categoria();
         categoria.setNomeCategoria(categoriaString.toUpperCase());

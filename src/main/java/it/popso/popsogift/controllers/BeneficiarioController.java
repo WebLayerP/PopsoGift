@@ -74,6 +74,21 @@ public class BeneficiarioController {
 
     }
 
+    @GetMapping("/lista")
+    public ResponseEntity<List<BeneficiarioDettaglioDTO>> getListaBeneficiari( @RequestHeader("Ruolo") String ruolo,
+                                                                                   @RequestHeader("Matricola")String matricola) {
+        logger.info("Chiamata getListaBeneficiari");
+        List<BeneficiarioDettaglioDTO> listaBeneficiari;
+        String performanceLog = PERFORMANCE_START.replace("???", "getListaBeneficiari");
+        loggerPerformance.info(performanceLog);
+        long start = System.currentTimeMillis();
+        listaBeneficiari = beneficiarioService.getListaBeneficiari();
+        performanceLog = PERFORMANCE_END.replace("???", listaBeneficiari + "\nRichiesta lista beneficiari completata in " + (System.currentTimeMillis() - start) + MILLISECONDI);
+        loggerPerformance.debug(performanceLog);
+        return new ResponseEntity<>(listaBeneficiari, HttpStatus.OK);
+
+    }
+
     @PutMapping("/{ndg}")
     public ResponseEntity<EsitoRisposta> updateBeneficiario(@RequestHeader("Ruolo") String ruolo,
                                                          @RequestHeader("Matricola")String matricola,

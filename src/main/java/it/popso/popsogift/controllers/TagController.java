@@ -55,7 +55,7 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity<Tag> createTag(@RequestHeader("Ruolo") String ruolo,
+    public ResponseEntity<EsitoRisposta> createTag(@RequestHeader("Ruolo") String ruolo,
                                          @RequestHeader("Matricola")String matricola,
                                          @RequestBody TagDTO tagDTO) {
         logger.info("Chiamata createTag");
@@ -66,7 +66,8 @@ public class TagController {
         tagInserito = tagService.saveTag(tagDTO, matricola);
         performanceLog = PERFORMANCE_END.replace("???", tagInserito+ "\nInserimento nuovo tag completato in "+(System.currentTimeMillis() - start)+ Constants.MILLISECONDI);
         loggerPerformance.debug(performanceLog);
-        return new ResponseEntity<>(tagInserito, HttpStatus.CREATED);
+        EsitoRisposta esitoRisposta = new EsitoRisposta(Esito.OK,"Tag con id " + tagInserito.getIdTag() + " modificato con successo");
+        return new ResponseEntity<>(esitoRisposta, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

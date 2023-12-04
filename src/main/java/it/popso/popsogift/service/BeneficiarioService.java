@@ -2,9 +2,7 @@ package it.popso.popsogift.service;
 
 import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.dto.BeneficiarioDettaglioDTO;
-import it.popso.popsogift.dto.FornitoreDTO;
 import it.popso.popsogift.entity.Beneficiario;
-import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
@@ -85,10 +83,16 @@ public class BeneficiarioService {
         BeneficiarioDettaglioDTO beneficiarioDettaglioDTO = beneficiarioMapper.beneficiarioDTOToBeneficiarioDettaglioDTO(beneficiarioDTO);
         beneficiarioDettaglioDTO.setStatoBeneficiario(statoBeneficiarioMapper.getStatoBeneficiario(beneficiario));
         beneficiarioDettaglioDTO.setListaGruppi(gruppoMapper.lgruppoToGruppoDTO(beneficiario.getListaGruppi()));
-//        beneficiarioDettaglioDTO.setListaOggetti(oggettoMapper.listaOggettiToDTO(beneficiario.getListaOggetti()));
-//        beneficiarioDettaglioDTO.setTag(tagMapper.toListTagDto(beneficiario.getTag()));
 
         return beneficiarioMapper.beneficiarioDettaglioCompleto(beneficiarioDettaglioDTO);
+    }
+    public List<BeneficiarioDettaglioDTO> getListaBeneficiari() {
+        List<Beneficiario> listaBeneficiari = beneficiarioRepository.findAll();
+        List<BeneficiarioDettaglioDTO> beneficiariDettaglioDTO = new ArrayList<>();
+        for(Beneficiario b: listaBeneficiari){
+            beneficiariDettaglioDTO.add(getBeneficiarioByNdg(b.getNdg()));
+        }
+        return beneficiariDettaglioDTO;
     }
 
     private void setStatoBeneficiarioAndListaGruppi(Beneficiario beneficiario, BeneficiarioDTO beneficiarioDTO) {

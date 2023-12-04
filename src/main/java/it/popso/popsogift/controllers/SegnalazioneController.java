@@ -26,10 +26,10 @@ public class SegnalazioneController {
 
 
     @GetMapping("/all")
-    public List<Segnalazione> getAllSegnalazione(@RequestHeader("Ruolo") String ruolo,
+    public List<SegnalazioneDTO> getAllSegnalazione(@RequestHeader("Ruolo") String ruolo,
                                                  @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllSegnalazione");
-        List<Segnalazione> listaSegnalazioni;
+        List<SegnalazioneDTO> listaSegnalazioni;
         String performanceLog=PERFORMANCE_START.replace("???","/all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();

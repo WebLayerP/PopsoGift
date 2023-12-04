@@ -35,8 +35,8 @@ public class OverviewOggettoControllerTest {
 
                 try {
                     mockMvc.perform(get("/overview/catalogo")
-                                    .header("ruolo", "RE")
-                                    .header("matricola", "12345")
+                                    .header("Ruolo", "RE")
+                                    .header("Matricola", "12345")
                                     .contentType(MediaType.APPLICATION_JSON))
                             .andExpect(status().isOk());
         }catch (Exception e){

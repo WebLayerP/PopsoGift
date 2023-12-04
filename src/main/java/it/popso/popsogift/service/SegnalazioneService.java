@@ -12,6 +12,7 @@ import it.popso.popsogift.repository.SegnalazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,9 +31,17 @@ public class SegnalazioneService {
     @Autowired
     private BeneficiarioMapper beneficiarioMapper;
 
-    public List<Segnalazione> getAllSegnalazione() {
+    public List<SegnalazioneDTO> getAllSegnalazione() {
         try{
-            return segnalazioneRepository.findAll();
+            List<Segnalazione> segnalazioni = segnalazioneRepository.findAll();
+            List<SegnalazioneDTO> segnalazioniDTO = new ArrayList<>();
+            for(Segnalazione s: segnalazioni){
+                SegnalazioneDTO segnalazioneDTO = segnalazioneMapper.segnalazioneToSegnalazioneDTO(s);
+                segnalazioneDTO.setBeneficiario(beneficiarioMapper.beneficiarioToBeneficiarioDTO(s.getBeneficiario()));
+                segnalazioneDTO.setCampagna(campagnaMapper.campagnaToCampagnaDTO(s.getCampagna()));
+                segnalazioniDTO.add(segnalazioneDTO);
+            }
+            return segnalazioniDTO;
         }catch(org.springframework.transaction.CannotCreateTransactionException e){
             throw new CannotCreateTransactionException(e.getMessage());
         }

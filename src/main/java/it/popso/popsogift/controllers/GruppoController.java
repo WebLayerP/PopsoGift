@@ -1,6 +1,6 @@
 package it.popso.popsogift.controllers;
 
-import it.popso.popsogift.entity.Gruppo;
+import it.popso.popsogift.dto.GruppoDTO;
 import it.popso.popsogift.service.GruppoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +31,10 @@ public class GruppoController {
 
 
     @GetMapping("/all")
-    public List<Gruppo> getAllGruppo(@RequestHeader("Ruolo") String ruolo,
-                                       @RequestHeader("Matricola")String matricola) {
+    public List<GruppoDTO> getAllGruppo(@RequestHeader("Ruolo") String ruolo,
+                                        @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllGruppo");
-        List<Gruppo> listaGruppo;
+        List<GruppoDTO> listaGruppo;
         String performanceLog=PERFORMANCE_START.replace("???","/all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();

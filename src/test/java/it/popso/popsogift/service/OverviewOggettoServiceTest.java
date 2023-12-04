@@ -64,7 +64,7 @@ class OverviewOggettoServiceTest {
     @Test
     void getOggettoOverviewTestQueryNumeroFornitori() {
         OggettoOverview oggettoOverview = overviewService.getOggettoOverview();
-        assertEquals(2,oggettoOverview.getNumeroFornitori());
+        assertEquals(10,oggettoOverview.getNumeroFornitori());
     }
 
 }

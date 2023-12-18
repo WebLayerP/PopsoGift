@@ -1,26 +1,29 @@
 package it.popso.popsogift.service;
 
-import it.popso.popsogift.dto.BeneficiarioDTO;
-import it.popso.popsogift.dto.BeneficiarioDettaglioDTO;
+import it.popso.popsogift.dto.*;
 import it.popso.popsogift.entity.Beneficiario;
+import it.popso.popsogift.entity.Oggetto;
 import it.popso.popsogift.exceptions.ApplicationFaultMsgException;
 import it.popso.popsogift.exceptions.CannotCreateTransactionException;
 import it.popso.popsogift.exceptions.DataIntegrityViolationException;
 import it.popso.popsogift.mapper.*;
 import it.popso.popsogift.repository.BeneficiarioRepository;
+import it.popso.popsogift.repository.OggettoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
+import static it.popso.popsogift.utils.CastObjectsUtils.castObjectIntValue;
 
 @Service
 public class BeneficiarioService {
 
     @Autowired
     private final BeneficiarioRepository beneficiarioRepository;
+
+    @Autowired
+    private OggettoRepository oggettoRepository;
 
     @Autowired
     private BeneficiarioMapper beneficiarioMapper;
@@ -115,5 +118,67 @@ public class BeneficiarioService {
             throw new ApplicationFaultMsgException("Errore modifica beneficiario");
         }
     }
+    public List<BeneficiarioDetailDTO> getListaBeneficiariDetail(Integer idCampagna) {
+        List<Beneficiario> listaBeneficiari = beneficiarioRepository.findAll();
+        List<BeneficiarioDettaglioDTO> beneficiariDettaglioDTO = new ArrayList<>();
+        for(Beneficiario b: listaBeneficiari){
+            BeneficiarioDettaglioDTO beneficiarioDettaglioDTO = getBeneficiarioByNdg(b.getNdg());
+            List<Object[]> oggettiAssegnati = beneficiarioRepository.findByIdCampagnaAndNdg(idCampagna,b.getNdg());
+            List<Integer> listaStringOggetti = new ArrayList<>();
+            for(Object[] o : oggettiAssegnati){
+               listaStringOggetti.add(castObjectIntValue(o[0]));
+            }
+            List<Object[]> oggettiStorico = beneficiarioRepository.findByNdgExcludeCampagna(idCampagna,b.getNdg());
+            List<Integer> listaStoricoOggetti = new ArrayList<>();
+            List<OggettoDTO> listaOggettoDTO = new ArrayList<>();
+            for(Object[] o : oggettiStorico){
+                Integer idOggetto = castObjectIntValue(o[0]);
+                listaStoricoOggetti.add(idOggetto);
+                Optional<Oggetto> oggetto = oggettoRepository.findById(idOggetto);
+                OggettoDTO oggettoDTO = new OggettoDTO();
+                if(oggetto.isPresent()) {
+                    oggettoDTO = oggettoMapper.oggettoToOggettoDTO(oggetto.get());
+                }
+                listaOggettoDTO.add(oggettoDTO);
+            }
+            beneficiarioDettaglioDTO.setListaOggettiCampagnaBeneficiario(listaStringOggetti);
+            beneficiarioDettaglioDTO.setListaOggetti(listaOggettoDTO);
+            beneficiariDettaglioDTO.add(beneficiarioDettaglioDTO);
+        }
+
+        return getBeneficiariDetailList(beneficiariDettaglioDTO);
+    }
+
+    private List<BeneficiarioDetailDTO> getBeneficiariDetailList(List<BeneficiarioDettaglioDTO> beneficiariDettaglioDTO) {
+        List<BeneficiarioDetailDTO> beneficiariDetail = new ArrayList<>();
+        for(BeneficiarioDettaglioDTO b: beneficiariDettaglioDTO){
+            BeneficiarioDetailDTO beneficiarioDetailDTO = new BeneficiarioDetailDTO();
+            beneficiarioDetailDTO.setNdg(b.getNdg());
+            beneficiarioDetailDTO.setNome(b.getNome());
+            beneficiarioDetailDTO.setCognome(b.getCognome());
+            List<String> listaGruppiString = new ArrayList<>();
+            for(GruppoDTO g: b.getListaGruppi()){
+               listaGruppiString.add(g.getNome());
+            }
+            beneficiarioDetailDTO.setGruppi(listaGruppiString);
+            List<String> listaOggettiString = new ArrayList<>();
+            for(Integer i: b.getListaOggettiCampagnaBeneficiario()){
+            Optional<Oggetto> oggetto = oggettoRepository.findById(i);
+            if(oggetto.isPresent()) {
+                listaOggettiString.add(oggetto.get().getNome());
+            }
+            }
+            beneficiarioDetailDTO.setOggettiAssegnati(listaOggettiString);
+            List<String> listaOggettiStoricoString = new ArrayList<>();
+            for(OggettoDTO o: b.getListaOggetti()){
+                listaOggettiStoricoString.add(o.getNome());
+            }
+            beneficiarioDetailDTO.setStoricoOggetti(listaOggettiStoricoString);
+            beneficiarioDetailDTO.setGruppi(listaGruppiString);
+            beneficiariDetail.add(beneficiarioDetailDTO);
+        }
+        return beneficiariDetail;
+    }
+
 }
 

@@ -16,4 +16,10 @@ public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Inte
     List<Object[]> countBeneficiariAndPrivacy();
     Beneficiario findByNdgAndStatoCancellazione(@Param("ndg") String ndg, @Param("statoCancellazione") Boolean stato);
 
+    @Query(value="SELECT id_oggetto FROM REL_BENEFICIARIO_OGGETTO_CAMPAGNA WHERE ID_CAMPAGNA = :idCampagna AND NDG = :ndg",nativeQuery = true)
+    List<Object[]> findByIdCampagnaAndNdg(@Param("idCampagna") Integer idCampagna, @Param("ndg") String ndg);
+
+    @Query(value="SELECT id_oggetto FROM REL_BENEFICIARIO_OGGETTO_CAMPAGNA WHERE ID_CAMPAGNA <> :idCampagna AND NDG = :ndg",nativeQuery = true)
+    List<Object[]> findByNdgExcludeCampagna(@Param("idCampagna") Integer idCampagna, @Param("ndg") String ndg);
+
 }

@@ -63,7 +63,8 @@ public interface BeneficiarioMapper {
         switch (beneficiarioDettaglioDTO.getNdg()) {
             case "1" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregio");
-                beneficiarioDettaglioDTO.setNomeCognome("Paolo Rossi");
+                beneficiarioDettaglioDTO.setNome("Paolo");
+                beneficiarioDettaglioDTO.setCognome("Rossi");
                 beneficiarioDettaglioDTO.setQualifica("Impiegato");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("paoloR@email.it");
@@ -83,7 +84,8 @@ public interface BeneficiarioMapper {
             }
             case "8" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregio");
-                beneficiarioDettaglioDTO.setNomeCognome("Davide Rossi");
+                beneficiarioDettaglioDTO.setNome("Davide");
+                beneficiarioDettaglioDTO.setCognome("Rossi");
                 beneficiarioDettaglioDTO.setQualifica("Impiegato");
                 beneficiarioDettaglioDTO.setProfessione("Dirigente");
                 beneficiarioDettaglioDTO.setEmail("davideR@email.it");
@@ -103,7 +105,8 @@ public interface BeneficiarioMapper {
             }
             case "100" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregia");
-                beneficiarioDettaglioDTO.setNomeCognome("Filippa Grigi");
+                beneficiarioDettaglioDTO.setNome("Filippa");
+                beneficiarioDettaglioDTO.setCognome("Grigi");
                 beneficiarioDettaglioDTO.setQualifica("Impiegata");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("filippaG@email.it");
@@ -123,7 +126,8 @@ public interface BeneficiarioMapper {
             }
             case "80" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregia");
-                beneficiarioDettaglioDTO.setNomeCognome("Fabiana Gigli");
+                beneficiarioDettaglioDTO.setNome("Fabiana");
+                beneficiarioDettaglioDTO.setCognome("Gigli");
                 beneficiarioDettaglioDTO.setQualifica("Impiegata");
                 beneficiarioDettaglioDTO.setProfessione("Dirigente");
                 beneficiarioDettaglioDTO.setEmail("fabianaG@email.it");
@@ -143,7 +147,8 @@ public interface BeneficiarioMapper {
             }
             case "70" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregio");
-                beneficiarioDettaglioDTO.setNomeCognome("Ludovico Pioli");
+                beneficiarioDettaglioDTO.setNome("Ludovico");
+                beneficiarioDettaglioDTO.setCognome("Pioli");
                 beneficiarioDettaglioDTO.setQualifica("Impiegato");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("ludovicoP@email.it");
@@ -163,7 +168,8 @@ public interface BeneficiarioMapper {
             }
             case "11" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregia");
-                beneficiarioDettaglioDTO.setNomeCognome("Barbara Longhi");
+                beneficiarioDettaglioDTO.setNome("Barbara");
+                beneficiarioDettaglioDTO.setCognome("Longhi");
                 beneficiarioDettaglioDTO.setQualifica("Impiegata");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("barbaraL@email.it");
@@ -183,7 +189,8 @@ public interface BeneficiarioMapper {
             }
             case "88" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregia");
-                beneficiarioDettaglioDTO.setNomeCognome("Stella Luna");
+                beneficiarioDettaglioDTO.setNome("Stella");
+                beneficiarioDettaglioDTO.setCognome("Luna");
                 beneficiarioDettaglioDTO.setQualifica("Impiegata");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("stellaL@email.it");
@@ -203,7 +210,8 @@ public interface BeneficiarioMapper {
             }
             case "120" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregia");
-                beneficiarioDettaglioDTO.setNomeCognome("Giorgia Luna");
+                beneficiarioDettaglioDTO.setNome("Giorgia");
+                beneficiarioDettaglioDTO.setCognome("Luna");
                 beneficiarioDettaglioDTO.setQualifica("Impiegata");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("giorgiaL@email.it");
@@ -223,7 +231,8 @@ public interface BeneficiarioMapper {
             }
             case "800" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregio");
-                beneficiarioDettaglioDTO.setNomeCognome("Filippo Lunati");
+                beneficiarioDettaglioDTO.setNome("Filippo");
+                beneficiarioDettaglioDTO.setCognome("Lunati");
                 beneficiarioDettaglioDTO.setQualifica("Impiegato");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("filippoL@email.it");
@@ -243,7 +252,8 @@ public interface BeneficiarioMapper {
             }
             case "889" -> {
                 beneficiarioDettaglioDTO.setTitolo("Egregio");
-                beneficiarioDettaglioDTO.setNomeCognome("Loredana Lesi");
+                beneficiarioDettaglioDTO.setNome("Loredana");
+                beneficiarioDettaglioDTO.setCognome("Lesi");
                 beneficiarioDettaglioDTO.setQualifica("Impiegata");
                 beneficiarioDettaglioDTO.setProfessione("Dipendente");
                 beneficiarioDettaglioDTO.setEmail("loredanaL@email.it");

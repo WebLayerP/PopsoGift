@@ -1,5 +1,6 @@
 package it.popso.popsogift.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -10,6 +11,18 @@ import java.util.List;
 public class BeneficiarioDettaglioDTO {
 
     private String ndg;
+    private String titolo;
+    private String nome;
+    private String cognome;
+    private String qualifica;
+    private String professione;
+    private String email;
+    private String indirizzo;
+    private String citta;
+    private String cap;
+    private String provincia;
+    private String stato;
+    private String continente;
     private Date dataInserimento;
     private Date dataAggiornamento;
     private String note;
@@ -22,17 +35,6 @@ public class BeneficiarioDettaglioDTO {
     private String idCancellazione;
     private String matricolaProponente;
     private FilialeDTO filiale;
-    private String titolo;
-    private String nomeCognome;
-    private String qualifica;
-    private String professione;
-    private String email;
-    private String indirizzo;
-    private String citta;
-    private String cap;
-    private String provincia;
-    private String stato;
-    private String continente;
     private List<TagDTO> tag;
     private String ragioneSociale;
     private String indirizzoAz;
@@ -42,5 +44,7 @@ public class BeneficiarioDettaglioDTO {
     private String statoAz;
     private String continenteAz;
     private List<OggettoDTO> listaOggetti;
+    @JsonIgnore
+    private List<Integer> listaOggettiCampagnaBeneficiario;
 
 }

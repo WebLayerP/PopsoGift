@@ -1,8 +1,10 @@
 package it.popso.popsogift.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import it.popso.popsogift.dto.TipologiaDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
@@ -13,7 +15,6 @@ public class Tipologia {
     @Id
     @Column(name="ID_TIPOLOGIA")
     private Integer idTipologia;
-    @Enumerated(EnumType.STRING)
     @Column(name="DESCRIZIONE")
-    private TipologiaDTO nomeTipologia;
+    private String nomeTipologia;
 }

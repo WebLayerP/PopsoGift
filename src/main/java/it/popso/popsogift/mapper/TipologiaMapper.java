@@ -1,18 +1,15 @@
 package it.popso.popsogift.mapper;
 
-import it.popso.popsogift.dto.CampagnaDTO;
-import it.popso.popsogift.dto.TipologiaDTO;
 import it.popso.popsogift.entity.Tipologia;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
 
-@Component
-public class TipologiaMapper {
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+public interface TipologiaMapper {
 
-    public Tipologia getTipologia(CampagnaDTO campagnaDTO){
-        TipologiaDTO tipologiaDTO = campagnaDTO.getTipologia();
+    default Tipologia toTipologia(Integer idTipologia){
         Tipologia tipologia = new Tipologia();
-        tipologia.setIdTipologia(tipologiaDTO.getIdTipologia());
-        tipologia.setNomeTipologia(tipologiaDTO);
+        tipologia.setIdTipologia(idTipologia);
         return tipologia;
     }
 }

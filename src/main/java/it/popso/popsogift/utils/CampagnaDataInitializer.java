@@ -1,8 +1,6 @@
 package it.popso.popsogift.utils;
 
 import it.popso.popsogift.dto.StatoBeneficiarioDTO;
-import it.popso.popsogift.dto.StatoDTO;
-import it.popso.popsogift.dto.TipologiaDTO;
 import it.popso.popsogift.entity.*;
 import it.popso.popsogift.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +33,12 @@ public class CampagnaDataInitializer {
 
         Stato stato = new Stato();
         stato.setIdStato(1);
-        stato.setNomeStato(StatoDTO.IN_CORSO);
+        stato.setNomeStato("IN_CORSO");
         statoRepository.save(stato);
 
         Tipologia tipologia = new Tipologia();
         tipologia.setIdTipologia(1);
-        tipologia.setNomeTipologia(TipologiaDTO.FISICA);
+        tipologia.setNomeTipologia("FISICA");
         tipologiaRepository.save(tipologia);
 
         StatoBeneficiario statoBeneficiario = new StatoBeneficiario();

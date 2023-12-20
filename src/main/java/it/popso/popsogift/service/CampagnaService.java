@@ -63,8 +63,8 @@ public class CampagnaService {
 
     public Campagna saveCampagna(CampagnaDTO campagnaDTO){
         Campagna campagna = campagnaMapper.campagnaDTOToEntity(campagnaDTO);
-        campagna.setTipologia(tipologiaMapper.getTipologia(campagnaDTO));
-        campagna.setStato(statoMapper.getStato(campagnaDTO));
+        campagna.setTipologia(tipologiaMapper.toTipologia(campagnaDTO.getTipologia()));
+        campagna.setStato(statoMapper.toStato(campagnaDTO.getStato()));
         Campagna campagnaInserita = null;
         List<Oggetto> listaOggetti = new ArrayList<>();
         for(OggettoDTO oggettoDTO: campagnaDTO.getListaOmaggi()){

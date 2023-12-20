@@ -11,7 +11,7 @@ public class CampagnaDTO {
 
     private Integer idCampagna;
     private String titoloCampagna;
-    private TipologiaDTO tipologia;
+    private Integer tipologia;
     private Date dataInizioModifiche;
     private Date dataFineModifiche;
     private List<OggettoDTO> listaOmaggi;
@@ -19,7 +19,7 @@ public class CampagnaDTO {
     private Date dataAggiornamento;
     private Date dataInserimento;
     private String matricola;
-    private StatoDTO stato;
+    private Integer stato;
     private Integer numeroSegnalazioni;
 
     public CampagnaDTO() {

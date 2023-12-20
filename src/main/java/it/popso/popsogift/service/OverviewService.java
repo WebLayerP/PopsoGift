@@ -74,13 +74,13 @@ public class OverviewService {
                         listaSegnalazioniPerCampagna(o, listaCampagneSegnalazioni);
                         int idStato = castObjectIntValue(o[1]);
                         int numeroCampagne = castObjectIntValue(o[0]);
-                        if(idStato == StatoDTO.IN_CORSO.getIdStato()){
+                        if(idStato == 1){
                                 campagnaGroup.setNumeroCampagneInCorso(numeroCampagne);
                         }
-                        if(idStato == StatoDTO.BOZZA.getIdStato()){
+                        if(idStato == 2){
                                 campagnaGroup.setNumeroCampagneBozza(numeroCampagne);
                         }
-                        if(idStato == StatoDTO.CHIUSA.getIdStato()){
+                        if(idStato == 3){
                                 campagnaGroup.setNumeroCampagneChiuse(numeroCampagne);
                         }
                 }

@@ -1,6 +1,6 @@
 package it.popso.popsogift.controllers;
 
-import it.popso.popsogift.entity.Stato;
+import it.popso.popsogift.dto.StatoDTO;
 import it.popso.popsogift.service.StatoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +25,10 @@ public class StatoController {
 
 
     @GetMapping("/all")
-    public List<Stato> getAllStato(@RequestHeader("Ruolo") String ruolo,
+    public List<StatoDTO> getAllStato(@RequestHeader("Ruolo") String ruolo,
                                    @RequestHeader("Matricola")String matricola) {
         logger.info("Chiamata getAllStato");
-        List<Stato> listaStati;
+        List<StatoDTO> listaStati;
         String performanceLog=PERFORMANCE_START.replace("???","/all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();

@@ -64,11 +64,11 @@ class OverviewServiceTest {
     public void init() {
 
         stato.setIdStato(1);
-        stato.setNomeStato(StatoDTO.IN_CORSO);
+        stato.setNomeStato("IN_CORSO");
         statoRepository.save(stato);
 
         tipologia.setIdTipologia(1);
-        tipologia.setNomeTipologia(TipologiaDTO.FISICA);
+        tipologia.setNomeTipologia("FISICA");
         tipologiaRepository.save(tipologia);
 
         filiale.setCodiceFiliale("F0001");

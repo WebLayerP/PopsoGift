@@ -77,7 +77,7 @@ public class OggettoServiceTest {
 
     @Test
     void inserisciOggettoTest() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 1, 23.04);
         OggettoDTO oggettoInserito = oggettoService.saveOggetto(oggettoDTO);
         assertEquals("CAT4", oggettoInserito.getCategoria());
         assertEquals(formato.format(oggettoInserito.getDataInserimento()), formato.format(new Date()));
@@ -85,7 +85,7 @@ public class OggettoServiceTest {
 
     @Test
     void inserisciOggettoTestConTag() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         assegnazioneTag(oggettoDTO);
         OggettoDTO oggettoInserito = oggettoService.saveOggetto(oggettoDTO);
         assertEquals(1, oggettoInserito.getTag().size());
@@ -98,7 +98,7 @@ public class OggettoServiceTest {
         assertThrows(ApplicationFaultMsgException.class, () -> oggettoService.deleteLogicaOggetto(1934, "34567"));
     }
 
-    private OggettoDTO nuovoOggetto(String codice, String categoria, String descrizione, String nome, Integer numeroColli, TipologiaOggettoDTO tipologia, Double prezzo) {
+    private OggettoDTO nuovoOggetto(String codice, String categoria, String descrizione, String nome, Integer numeroColli, Integer tipologia, Double prezzo) {
         Fornitore actualFornitoreDTO = new Fornitore();
         actualFornitoreDTO.setCap("Cap");
         actualFornitoreDTO.setCitta("Roma");
@@ -122,10 +122,10 @@ public class OggettoServiceTest {
         actualOggettoDTO.setNumeroColli(numeroColli);
         actualOggettoDTO.setPrezzo(prezzo);
         TipologiaOggetto tipologiaToSave = new TipologiaOggetto();
-        tipologiaToSave.setNomeTipologia(tipologia);
-        tipologiaToSave.setIdTipologia(2);
+        tipologiaToSave.setIdTipologia(tipologia);
+        tipologiaToSave.setNomeTipologia("DIGITALE");
         tipologiaOggettoRepository.save(tipologiaToSave);
-        actualOggettoDTO.setTipologia(tipologiaToSave.getNomeTipologia());
+        actualOggettoDTO.setTipologia(tipologiaToSave.getIdTipologia());
         return actualOggettoDTO;
     }
 
@@ -145,7 +145,7 @@ public class OggettoServiceTest {
 
     @Test
     void oggettoByIdTest() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
         OggettoDTO oggettoById = oggettoService.oggettoById(saved.getIdOggetto());
         assertEquals(0, oggettoById.getTag().size());
@@ -154,7 +154,7 @@ public class OggettoServiceTest {
 
     @Test
     void oggettoByIdTestConTag() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         assegnazioneTag(oggettoDTO);
         OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
         OggettoDTO oggettoById = oggettoService.oggettoById(saved.getIdOggetto());
@@ -164,10 +164,10 @@ public class OggettoServiceTest {
 
     @Test
     void oggettoModificaTest() {
-        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("004", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
         assertEquals( "Bicchiere", saved.getNome());
-        OggettoDTO oggettoModificatoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoModificatoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         assegnazioneTag(oggettoModificatoDTO);
         oggettoService.updateOggetto(saved.getIdOggetto(),oggettoModificatoDTO);
         OggettoDTO oggetto = oggettoService.oggettoById(saved.getIdOggetto());
@@ -178,7 +178,7 @@ public class OggettoServiceTest {
 
     @Test
     void oggettoModificaTestDatoNonPresente() {
-        OggettoDTO oggettoModificatoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoModificatoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         assegnazioneTag(oggettoModificatoDTO);
         assertThrows(ApplicationFaultMsgException.class, () -> oggettoService.updateOggetto(1,oggettoModificatoDTO));
     }
@@ -186,7 +186,7 @@ public class OggettoServiceTest {
 
     @Test
     void deleteOggetto(){
-        OggettoDTO oggettoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, TipologiaOggettoDTO.DIGITALE, 23.04);
+        OggettoDTO oggettoDTO = nuovoOggetto("005", "CAT4", "Oggetto nuovo", "Bicchiere", 2, 2, 23.04);
         OggettoDTO saved = oggettoService.saveOggetto(oggettoDTO);
         oggettoService.deleteLogicaOggetto(saved.getIdOggetto(), "34567");
         Oggetto oggettoDeleted = oggettoRepository.findById(saved.getIdOggetto()).get();

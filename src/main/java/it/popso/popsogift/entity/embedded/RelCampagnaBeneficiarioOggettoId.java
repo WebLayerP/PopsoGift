@@ -16,4 +16,7 @@ public class RelCampagnaBeneficiarioOggettoId {
 
     @Column(name = "ID_OGGETTO")
     private Integer idOggetto;
+
+    @Column(name = "NUMERO_ITEM")
+    private Integer numeroItem;
 }

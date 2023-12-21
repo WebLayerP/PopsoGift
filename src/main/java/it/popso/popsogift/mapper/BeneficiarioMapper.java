@@ -3,7 +3,6 @@ package it.popso.popsogift.mapper;
 import it.popso.popsogift.dto.BeneficiarioDTO;
 import it.popso.popsogift.dto.BeneficiarioDettaglioDTO;
 import it.popso.popsogift.dto.OggettoDTO;
-import it.popso.popsogift.dto.TipologiaOggettoDTO;
 import it.popso.popsogift.entity.Beneficiario;
 import it.popso.popsogift.entity.Categoria;
 import it.popso.popsogift.entity.Oggetto;
@@ -52,10 +51,6 @@ public interface BeneficiarioMapper {
     }
     default String mapCategoriaDTOtoCategoria(Categoria categoria) {
         return categoria.getNomeCategoria();
-    }
-
-    default TipologiaOggettoDTO mapTipologiaOggettoDTOtoTipologia(TipologiaOggetto tipologiaOggetto){
-        return null!=tipologiaOggetto ? tipologiaOggetto.getNomeTipologia(): null;
     }
 
     BeneficiarioDettaglioDTO beneficiarioDTOToBeneficiarioDettaglioDTO(BeneficiarioDTO beneficiarioDTO);
@@ -272,10 +267,18 @@ public interface BeneficiarioMapper {
                 beneficiarioDettaglioDTO.setContinenteAz("Eu");
             }
             default->
-                throw new ApplicationFaultMsgException("L'ndg inserito non è stato trovato");
+                    throw new ApplicationFaultMsgException("L'ndg inserito non è stato trovato");
 
         }
         return beneficiarioDettaglioDTO;
+    }
+    default TipologiaOggetto mapTipologiaOggettotoTipologia(Integer idTipologiaOggetto){
+        TipologiaOggetto tipologiaOggetto = new TipologiaOggetto();
+        tipologiaOggetto.setIdTipologia(idTipologiaOggetto);
+        return tipologiaOggetto;
+    }
+    default Integer mapTipologiaOggettoDTOtoInteger(TipologiaOggetto tipologiaOggetto) {
+        return tipologiaOggetto.getIdTipologia();
     }
 }
 

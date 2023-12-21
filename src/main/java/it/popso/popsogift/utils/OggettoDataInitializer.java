@@ -1,7 +1,6 @@
 package it.popso.popsogift.utils;
 
 import it.popso.popsogift.dto.OggettoDTO;
-import it.popso.popsogift.dto.TipologiaOggettoDTO;
 import it.popso.popsogift.entity.Categoria;
 import it.popso.popsogift.entity.Fornitore;
 import it.popso.popsogift.entity.Oggetto;
@@ -40,7 +39,7 @@ public class OggettoDataInitializer {
         Oggetto oggetto = new Oggetto();
         TipologiaOggetto tipologia = new TipologiaOggetto();
         tipologia.setIdTipologia(1);
-        tipologia.setNomeTipologia(TipologiaOggettoDTO.FISICO);
+        tipologia.setNomeTipologia("FISICO");
         Categoria categoria = new Categoria();
         categoria.setNomeCategoria("CATEGORIA1");
         Fornitore fornitore = new Fornitore();
@@ -71,7 +70,7 @@ public class OggettoDataInitializer {
         Oggetto oggettoTwo = new Oggetto();
         TipologiaOggetto tipologiaTwo = new TipologiaOggetto();
         tipologiaTwo.setIdTipologia(2);
-        tipologiaTwo.setNomeTipologia(TipologiaOggettoDTO.DIGITALE);
+        tipologiaTwo.setNomeTipologia("DIGITALE");
         Categoria categoriaTwo = new Categoria();
         categoriaTwo.setNomeCategoria("CATEGORIA2");
         Fornitore fornitoreTwo = new Fornitore();

@@ -21,16 +21,19 @@ public interface OggettoMapper {
 
     List<OggettoDTO> listaOggettiToDTO(List<Oggetto> oggetti);
 
-
-    default TipologiaOggetto toTipologiaOggetto(TipologiaOggettoDTO tipologiaOggettoDTO){
+    default TipologiaOggetto toTipologiaOggetto(Integer idTipologiaOggetto){
         TipologiaOggetto tipologiaOggetto = new TipologiaOggetto();
-        tipologiaOggetto.setIdTipologia(tipologiaOggettoDTO.getIdTipologiaOggetto());
-        tipologiaOggetto.setNomeTipologia(tipologiaOggettoDTO);
+        tipologiaOggetto.setIdTipologia(idTipologiaOggetto);
         return tipologiaOggetto;
     }
+    default Integer mapTipologiaOggettoDTOtoInteger(TipologiaOggetto tipologiaOggetto) {
+        return tipologiaOggetto.getIdTipologia();
+    }
 
-    default TipologiaOggettoDTO mapTipologiaOggettoDTOtoTipologia(TipologiaOggetto tipologiaOggetto){
-        return tipologiaOggetto.getNomeTipologia();
+    default TipologiaOggettoDTO mapTipologiaOggettoDTOtoTipologia(Integer tipologiaOggetto){
+        TipologiaOggettoDTO tipologiaOggettoDTO = new TipologiaOggettoDTO();
+        tipologiaOggettoDTO.setIdTipologiaOggetto(tipologiaOggetto);
+        return tipologiaOggettoDTO;
     }
 
     default Categoria toCategoria(String categoriaString){

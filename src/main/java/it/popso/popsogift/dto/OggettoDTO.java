@@ -19,7 +19,7 @@ public class OggettoDTO implements Serializable {
     private String codice;
     private String categoria;
     private FornitoreDTO fornitore;
-    private TipologiaOggettoDTO tipologia;
+    private Integer tipologia;
     private Date dataAggiornamento;
     private Date dataInserimento;
     private List<TagDTO> tag;

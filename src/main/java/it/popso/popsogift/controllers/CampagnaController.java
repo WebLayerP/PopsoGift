@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/campagna")
+@RequestMapping("/campagne")
 public class CampagnaController {
 
     public static final Logger loggerPerformance = LoggerFactory.getLogger("PERFORMANCE."+CampagnaController.class);
@@ -33,9 +33,31 @@ public class CampagnaController {
     }
 
 
-    @GetMapping("/all")
-    public List<CampagnaDTO> getAllCampagne(@RequestHeader("Ruolo") String ruolo,
-                                         @RequestHeader("Matricola")String matricola) {
+//    @GetMapping("/all")
+//    public List<CampagnaDTO> getAllCampagne(@RequestHeader("utenza") String utenza,
+//                                            @RequestHeader("matricola")String matricola) {
+//        logger.info("Chiamata getAllCampagne");
+//        List<CampagnaDTO> listaCampagne;
+//        String performanceLog=PERFORMANCE_START.replace("???","all");
+//        loggerPerformance.info(performanceLog);
+//        long start = System.currentTimeMillis();
+//        listaCampagne = campagnaService.getAllCampagne();
+//        performanceLog = PERFORMANCE_END.replace("???", listaCampagne+ "\nRicerca dati campagne completata in "+(System.currentTimeMillis() - start)+" millisecondi");
+//        loggerPerformance.debug(performanceLog);
+//        return listaCampagne;
+//    }
+    @GetMapping
+    public List<CampagnaDTO> getAllCampagne(@RequestHeader("utenza") String utenza,
+                                            @RequestHeader("matricola")String matricola,
+                                            @RequestHeader("codiceFiliale") String codiceFiliale,
+                                            @RequestParam ("page") int page,
+                                            @RequestParam (value = "size")int size,
+                                            @RequestParam(value = "stato" , required = false)String stato,
+                                            @RequestParam(value = "tipologia" , required = false) String tipologia,
+                                            @RequestParam(value = "costo" , required = false) String costo,
+                                            @RequestParam(value = "anno" , required = false) String anno,
+                                            @RequestParam(value = "order", required = false) String order,
+                                            @RequestParam(value ="orderBy", required = false)String orderBy) {
         logger.info("Chiamata getAllCampagne");
         List<CampagnaDTO> listaCampagne;
         String performanceLog=PERFORMANCE_START.replace("???","all");

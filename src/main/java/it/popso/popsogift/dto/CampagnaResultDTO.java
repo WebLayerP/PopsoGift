@@ -16,7 +16,7 @@ public class CampagnaResultDTO {
     private Date dataFineSegnalazioni;
     private Date dataFineCampagna;
     private Integer totOmaggi;
-    private Long costo;
+    private Double costo;
     private Integer filialeApprovato;
     private Integer filialeInAttesa;
     private String tipologia;

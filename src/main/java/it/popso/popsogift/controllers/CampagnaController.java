@@ -1,8 +1,6 @@
 package it.popso.popsogift.controllers;
 
-import it.popso.popsogift.dto.CampagnaDTO;
-import it.popso.popsogift.dto.Esito;
-import it.popso.popsogift.dto.EsitoRisposta;
+import it.popso.popsogift.dto.*;
 import it.popso.popsogift.entity.Campagna;
 import it.popso.popsogift.service.CampagnaService;
 import org.slf4j.Logger;
@@ -47,31 +45,32 @@ public class CampagnaController {
 //        return listaCampagne;
 //    }
     @GetMapping
-    public List<CampagnaDTO> getAllCampagne(@RequestHeader("utenza") String utenza,
-                                            @RequestHeader("matricola")String matricola,
-                                            @RequestHeader("codiceFiliale") String codiceFiliale,
-                                            @RequestParam ("page") int page,
-                                            @RequestParam (value = "size")int size,
-                                            @RequestParam(value = "stato" , required = false)String stato,
-                                            @RequestParam(value = "tipologia" , required = false) String tipologia,
-                                            @RequestParam(value = "costo" , required = false) String costo,
-                                            @RequestParam(value = "anno" , required = false) String anno,
-                                            @RequestParam(value = "order", required = false) String order,
-                                            @RequestParam(value ="orderBy", required = false)String orderBy) {
+    public CampagnaListDTO getAllCampagne(          @RequestHeader("utenza") String utenza,
+                                                    @RequestHeader("matricola")String matricola,
+                                                    @RequestHeader("codiceFiliale") String codiceFiliale,
+                                                    @RequestParam ("page") int page,
+                                                    @RequestParam (value = "size")int size,
+                                                    @RequestParam(value = "stato" , required = false)String stato,
+                                                    @RequestParam(value = "tipologia" , required = false) String tipologia,
+                                                    @RequestParam(value = "costo" , required = false) String costo,
+                                                    @RequestParam(value = "anno" , required = false) String anno,
+                                                    @RequestParam(value = "order", required = false) String order,
+                                                    @RequestParam(value ="orderBy", required = false)String orderBy) {
         logger.info("Chiamata getAllCampagne");
-        List<CampagnaDTO> listaCampagne;
+        CampagnaListDTO listaCampagne;
         String performanceLog=PERFORMANCE_START.replace("???","all");
         loggerPerformance.info(performanceLog);
         long start = System.currentTimeMillis();
-        listaCampagne = campagnaService.getAllCampagne();
+        listaCampagne = campagnaService.listaCampagne(page,size,order,orderBy,tipologia,stato,costo,anno);
         performanceLog = PERFORMANCE_END.replace("???", listaCampagne+ "\nRicerca dati campagne completata in "+(System.currentTimeMillis() - start)+" millisecondi");
         loggerPerformance.debug(performanceLog);
         return listaCampagne;
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<EsitoRisposta> createCampagna( @RequestHeader("Ruolo") String ruolo,
-                                                         @RequestHeader("Matricola")String matricola,
+    public ResponseEntity<EsitoRisposta> createCampagna( @RequestHeader("utenza") String utenza,
+                                                         @RequestHeader("matricola")String matricola,
+                                                         @RequestHeader("codiceFiliale") String codiceFiliale,
                                                          @RequestBody CampagnaDTO campagnaDTO) {
         logger.info("Chiamata createCampagna");
         Campagna campagnaInserita;

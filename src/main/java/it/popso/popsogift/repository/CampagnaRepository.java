@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional
@@ -27,5 +28,12 @@ public interface CampagnaRepository extends JpaRepository<Campagna, Integer> {
     @Query("SELECT MAX (c.dataAggiornamento) FROM Campagna c WHERE YEAR (c.dataAggiornamento)= :anno")
     Date findMaxDataAggiornamentoForYear(@Param("anno") Integer anno);
 
+    @Query("SELECT c FROM Campagna c WHERE (?1 IS NULL OR c.tipologia.idTipologia = ?1) AND (?2 IS NULL OR c.stato.idStato = ?2) AND (?3 IS NULL OR YEAR(c.dataInserimento) = ?3)")
+    List<Campagna> findByFilters(@Param("tipologia") Integer tipologia, @Param("stato") Integer stato, @Param("anno") Integer anno);
+
+    @Query("SELECT SUM(o.prezzo) AS costo, o as oggetto FROM RelCampagnaBeneficiarioOggetto r" +
+            " INNER JOIN Oggetto o on o.idOggetto = r.oggetto.idOggetto "+
+            "INNER JOIN Campagna c on r.campagna.idCampagna = c.idCampagna WHERE c.idCampagna =:idCampagna GROUP BY o.prezzo, o")
+    List<Map<String,Object>> findByCostoOggetti(@Param("idCampagna") Integer idCampagna);
 }
 
